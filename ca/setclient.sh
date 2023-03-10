@@ -28,3 +28,5 @@ then
     echo "Did you use the . before ./setclient.sh? If yes then we are good :)"
 fi
 
+
+

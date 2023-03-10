@@ -1,0 +1,3 @@
+Error: Response from server: Error Code: 80 - CSR input validation failed: The country name 'India' exceeds the maximum character limit of 2  -> Csr -names -c subsection must have only two characters
+
+case sensitive -> authorization issue
