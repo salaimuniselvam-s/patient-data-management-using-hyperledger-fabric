@@ -1,5 +1,5 @@
 #############################################################################
-#   hospital1 Admin Client YAML file
+#   hospital1 Peer1 Client YAML file
 #   Changes to the CSR
 #############################################################################
 
@@ -27,7 +27,7 @@ tls:
 #
 #############################################################################
 csr:
-  cn: peer3-anchor
+  cn: hosp1-peer1
   serialnumber:
   names:
     - C: In
@@ -44,7 +44,7 @@ csr:
 #############################################################################
 id:
   # Must override the name
-  name: peer3
+  name: hosp1-peer1
   # By default the type is set to be user
   type: user
   # Default org is acme - make sure the org is set up in CA server :-)

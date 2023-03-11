@@ -1,13 +1,13 @@
 #!/bin/bash
 # Test case #1 for validating the setup
-# Requires the acme peer1 to be up & running
+# Requires the Hospital1 hosp1-peer1 to be up & running
 #
-# Validates the working of : Acme Peer1
+# Validates the working of : Hospital1 hosp1-peer1
 #
 # 1. Checks if the chaincode is already committed
 #    If NOT then
 #       * Package the chaincode
-#       * Installs the chaincode on peer1
+#       * Installs the chaincode on hosp1-peer1
 #       * Approve & Commit the chaincode
 #       * Initialize the chaincode
 #    Fi
@@ -18,7 +18,7 @@
 # Change this only if you get errors
 export FABRIC_LOGGING_SPEC=ERROR
 
-source  set-env.sh  acme peer1 7050 admin
+source  set-env.sh  hospital1 hosp1-peer 7050 admin
 
 ORDERER_ADDRESS="localhost:7050"
 
@@ -30,16 +30,16 @@ CC_PATH="chaincode_example02"
 
 # Script does not support upgrade
 CC_VERSION="1.0"
-CC_CHANNEL_ID="airlinechannel"
+CC_CHANNEL_ID="hospitalchannel"
 CC_LANGUAGE="golang"
 
 # Introduced in Fabric 2.x
 INTERNAL_DEV_VERSION="1.0"
-CC2_PACKAGE_FOLDER="$HOME/packages"
+CC2_PACKAGE_FOLDER="./packages"
 CC2_SEQUENCE=1
 CC2_INIT_REQUIRED="--init-required"
 
-ORG_NAME="acme"
+ORG_NAME="hospital1"
 IDENTITY="admin"
 
 # 2. Create the package
@@ -53,7 +53,7 @@ function cc_get_package_id {
 }
 
 # 1. Set the identity context
-# ORG_NAME=acme
+# ORG_NAME=hospital1
 # IDENTITY=admin
 # source  set-identity.sh  $ORG_NAME  $IDENTITY
 
@@ -109,7 +109,7 @@ fi
 
 
 # 6. Execute Query
-echo "====> Step 6     Querying A on Acme peer1"
+echo "====> Step 6     Querying A on Hospital1 hosp1-peer1"
 peer chaincode query -C $CC_CHANNEL_ID -n $CC_NAME  -c '{"Args":["query","a"]}'
 
 
@@ -119,5 +119,5 @@ peer chaincode invoke -C $CC_CHANNEL_ID -n $CC_NAME  -c '{"Args":["invoke","a","
 
 
 # 6. Execute Query
-echo "====> Step 8     Querying A on Acme peer1"
+echo "====> Step 8     Querying A on Hospital1 hosp1-peer1"
 peer chaincode query -C $CC_CHANNEL_ID -n $CC_NAME  -c '{"Args":["query","a"]}'

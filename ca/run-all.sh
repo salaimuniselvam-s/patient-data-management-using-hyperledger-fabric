@@ -25,16 +25,16 @@ echo "====> 4. Enrolled Admin Identities  (Orderer, hospital1, hospital2)"
 # 
 # . ./setclient.sh hospital1 admin
 
-./register-enroll-users.sh hospital1 peer1 hospital1.outpatient
+# ./register-enroll-users.sh hospital1 peer1 hospital1.outpatient
 
-echo "====> Registered Peer1 Under Hospital1"
+# echo "====> Registered Peer1 Under Hospital1"
 
-echo "Sleeping for $SLEEP_TIME seconds"
-sleep $SLEEP_TIME
+# echo "Sleeping for $SLEEP_TIME seconds"
+# sleep $SLEEP_TIME
 
-./register-enroll-users.sh hospital2 peer2 hospital2.surgery
+# ./register-enroll-users.sh hospital2 peer2 hospital2.surgery
 
-echo "====> Registered Peer2 Under Hospital2"
+# echo "====> Registered Peer2 Under Hospital2"
 
 # Things to Remember
 # Identity names needs to be unique even across organizations ( still not unsure maybe its because the identity name has to be unique to the fabric ca server)

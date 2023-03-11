@@ -27,11 +27,11 @@ else
 fi
 
 # Function checks for the availability of the 
-function    checkCopyYAML {
-    SETUP_CONFIG_CLIENT_YAML="../config/peer/identities/$ORG_NAME/$PEER_NAME/fabric-ca-client-config.yaml"
-    # Placeholder
-    # This is not implemented - but is placed here to show how you can manage the CSR for the peers like other identities
-}
+# function    checkCopyYAML {
+#     SETUP_CONFIG_CLIENT_YAML="../config/peer/identities/$ORG_NAME/$PEER_NAME/fabric-ca-client-config.yaml"
+#     # Placeholder
+#     # This is not implemented - but is placed here to show how you can manage the CSR for the peers like other identities
+# }
 
 # Function sets the FABRIC_CA_CLIENT_HOME
 function    setFabricCaClientHome {
@@ -56,7 +56,7 @@ IDENTITY=$PEER_NAME
 setFabricCaClientHome
 
 # Step-2 Copies the YAML file for CSR setup
-checkCopyYAML
+# checkCopyYAML
 
 # Step-3 Peer identity is enrolled
 # Admin will  enroll the peer identity. The MSP will be written in the 
