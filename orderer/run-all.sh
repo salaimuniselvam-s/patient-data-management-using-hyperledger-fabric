@@ -1,12 +1,16 @@
 # Generates the genesis & airline channel
 
-./clean.sh
+./clean.sh all
 echo "====>Cleaned"
 
-./generate-genesis.sh
-echo "====>Generated Genesis"
+./init.sh all
 
-./generate-channel-tx.sh
-echo "====>Generated Channel Transacton"
+./register-enroll-orderer.sh
+
+# ./generate-genesis.sh
+# echo "====>Generated Genesis"
+
+# ./generate-channel-tx.sh
+# echo "====>Generated Channel Transacton"
 
 ./launch.sh

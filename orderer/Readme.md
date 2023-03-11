@@ -11,3 +11,5 @@
 Notes
 
 &ApplicationDefaultPolicies in config Yaml -> controls the no of orgs admin needs to sign the channel transaction file
+
+We have created a separate organization for orderer itself , that's y we have orderer under orderer (Root level is for orderer orgs,below leverl orderer is the one who manages the tx in the network)
