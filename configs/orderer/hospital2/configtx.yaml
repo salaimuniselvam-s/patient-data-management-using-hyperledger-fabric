@@ -15,7 +15,7 @@ Organizations:
   - &Orderer
     Name: Orderer
     ID: OrdererMSP
-    MSPDir: ../ca/client/orderer/msp
+    MSPDir: ../../ca/client/orderer/msp
     # Policies are mandatory starting 2.x
     Policies: &OrdererPolicies
       Readers:
@@ -35,7 +35,7 @@ Organizations:
   - &Hospital1
     Name: Hospital1
     ID: Hospital1MSP
-    MSPDir: ../ca/client/hospital1/msp
+    MSPDir: ../../ca/client/hospital1/msp
     Policies: &Hospital1Policies
       Readers:
         Type: Signature
@@ -54,8 +54,33 @@ Organizations:
         # Any member can act as an endorser
         Rule: "OR('Hospital1MSP.member')"
     AnchorPeers:
-      - Host: peer1.hospital1.com
+      - Host: localhost #peer1.hospital1.com
         Port: 7051
+
+  - &Hospital2
+    Name: Hospital2
+    ID: Hospital2MSP
+    MSPDir: ../../ca/client/hospital2/msp
+    Policies: &Hospital2Policies
+      Readers:
+        Type: Signature
+        # Any member can READ e.g., query
+        Rule: "OR('Hospital2MSP.member')"
+      Writers:
+        Type: Signature
+        # Any member can WRITE e.g., submit transaction
+        Rule: "OR('Hospital2MSP.member')"
+      Admins:
+        Type: Signature
+        # Either Hospital2 admin OR Orderer Admin can carry out admin activities
+        Rule: "OR('Hospital2MSP.admin','OrdererMSP.admin')"
+      Endorsement:
+        Type: Signature
+        # Any member can act as an endorser
+        Rule: "OR('Hospital2MSP.member')"
+    AnchorPeers:
+      - Host: localhost #peer1.hospital2.com
+        Port: 9051
 
 #   ORDERER
 Orderer: &OrdererDefaults
