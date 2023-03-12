@@ -10,10 +10,11 @@
 4. To submit the signed config file to the orderer use, ./submit-config-update-tx.sh
 
 Notes:
-. ./set-env.sh hospital1 peer1 7050 admin
+. ./set-env.sh hospital1 hosp1-peer1 7050 admin
 ./fetch-config-json.sh ordererchannel
 ./generate-config-update.sh orderechannel
-./sign-config-update.sh hospital1
+./sign-config-update.sh hospital1 admin
+./sign-config-update.sh orderer admin
 ./submit-config-update-tx.sh hospital1 admin ordererchannel
 ./fetch-config-json.sh ordererchannel
 
@@ -36,10 +37,16 @@ Notes:
 
    1. cd ../peer & . set-env.sh hospital2 admin
 
-   2. ./register-enroll-peer.sh hospital2 peerh21(peer name in the configs folder)
+   2. ./register-enroll-peer.sh hospital2 hosp2-peer1(peer name in the configs folder)
 
-   3. ./launch-peer.sh hospital2 peerh21 9050
+   3. ./launch-peer.sh hospital2 hosp2-peer1 9050
 
-   4. ./join-regular-peer-to-hospitalchannel.sh hospital2 peerh21 9050
+   . set-env.sh hospital2 hosp2-peer1 9050
+
+   4. ./join-regular-peer-to-hospitalchannel.sh hospital2 hosp2-peer1 9050
 
    5. ./validate-with-chaincode-3.sh
+
+# Removing an organization
+
+1. Remove the orgs from the groups section in the fetch-config yaml
