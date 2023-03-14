@@ -19,9 +19,9 @@
 
 <!-- 4. SUbmit the signed transaction to the orderer to create a hospital channel (./submit-create-channel.sh hospital1) -->
 
-5. To join the channel use (. set-env.sh hospital1 hosp1-peer1)(./launch-peer.sh hospital1 hosp1-peer1)(./join-hospital-channel.sh hospital1 hosp1-peer1)
+3. To join the channel use (. set-env.sh hospital1 hosp1-peer1)(./launch-peer.sh hospital1 hosp1-peer1)(./join-hospital-channel.sh hospital1 hosp1-peer1)
 
-6. To register a new peer use Repeat the above steps with different peer port address(with new peer address like 8050)(./join-regular-peer-to-hospitalchannel.sh hospital1 hosp1-peer2 8050)
+4. To register a new peer use Repeat the above steps with different peer port address(with new peer address like 8050)(./join-regular-peer-to-hospitalchannel.sh hospital1 hosp1-peer2 8050)
 
 Notes:
 

@@ -1,0 +1,10 @@
+# OrdererType: etcdraft
+
+#   Addresses:
+#     - localhost:17050
+#   EtcdRaft:
+#     Consenters:
+#       - Host: localhost
+#         Port: 17050
+#         ClientTLSCert: ../ca/client/orderer/orderer/msp/tls/server.crt
+#         ServerTLSCert: ../organizations/client/orderer/orderer/msp/tls/server.crt

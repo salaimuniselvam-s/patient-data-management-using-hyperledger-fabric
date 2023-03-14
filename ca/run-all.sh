@@ -1,13 +1,13 @@
 # Sets up the initail set of identities
 ./clean.sh
-SLEEP_TIME=4
+SLEEP_TIME=5
 
 # 1. Start the CA Server
 ./server.sh start
 echo "====> 1. Starting server "
 # 2. Sleep for 3 seconds - give time for server to start up
 #    Increase this if needed
-SLEEP_TIME=3s
+SLEEP_TIME=5
 echo "====> 2. Sleeping for $SLEEP_TIME "
 sleep $SLEEP_TIME
 

@@ -15,9 +15,12 @@ then
     rm *.tx 2> /dev/null
     rm -rf ./hospital1
     rm -rf ./hospital2
+    rm -rf ./packages
     
     echo 'Deleted all artifacts.'
 else
     echo 'Deleted the ledger data only.'
     echo 'To delete all artifacts use:  ./clean.sh  all'
 fi
+
+mkdir packages

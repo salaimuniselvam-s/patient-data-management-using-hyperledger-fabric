@@ -50,7 +50,7 @@ fi
 
 # Only admin is allowed to execute join command
 export CORE_PEER_MSPCONFIGPATH=../ca/client/$ORG_NAME/admin/msp
-echo $CORE_PEER_MSPCONFIGPATH
+# echo $CORE_PEER_MSPCONFIGPATH
 # Fetch hospital channel configuration
 # peer channel fetch config $HOSPITAL_CHANNEL_BLOCK -o $ORDERER_ADDRESS -c hospitalchannel
 peer channel fetch 0 $HOSPITAL_CHANNEL_BLOCK -o $ORDERER_ADDRESS -c hospitalchannel
