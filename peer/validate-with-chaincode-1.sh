@@ -25,8 +25,8 @@ ORDERER_ADDRESS="localhost:7050"
 CC_CONSTRUCTOR='{"function":"InitLedger","Args":[]}'
 
 # Change the name to re install the chaincode
-CC_NAME="gocc6"
-CC_PATH="../chaincode/sample"
+CC_NAME="hosp-cc"
+CC_PATH="../chaincode/chaincode-javascript"
 
 # Script does not support upgrade
 CC_VERSION="1.0"
@@ -42,9 +42,7 @@ CC2_INIT_REQUIRED="--init-required"
 ORG_NAME="hospital1"
 IDENTITY="admin"
 
-# peer lifecycle chaincode approveformyorg --channelID hospitalchannel  --name gocc6 \
-#             --version 1.0 --package-id gocc6.1.0-1.0:6d26b110edc94fd6f5fe67b32c707242e669153dddcb4a6d115154099a790c1c --sequence 1 \
-#             --init-required    -o localhost:7050  --waitForEvent
+
 
 # 2. Create the package
 PACKAGE_NAME="$CC_NAME.$CC_VERSION-$INTERNAL_DEV_VERSION.tar.gz"
@@ -54,6 +52,7 @@ LABEL="$CC_NAME.$CC_VERSION-$INTERNAL_DEV_VERSION"
 function cc_get_package_id {  
     OUTPUT=$(peer lifecycle chaincode queryinstalled -O json)
     PACKAGE_ID=$(echo $OUTPUT | jq -r ".installed_chaincodes[]|select(.label==\"$LABEL\")|.package_id")
+    # PACKAGE_ID="hosp-cc.1.0-1.0:6e079294b86ed8d2599357f7054729e4a22ee82271b5ef0d4ebe478d5a4115a3"
 }
 
 # 1. Set the identity context
@@ -76,18 +75,17 @@ else
         echo "====> Step 1 Creating the chaincode package 
         $CC2_PACKAGE_FOLDER/$PACKAGE_NAME"
 
-        # peer lifecycle chaincode package ${CC_NAME}.tar.gz --path ${CC_SRC_PATH} --lang ${CC_RUNTIME_LANGUAGE} --label ${CC_NAME}_${CC_VERSION} >&log.txt
-
         peer lifecycle chaincode package $CC2_PACKAGE_FOLDER/$PACKAGE_NAME --path $CC_PATH --lang $CC_LANGUAGE --label="$CC_NAME.$CC_VERSION-$INTERNAL_DEV_VERSION"
+       
+        # peer lifecycle chaincode package ./packages/hosp-cc.tar.gz --path ../chaincode/sample --label hosp-cc.1.0-1.0 -l node
 
-        # peer lifecycle chaincode package $CC2_PACKAGE_FOLDER/$PACKAGE_NAME -p $CC_PATH \
-        #             --label="$CC_NAME.$CC_VERSION-$INTERNAL_DEV_VERSION" -l $CC_LANGUAGE
     fi
 
 
     # 2. Install the chaincode
     echo "====> Step 2   Installing chaincode (may fail if CC/version already there)"
     peer lifecycle chaincode install  $CC2_PACKAGE_FOLDER/$PACKAGE_NAME
+    # peer lifecycle chaincode install  ./packages/hosp-cc.tar.gz
 
     # Set the package ID -  PACAKGE_ID will be set
     cc_get_package_id
@@ -97,27 +95,34 @@ else
     peer lifecycle chaincode approveformyorg --channelID $CC_CHANNEL_ID  --name $CC_NAME \
             --version $CC_VERSION --package-id $PACKAGE_ID --sequence $CC2_SEQUENCE \
             $CC2_INIT_REQUIRED    -o $ORDERER_ADDRESS  --waitForEvent
+    
+    # peer lifecycle chaincode approveformyorg --channelID hospitalchannel  --name hosp-cc --version 1.0 --package-id hosp-cc.1.0-1.0:46d84264132c86284c8a0c123fba112c83defeeb489c3a39af291602c314eda7 --sequence 1 --init-required -o localhost:7050  --waitForEvent
 
     # This is to confirm the approval         
     peer lifecycle chaincode checkcommitreadiness -C $CC_CHANNEL_ID -n \
         $CC_NAME --sequence $CC2_SEQUENCE -v $CC_VERSION  $CC2_INIT_REQUIRED 
+    
+    # peer lifecycle chaincode checkcommitreadiness -C hospitalchannel  -n hosp-cc --sequence 1 -v 1.0 --init-required 
 
     # 4. Commit the chaincode
     echo "====> Step 4   Committing the chaincode"
     peer lifecycle chaincode commit -C $CC_CHANNEL_ID -n $CC_NAME -v $CC_VERSION \
             --sequence $CC2_SEQUENCE  $CC2_INIT_REQUIRED    --waitForEvent
+
+    # peer lifecycle chaincode commit -C hospitalchannel -n hosp-cc -v 1.0 --sequence 1  --init-required     --waitForEvent
     # this is to check commited chaincode
-    peer lifecycle chaincode querycommitted -C $CC_CHANNEL_ID -n $CC_NAME 
+    peer lifecycle chaincode querycommitted -C $CC_CHANNEL_ID -n $CC_NAME
+    # peer lifecycle chaincode querycommitted -C hospitalchannel -n hosp-cc  
 
     # 5. Init the chaincode
     echo "====> Step 5     Initailsing the Chaincode  (will fail if already initialized)"
 
 #    peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile "${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem" -C mychannel -n basic --peerAddresses localhost:7051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" --peerAddresses localhost:9051 --tlsRootCertFiles "${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" -c '{"function":"InitLedger","Args":[]}'
 
-#    peer chaincode invoke  -C hospitalchannel  -n gocc6 -c '{"function":"InitLedger","Args":[]}' --waitForEvent --isInit -o localhost:7050
+    peer chaincode invoke -o $ORDERER_ADDRESS  -C $CC_CHANNEL_ID  -n $CC_NAME --peerAddresses localhost:7051  -c $CC_CONSTRUCTOR \
+        --waitForEvent --isInit 
 
-    peer chaincode invoke  -C $CC_CHANNEL_ID -n $CC_NAME -c $CC_CONSTRUCTOR \
-        --waitForEvent --isInit -o $ORDERER_ADDRESS 
+    #    peer chaincode invoke  -o localhost:7050 -C hospitalchannel  -n hosp-cc -c '{"function":"InitLedger","Args":[]}' --isInit 
 fi
 
 
