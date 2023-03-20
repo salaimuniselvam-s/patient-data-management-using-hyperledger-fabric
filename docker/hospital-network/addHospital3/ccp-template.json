@@ -1,5 +1,5 @@
 {
-  "name": "test-network-hopsital${HOSPITAL}",
+  "name": "hospital-network-hopsital${HOSPITAL}",
   "version": "1.0.0",
   "client": {
     "organization": "Org${HOSPITAL}",
