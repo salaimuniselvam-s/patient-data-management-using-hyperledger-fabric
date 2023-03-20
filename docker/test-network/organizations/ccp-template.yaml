@@ -1,0 +1,34 @@
+---
+name: test-network-hopsital${HOSPITAL}
+version: 1.0.0
+client:
+  organization: Org${HOSPITAL}
+  connection:
+    timeout:
+      peer:
+        endorser: "300"
+organizations:
+  Org${HOSPITAL}:
+    mspid: Org${HOSPITAL}MSP
+    peers:
+      - peer0.hopsital${HOSPITAL}.geakminds.com
+    certificateAuthorities:
+      - ca.hopsital${HOSPITAL}.geakminds.com
+peers:
+  peer0.hopsital${HOSPITAL}.geakminds.com:
+    url: grpcs://localhost:${P0PORT}
+    tlsCACerts:
+      pem: |
+        ${PEERPEM}
+    grpcOptions:
+      ssl-target-name-override: peer0.hopsital${HOSPITAL}.geakminds.com
+      hostnameOverride: peer0.hopsital${HOSPITAL}.geakminds.com
+certificateAuthorities:
+  ca.hopsital${HOSPITAL}.geakminds.com:
+    url: https://localhost:${CAPORT}
+    caName: ca-hopsital${HOSPITAL}
+    tlsCACerts:
+      pem: |
+        ${CAPEM}
+    httpOptions:
+      verify: false

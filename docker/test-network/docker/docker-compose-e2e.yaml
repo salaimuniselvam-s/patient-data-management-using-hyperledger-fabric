@@ -1,0 +1,176 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: "2"
+
+volumes:
+  orderer.geakminds.com:
+  peer0.hospital1.geakminds.com:
+  peer0.hospital2.geakminds.com:
+
+networks:
+  hospital-network:
+
+services:
+  ca0:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-hospital1
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=7054
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../organizations/fabric-ca/hospital1:/etc/hyperledger/fabric-ca-server
+    container_name: ca_hospital1
+    networks:
+      - hospital-network
+
+  ca1:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-hospital2
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=8054
+    ports:
+      - "8054:8054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../organizations/fabric-ca/hospital2:/etc/hyperledger/fabric-ca-server
+    container_name: ca_hospital2
+    networks:
+      - hospital-network
+
+  ca2:
+    image: hyperledger/fabric-ca:$IMAGE_TAG
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-orderer
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=9054
+    ports:
+      - "9054:9054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ../organizations/fabric-ca/ordererOrg:/etc/hyperledger/fabric-ca-server
+    container_name: ca_orderer
+    networks:
+      - hospital-network
+
+    orderer.geakminds.com:
+      container_name: orderer.geakminds.com
+      image: hyperledger/fabric-orderer:$IMAGE_TAG
+      environment:
+        - FABRIC_LOGGING_SPEC=INFO
+        - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+        - ORDERER_GENERAL_LISTENPORT=7050
+        - ORDERER_GENERAL_GENESISMETHOD=file
+        - ORDERER_GENERAL_GENESISFILE=/var/hyperledger/orderer/orderer.genesis.block
+        - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+        - ORDERER_GENERAL_LOCALMSPDIR=/var/hyperledger/orderer/msp
+        # enabled TLS
+        - ORDERER_GENERAL_TLS_ENABLED=true
+        - ORDERER_GENERAL_TLS_PRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+        - ORDERER_GENERAL_TLS_CERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+        - ORDERER_GENERAL_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+        - ORDERER_KAFKA_TOPIC_REPLICATIONFACTOR=1
+        - ORDERER_KAFKA_VERBOSE=true
+        - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/var/hyperledger/orderer/tls/server.crt
+        - ORDERER_GENERAL_CLUSTER_CLIENTPRIVATEKEY=/var/hyperledger/orderer/tls/server.key
+        - ORDERER_GENERAL_CLUSTER_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
+      working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+      command: orderer
+      volumes:
+        - ../system-genesis-block/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+        - ../organizations/ordererOrganizations/geakminds.com/orderers/orderer.geakminds.com/msp:/var/hyperledger/orderer/msp
+        - ../organizations/ordererOrganizations/geakminds.com/orderers/orderer.geakminds.com/tls/:/var/hyperledger/orderer/tls
+        - orderer.geakminds.com:/var/hyperledger/production/orderer
+      ports:
+        - 7050:7050
+      networks:
+        - hospital-network
+
+    peer0.hospital1.geakminds.com:
+      container_name: peer0.hospital1.geakminds.com
+      image: hyperledger/fabric-peer:$IMAGE_TAG
+      environment:
+        #Generic peer variables
+        - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+        # the following setting starts chaincode containers on the same
+        # bridge network as the peers
+        # https://docs.docker.com/compose/networking/
+        - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_test
+        - FABRIC_LOGGING_SPEC=INFO
+        #- FABRIC_LOGGING_SPEC=DEBUG
+        - CORE_PEER_TLS_ENABLED=true
+        - CORE_PEER_GOSSIP_USELEADERELECTION=true
+        - CORE_PEER_GOSSIP_ORGLEADER=false
+        - CORE_PEER_PROFILE_ENABLED=true
+        - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+        - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+        - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+        # Peer specific variabes
+        - CORE_PEER_ID=peer0.hospital1.geakminds.com
+        - CORE_PEER_ADDRESS=peer0.hospital1.geakminds.com:7051
+        - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+        - CORE_PEER_CHAINCODEADDRESS=peer0.hospital1.geakminds.com:7052
+        - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+        - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.hospital1.geakminds.com:7051
+        - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.hospital1.geakminds.com:7051
+        - CORE_PEER_LOCALMSPID=Hospital1MSP
+      volumes:
+        - /var/run/:/host/var/run/
+        - ../organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/msp:/etc/hyperledger/fabric/msp
+        - ../organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.hospital1.geakminds.com:/var/hyperledger/production
+      working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+      command: peer node start
+      ports:
+        - 7051:7051
+      networks:
+        - hospital-network
+
+    peer0.hospital2.geakminds.com:
+      container_name: peer0.hospital2.geakminds.com
+      image: hyperledger/fabric-peer:$IMAGE_TAG
+      environment:
+        #Generic peer variables
+        - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+        # the following setting starts chaincode containers on the same
+        # bridge network as the peers
+        # https://docs.docker.com/compose/networking/
+        - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_test
+        - FABRIC_LOGGING_SPEC=INFO
+        #- FABRIC_LOGGING_SPEC=DEBUG
+        - CORE_PEER_TLS_ENABLED=true
+        - CORE_PEER_GOSSIP_USELEADERELECTION=true
+        - CORE_PEER_GOSSIP_ORGLEADER=false
+        - CORE_PEER_PROFILE_ENABLED=true
+        - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
+        - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
+        - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
+        # Peer specific variabes
+        - CORE_PEER_ID=peer0.hospital2.geakminds.com
+        - CORE_PEER_ADDRESS=peer0.hospital2.geakminds.com:9051
+        - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+        - CORE_PEER_CHAINCODEADDRESS=peer0.hospital2.geakminds.com:9052
+        - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+        - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.hospital2.geakminds.com:9051
+        - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.hospital2.geakminds.com:9051
+        - CORE_PEER_LOCALMSPID=Hospital2MSP
+      volumes:
+        - /var/run/:/host/var/run/
+        - ../organizations/peerOrganizations/hospital2.geakminds.com/peers/peer0.hospital2.geakminds.com/msp:/etc/hyperledger/fabric/msp
+        - ../organizations/peerOrganizations/hospital2.geakminds.com/peers/peer0.hospital2.geakminds.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.hospital2.geakminds.com:/var/hyperledger/production
+      working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+      command: peer node start
+      ports:
+        - 9051:9051
+      networks:
+        - hospital-network

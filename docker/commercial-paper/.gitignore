@@ -1,0 +1,4 @@
+cp.tar.gz
+**/.gradle
+**/gateway/connection-hospital1.yaml
+**/gateway/connection-hospital2.yaml

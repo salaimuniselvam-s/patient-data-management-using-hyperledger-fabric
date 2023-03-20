@@ -1,0 +1,10 @@
+https://hyperledger-fabric.readthedocs.io/en/release-2.0/channel_update_tutorial.html
+
+./addHospital3.sh up
+
+cd ..
+
+./scripts/deployCCHosp3.sh
+
+docker exec -it peer0.hospital3.geakminds.com bash
+

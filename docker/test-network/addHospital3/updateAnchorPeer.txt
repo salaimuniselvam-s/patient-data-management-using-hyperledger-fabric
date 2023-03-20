@@ -1,0 +1,40 @@
+peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.geakminds.com --tls --cafile ${PWD}/organizations/ordererOrganizations/geakminds.com/orderers/orderer.geakminds.com/msp/tlscacerts/tlsca.geakminds.com-cert.pem -C hospital-channel -n fabcar --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls/ca.crt --peerAddresses localhost:11051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/hospital3.geakminds.com/peers/peer0.hospital3.geakminds.com/tls/ca.crt -c '{"function":"createCar","Args":["CAR11","Honda","Accord","Black","Tom"]}'
+
+peer chaincode query -C hospital-channel -n fabcar -c '{"Args":["queryCar","CAR11"]}'
+
+
+// Update Anchor Peer
+
+docker exec -it Hospital3cli bash
+
+export ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/ordererOrganizations/geakminds.com/orderers/orderer.geakminds.com/msp/tlscacerts/tlsca.geakminds.com-cert.pem
+export CHANNEL_NAME=hospital-channel
+
+peer channel fetch config config_block.pb -o orderer.geakminds.com:7050 -c $CHANNEL_NAME --tls --cafile $ORDERER_CA
+
+configtxlator proto_decode --input config_block.pb --type common.Block --output config_block.json
+jq .data.data[0].payload.data.config config_block.json > config.json
+
+jq '.channel_group.groups.Application.groups.Hospital3MSP.values += {"AnchorPeers":{"mod_policy": "Admins","value":{"anchor_peers": [{"host": "peer0.hospital3.geakminds.com","port": 11051}]},"version": "0"}}' config.json > modified_anchor_config.json
+
+configtxlator proto_encode --input config.json --type common.Config --output config.pb
+
+configtxlator proto_encode --input modified_anchor_config.json --type common.Config --output modified_anchor_config.pb
+
+configtxlator compute_update --channel_id $CHANNEL_NAME --original config.pb --updated modified_anchor_config.pb --output anchor_update.pb
+
+configtxlator proto_decode --input anchor_update.pb --type common.ConfigUpdate | jq . > anchor_update.json
+
+echo '{"payload":{"header":{"channel_header":{"channel_id":"'$CHANNEL_NAME'", "type":2}},"data":{"config_update":'$(cat anchor_update.json)'}}}' | jq . > anchor_update_in_envelope.json
+
+
+configtxlator proto_encode --input anchor_update_in_envelope.json --type common.Envelope --output anchor_update_in_envelope.pb
+
+export CORE_PEER_LOCALMSPID="Hospital3MSP"
+export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/hospital3.geakminds.com/peers/peer0.hospital3.geakminds.com/tls/ca.crt
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/organizations/peerOrganizations/hospital3.geakminds.com/users/Admin@hospital3.geakminds.com/msp
+export CORE_PEER_ADDRESS=peer0.hospital3.geakminds.com:11051
+
+peer channel update -f anchor_update_in_envelope.pb -c $CHANNEL_NAME -o orderer.geakminds.com:7050 --tls --cafile $ORDERER_CA
+
+docker logs -f peer0.hospital1.geakminds.com

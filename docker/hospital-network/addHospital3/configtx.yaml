@@ -1,0 +1,45 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+---
+################################################################################
+#
+#   Section: Organizations
+#
+#   - This section defines the different organizational identities which will
+#   be referenced later in the configuration.
+#
+################################################################################
+Organizations:
+  - &Hospital3
+    # DefaultOrg defines the organization which is used in the sampleconfig
+    # of the fabric.git development environment
+    Name: Hospital3MSP
+
+    # ID to load the MSP definition as
+    ID: Hospital3MSP
+
+    MSPDir: ../organizations/peerOrganizations/hospital3.geakminds.com/msp
+
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('Hospital3MSP.admin', 'Hospital3MSP.peer', 'Hospital3MSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('Hospital3MSP.admin', 'Hospital3MSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('Hospital3MSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('Hospital3MSP.peer')"
+
+    AnchorPeers:
+      # AnchorPeers defines the location of peers which can be used
+      # for cross hopsital gossip communication.  Note, this value is only
+      # encoded in the genesis block in the Application section context
+      - Host: peer0.hospital3.geakminds.com
+        Port: 11051
