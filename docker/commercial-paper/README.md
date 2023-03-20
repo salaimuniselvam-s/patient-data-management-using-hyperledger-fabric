@@ -21,7 +21,7 @@ This `README.md` file is in the `commercial-paper` directory, the source code fo
 
 1. Start the Hyperledger Fabric infrastructure
 
-The 'test-network' will be used - this has two organizations 'hospital1' and 'hospital2' DigiBank will be hospital1, and MagnetoCorp will be hospital2.
+The 'hospital-network' will be used - this has two organizations 'hospital1' and 'hospital2' DigiBank will be hospital1, and MagnetoCorp will be hospital2.
 
 2. Install and Instantiate the Contracts
 

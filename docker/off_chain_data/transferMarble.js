@@ -37,7 +37,7 @@ async function main() {
     const ccpPath = path.resolve(
       __dirname,
       "..",
-      "test-network",
+      "hospital-network",
       "organizations",
       "peerOrganizations",
       "hospital1.geakminds.com",

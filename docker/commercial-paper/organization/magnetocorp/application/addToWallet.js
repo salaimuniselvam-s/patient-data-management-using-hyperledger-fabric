@@ -9,7 +9,7 @@ const fs = require("fs");
 const { Wallets } = require("fabric-network");
 const path = require("path");
 
-const fixtures = path.resolve(__dirname, "../../../../test-network");
+const fixtures = path.resolve(__dirname, "../../../../hospital-network");
 
 async function main() {
   // Main try/catch block

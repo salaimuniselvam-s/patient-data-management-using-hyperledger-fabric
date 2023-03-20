@@ -1,1 +1,1 @@
-cd docker/test-network
+cd docker/hospital-network

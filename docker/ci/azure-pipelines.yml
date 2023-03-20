@@ -74,4 +74,4 @@ jobs:
       vmImage: ubuntu-18.04
     steps:
       - template: templates/install-deps.yml
-      - template: templates/test-network/azure-pipelines.yml
+      - template: templates/hospital-network/azure-pipelines.yml

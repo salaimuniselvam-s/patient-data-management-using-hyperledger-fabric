@@ -9,7 +9,7 @@ steps:
       # Copy the connection profiles so they are in the correct organizations. 
       cp "./organizations/peerOrganizations/hospital1.geakminds.com/connection-hospital1.yaml" "../commercial-paper/organization/digibank/gateway/"
       cp "./organizations/peerOrganizations/hospital2.geakminds.com/connection-hospital2.yaml" "../commercial-paper/organization/magnetocorp/gateway/"
-    workingDirectory: test-network
+    workingDirectory: hospital-network
     displayName: Start Fabric
   - script: |
       source <(./magnetocorp.sh)

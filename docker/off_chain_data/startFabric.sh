@@ -21,7 +21,7 @@ popd
 echo Finished vendoring Go dependencies
 
 # launch network; create channel and join peer to channel
-pushd ../test-network
+pushd ../hospital-network
 ./network.sh down
 ./network.sh up createChannel -ca -s couchdb
 

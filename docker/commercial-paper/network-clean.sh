@@ -16,7 +16,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 export FABRIC_CFG_PATH="${DIR}/../config"
 
-cd "${DIR}/../test-network/"
+cd "${DIR}/../hospital-network/"
 
 docker kill cliDigiBank cliMagnetoCorp logspout || true
 ./network.sh down

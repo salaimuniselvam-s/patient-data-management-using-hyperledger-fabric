@@ -14,7 +14,7 @@ export TIMEOUT=10
 export DELAY=3
 
 # launch network; create channel and join peer to channel
-pushd ../test-network
+pushd ../hospital-network
 ./network.sh down
 
 echo "Bring up test network"

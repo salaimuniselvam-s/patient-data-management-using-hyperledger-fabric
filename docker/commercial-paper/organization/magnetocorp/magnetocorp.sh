@@ -17,8 +17,8 @@ function _exit(){
 # Where am I?
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Locate the test-network 
-cd "${DIR}/../../../test-network"
+# Locate the hospital-network 
+cd "${DIR}/../../../hospital-network"
 env | sort > /tmp/env.orig
 
 OVERRIDE_ORG="2"

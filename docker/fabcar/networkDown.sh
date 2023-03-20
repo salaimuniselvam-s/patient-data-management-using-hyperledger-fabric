@@ -8,7 +8,7 @@
 set -ex
 
 # Bring the test network down
-pushd ../test-network
+pushd ../hospital-network
 ./network.sh down
 popd
 

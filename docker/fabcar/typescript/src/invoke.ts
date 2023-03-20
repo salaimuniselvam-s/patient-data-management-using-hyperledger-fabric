@@ -14,7 +14,7 @@ async function main() {
             "..",
             "..",
             "..",
-            "test-network",
+            "hospital-network",
             "organizations",
             "peerOrganizations",
             "hospital1.geakminds.com",

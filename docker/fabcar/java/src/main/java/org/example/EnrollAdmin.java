@@ -26,7 +26,7 @@ public class EnrollAdmin {
 		// Create a CA client for interacting with the CA.
 		Properties props = new Properties();
 		props.put("pemFile",
-			"../../test-network/organizations/peerOrganizations/hospital1.geakminds.com/ca/ca.hospital1.geakminds.com-cert.pem");
+			"../../hospital-network/organizations/peerOrganizations/hospital1.geakminds.com/ca/ca.hospital1.geakminds.com-cert.pem");
 		props.put("allowAllHostNames", "true");
 		HFCAClient caClient = HFCAClient.createNewInstance("https://localhost:7054", props);
 		CryptoSuite cryptoSuite = CryptoSuiteFactory.getDefault().getCryptoSuite();

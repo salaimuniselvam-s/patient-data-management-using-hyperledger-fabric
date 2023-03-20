@@ -8,13 +8,13 @@ setGlobals() {
   HOSPITAL=$1
   if [ $HOSPITAL -eq 1 ]; then
     CORE_PEER_LOCALMSPID="Hospital1MSP"
-    CORE_PEER_TLS_ROOTCERT_FILE=../test-network/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls/ca.crt
-    CORE_PEER_MSPCONFIGPATH=../test-network/organizations/peerOrganizations/hospital1.geakminds.com/users/Admin@hospital1.geakminds.com/msp
+    CORE_PEER_TLS_ROOTCERT_FILE=../hospital-network/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls/ca.crt
+    CORE_PEER_MSPCONFIGPATH=../hospital-network/organizations/peerOrganizations/hospital1.geakminds.com/users/Admin@hospital1.geakminds.com/msp
     CORE_PEER_ADDRESS=localhost:7051
   elif [ $HOSPITAL -eq 2 ]; then
     CORE_PEER_LOCALMSPID="Hospital2MSP"
-    CORE_PEER_TLS_ROOTCERT_FILE=../test-network/organizations/peerOrganizations/hospital2.geakminds.com/peers/peer0.hospital2.geakminds.com/tls/ca.crt
-    CORE_PEER_MSPCONFIGPATH=../test-network/organizations/peerOrganizations/hospital2.geakminds.com/users/Admin@hospital2.geakminds.com/msp
+    CORE_PEER_TLS_ROOTCERT_FILE=../hospital-network/organizations/peerOrganizations/hospital2.geakminds.com/peers/peer0.hospital2.geakminds.com/tls/ca.crt
+    CORE_PEER_MSPCONFIGPATH=../hospital-network/organizations/peerOrganizations/hospital2.geakminds.com/users/Admin@hospital2.geakminds.com/msp
     CORE_PEER_ADDRESS=localhost:9051
   else
     echo "================== ERROR !!! HOSPITAL Unknown =================="
