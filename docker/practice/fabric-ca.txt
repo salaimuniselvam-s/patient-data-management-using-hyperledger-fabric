@@ -1,0 +1,48 @@
+export IMAGE_TAG=latest
+export PATH=${PWD}/../bin:${PWD}:$PATH
+docker-compose -f ../hospital-network/docker/docker-compose-ca.yaml up -d 2>&1
+
+mkdir hospital
+export FABRIC_CA_CLIENT_HOME=./hospital
+
+// Enroll the ca admin 
+
+ fabric-ca-client enroll -u https://admin:adminpw@localhost:7054 --caname ca-hospital1 --tls.certfiles ${PWD}/../hospital-network/organizations/fabric-ca/hospital1/tls-cert.pem
+
+ Notes: key-store is the private key && sign certs is the public key
+
+# Registering Peer 0
+	fabric-ca-client register --caname ca-hospital1 --id.name peer0 --id.secret peer0pw --id.type peer --tls.certfiles ${PWD}/../hospital-network/organizations/fabric-ca/hospital1/tls-cert.pem
+
+
+ # Generate the peer0 msp
+
+	fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-hospital1 -M ./hospital1/peer0.hospital1.geakminds.com/msp --csr.hosts peer0.hospital1.geakminds.com --tls.certfiles ${PWD}/../hospital-network/organizations/fabric-ca/hospital1/tls-cert.pem
+  set +x
+
+  cp ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/msp/config.yaml ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/msp/config.yaml
+
+
+  echo
+  echo "## Generate the peer0-tls certificates"
+  echo
+  set -x
+  fabric-ca-client enroll -u https://peer0:peer0pw@localhost:7054 --caname ca-hospital1 -M ./hospital1/peer0.hospital1.geakminds.com/tls --enrollment.profile tls --csr.hosts peer0.hospital1.geakminds.com --csr.hosts localhost --tls.certfiles ${PWD}/../hospital-network/organizations/fabric-ca/hospital1/tls-cert.pem
+  set +x
+
+
+  cp ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls/ca.crt
+  cp ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls/signcerts/* ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls/server.crt
+  cp ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls/keystore/* ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls/server.key
+
+  mkdir ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/msp/tlscacerts
+  cp ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/msp/tlscacerts/ca.crt
+
+  mkdir ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/tlsca
+  cp ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/tls/tlscacerts/* ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/tlsca/tlsca.hospital1.geakminds.com-cert.pem
+
+  mkdir ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/ca
+  cp ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/peers/peer0.hospital1.geakminds.com/msp/cacerts/* ${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/ca/ca.hospital1.geakminds.com-cert.pem
+
+  mkdir -p organizations/peerOrganizations/hospital1.geakminds.com/users
+  mkdir -p organizations/peerOrganizations/hospital1.geakminds.com/users/User1@hospital1.geakminds.com

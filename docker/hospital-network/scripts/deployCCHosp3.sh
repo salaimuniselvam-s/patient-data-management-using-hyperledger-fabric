@@ -6,14 +6,15 @@ DELAY="$4"
 MAX_RETRY="$5"
 VERBOSE="$6"
 : ${CHANNEL_NAME:="hospital-channel"}
-: ${CC_SRC_LANGUAGE:="golang"}
+: ${CC_SRC_LANGUAGE:="javascript"}
 : ${VERSION:="1"}
 : ${DELAY:="3"}
 : ${MAX_RETRY:="5"}
 : ${VERBOSE:="false"}
 CC_SRC_LANGUAGE=`echo "$CC_SRC_LANGUAGE" | tr [:upper:] [:lower:]`
 
-FABRIC_CFG_PATH=$PWD/../config/
+export FABRIC_CFG_PATH=$PWD/../config
+export PATH=${PWD}/../bin:${PWD}:$PATH
 
 if [ "$CC_SRC_LANGUAGE" = "go" -o "$CC_SRC_LANGUAGE" = "golang" ] ; then
 	CC_RUNTIME_LANGUAGE=golang
@@ -266,13 +267,13 @@ approveForMyOrg 3
 
 ## check whether the chaincode definition is ready to be committed
 
-checkCommitReadiness 3 "\"Hospital1MSP\": true" "\"Hospital2MSP\": false" "\"Hospital3MSP\": true"
+# checkCommitReadiness 3 "\"Hospital1MSP\": true" "\"Hospital2MSP\": false" "\"Hospital3MSP\": true"
 
 ## query whether the chaincode is installed
-queryInstalled 3
+# queryInstalled 3
 
 ## now approve also for hospital3
-approveForMyOrg 3
+# approveForMyOrg 3
 
 ## check whether the chaincode definition is ready to be committed
 ## expect them both to have approved
@@ -282,7 +283,7 @@ approveForMyOrg 3
 # commitChaincodeDefinition 3 2
 
 ## query on both orgs to see that the definition committed successfully
-queryCommitted 3
+# queryCommitted 3
 
 ## Invoke the chaincode
 # chaincodeInvokeInit 3 2

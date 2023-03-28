@@ -223,8 +223,8 @@ CRYPTO="cryptogen"
 CLI_TIMEOUT=10
 #default for delay
 CLI_DELAY=3
-# channel name defaults to "mychannel"
-CHANNEL_NAME="mychannel"
+# channel name defaults to "hospital-channel"
+CHANNEL_NAME="hospital-channel"
 # use this as the docker compose couch file
 COMPOSE_FILE_COUCH_HOSPITAL3=docker/docker-compose-couch-hospital3.yaml
 # use this as the default docker-compose yaml definition
