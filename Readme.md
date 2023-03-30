@@ -27,7 +27,9 @@ $ git clone https://github.com/salaimuniselvam-s/Hospital_Fabric.git
 3. Run the following command to install the binaries and images.
 
 ```bash
-$ curl -sSL https://bit.ly/2ysbOFE | bash -s
+$ curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
+
+$ ./install-fabric.sh docker
 ```
 
 4. Change the working directory to /fabric-samples/pdm-network
