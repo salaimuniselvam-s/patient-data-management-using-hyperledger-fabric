@@ -1,0 +1,38 @@
+1. InitPatientLedger  -> Constructor Used to Enroll Patient Records to the Network on Deployment of chaincode
+
+2. CreatePatientRecord -> To Register & Enroll New Patient Into the System ( Now Required Parameters are PatientId, Name,address,telephoneNo)
+
+3. DoctorReadPatientRecord -> To Read Patient Record By Doctor ( Only Authorized Doctors Can able to Read)
+
+4. UpdatePatientRecordByDoctor -> To Update Patient Record By Doctor ( Only Authorized Doctors Can able to Update)
+
+5. DeletePatientRecord -> To Delete the Patient Record From the System
+
+6. GetAllPatientRecords -> To Get All the Patient Records in the System ( Only Hospital Admins Can Call It )
+
+7. GetPatientRecordHistory -> To Get the History Of the Record Updates for particular Patient ( From Register to Current State )
+
+8. GrantAccess -> To Grant Acces to Organizations or Doctors By Patient
+
+9. RevokeAccess -> To Revoke Acces From Organizations or Doctors By Patient
+
+10. ReadPatientRecord -> To Read Specific Patient Record By PatientId
+
+
+11. Sample Patient Details Stored on Ledger
+
+{
+        PatientId: "Patient1",
+        Address: "A1",
+        Telephone: 741258,
+        BloodGroup: "A1",
+        HealthRecordId: "EHR1",
+        Diagnosis: "D1",
+        Medication: "M1",
+        DoctorAuthorizationList: ["Doc1"],
+        OrganisationAuthorizationList: ["Hospital1"],
+
+}
+
+
+

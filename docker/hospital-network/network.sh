@@ -403,7 +403,7 @@ function networkDown() {
 
 
     # remove channel and script artifacts
-    rm -rf channel-artifacts log.txt fabcar.tar.gz fabcar
+    rm -rf channel-artifacts log.txt hospital-chaincode.tar.gz fabcar
 
   fi
 }

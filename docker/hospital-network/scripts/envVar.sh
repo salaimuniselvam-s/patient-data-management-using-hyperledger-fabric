@@ -27,7 +27,7 @@ setGlobals() {
   else
     USING_ORG="${OVERRIDE_ORG}"
   fi
-  echo "Using organization ${USING_ORG}"
+  echo "Using Hospital ${USING_ORG}"
   if [ $USING_ORG -eq 1 ]; then
     export CORE_PEER_LOCALMSPID="Hospital1MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG1_CA
