@@ -41,13 +41,13 @@ $ cd ./docker/hospital-network
 5. Use the following command to start the network, with 2 organization hospital1 and hospital2 with one peer each (peer0) and an Orderer node & then create an hospital-channel & deploy & Instantiate the hospital Contract on two peers.
 
 ```bash
-$ ./upNetwork.sh up
+$ ./hospitalNetwork.sh up
 ```
 
 7. Use the Following Command to test the Chaincode is Successfully Installed & Instantiated on Two Peers
 
 ```bash
-$ ./upNetwork.sh validate
+$ ./hospitalNetwork.sh validate
 ```
 
 8. Use this command to bring the network down

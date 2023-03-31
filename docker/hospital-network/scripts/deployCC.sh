@@ -219,15 +219,17 @@ chaincodeQuery() {
   fi
 }
 
-## at first we package the chaincode
+# at first we package the chaincode
 packageChaincode 1
 
-sleep 3
-## Install chaincode on peer0.hospital1 and peer0.hospital2
+
+echo $ORDERER_CA $PEER0_ORG1_CA
+# sleep 3
+# Install chaincode on peer0.hospital1 and peer0.hospital2
 echo "Installing chaincode on peer0.hospital1..."
 installChaincode 1
 
-sleep 5
+# sleep 5
 echo "Install chaincode on peer0.hospital2..."
 installChaincode 2
 
