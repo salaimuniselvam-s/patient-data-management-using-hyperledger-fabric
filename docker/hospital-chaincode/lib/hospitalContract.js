@@ -61,6 +61,8 @@ class HospitalContract extends Contract {
 
   // CreatePatientRecord Creates a New Patient Record in the Network
   async CreatePatientRecord(ctx, userObj) {
+    console.log(userObj, "userObj");
+    console.log(JSON.parse(userObj));
     userObj = JSON.parse(userObj);
     const patientId = userObj.patientId;
     const address = userObj.address;

@@ -89,5 +89,7 @@ $docker volume prune
 6. Once the docker is up ,open a new terminal and download the images. (same as Step 3 in Bring up the network section)
 
 ```bash
-$ curl -sSL https://bit.ly/2ysbOFE | bash -s
+$ curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
+
+$ ./install-fabric.sh docker
 ```

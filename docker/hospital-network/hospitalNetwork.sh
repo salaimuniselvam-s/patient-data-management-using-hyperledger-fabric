@@ -127,6 +127,8 @@ elif [ $1 == "hosp3" ]; then
   addHospital3
 elif [ $1 == "validate" ]; then
   ValidateChaincodeonPeers
+elif [ $1 == "validateChaincode" ]; then
+  ./scripts/custom/validateAllFunctionsOnChaincode.sh
 elif [ $1 == "down" ]; then
   ./network.sh down
 else
