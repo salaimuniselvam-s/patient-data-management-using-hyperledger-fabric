@@ -119,6 +119,12 @@ function addHospital3() {
   sleep $SLEEP_TIME
   peer lifecycle chaincode queryinstalled
 
+  echo "Validation on Hospital3-Peer0"
+  setEnvPeer 3
+  peer channel getinfo -c hospital-channel
+  peer lifecycle chaincode queryinstalled 
+  chaincodeQuery 3
+
 }
 
 if [ $1 == "up" ]; then
@@ -127,7 +133,7 @@ elif [ $1 == "peer" ]; then
   setEnvPeer $2
   peer channel list
   peer lifecycle chaincode queryinstalled
-elif [ $1 == "hosp3" ]; then
+elif [ $1 == "addHosp3" ]; then
   addHospital3
 elif [ $1 == "validate" ]; then
   ValidateChaincodeonPeers
