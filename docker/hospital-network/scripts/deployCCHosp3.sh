@@ -203,7 +203,7 @@ chaincodeQuery() {
     sleep $DELAY
     echo "Attempting to Query peer0.hopsital${HOSPITAL} ...$(($(date +%s) - starttime)) secs"
     set -x
-    peer chaincode query -C $CHANNEL_NAME -n hospitalcontract -c '{"Args":["GetAllPatientRecords"]}' >&log.txt
+    peer chaincode query -C $CHANNEL_NAME -n hospitalcontract -c '{"Args":["readPatient","PID0"]}' >&log.txt
     res=$?
     set +x
 		let rc=$res

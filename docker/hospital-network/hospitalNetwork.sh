@@ -43,7 +43,7 @@ chaincodeQuery() {
     sleep $DELAY
     echo "Attempting to Query peer0.hopsital${HOSPITAL} ...$(($(date +%s) - starttime)) secs"
     set -x
-    peer chaincode query -C $CHANNEL_NAME -n hospitalcontract -c '{"Args":["GetAllPatientRecords"]}' >&log.txt
+    peer chaincode query -C $CHANNEL_NAME -n hospitalcontract -c '{"Args":["readPatient","PID0"]}' >&log.txt
     res=$?
     set +x
 		let rc=$res
@@ -99,6 +99,10 @@ function createHospitalNetwork_DeployChaincode(){
   ./network.sh deployCC
 
   validateChainCodeInstalledOnPeers
+
+  echo "Please Check the log for any errors."
+
+  echo "run ./hospitalNetwork.sh validate --> To validate the chaincode is installed successfully on both the peers" 
 
 }
 
