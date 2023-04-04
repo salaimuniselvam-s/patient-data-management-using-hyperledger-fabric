@@ -38,7 +38,6 @@ exports.connectToNetwork = async function (doctorID) {
     const walletPath = path.join(process.cwd(), "../fabric-network/wallet/");
 
     const wallet = await buildWallet(Wallets, walletPath);
-
     const userExists = await wallet.get(doctorID);
 
     if (!userExists) {
@@ -161,7 +160,7 @@ exports.registerUser = async function (attributes) {
         wallet,
         mspHosp1,
         userId,
-        "admin", // identities in the fabric-ca-server-config.yaml
+        "hosp1admin", // identities in the fabric-ca-server-config.yaml
         attributes
       );
     } else if (hospitalId === 2) {

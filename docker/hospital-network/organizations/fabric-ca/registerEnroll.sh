@@ -10,9 +10,9 @@ function createOrg1 {
 	export FABRIC_CA_CLIENT_HOME=${PWD}/organizations/peerOrganizations/hospital1.geakminds.com/
 #  rm -rf $FABRIC_CA_CLIENT_HOME/fabric-ca-client-config.yaml
 #  rm -rf $FABRIC_CA_CLIENT_HOME/msp
-
+# fabric-ca-client certificate list --caname ca-hospital1 --tls.certfiles ${PWD}/organizations/fabric-ca/hospital1/tls-cert.pem
   set -x
-  fabric-ca-client enroll -u https://admin:adminpw@localhost:7054 --caname ca-hospital1 --tls.certfiles ${PWD}/organizations/fabric-ca/hospital1/tls-cert.pem
+  fabric-ca-client enroll -u https://hosp1admin:hosp1adminpw@localhost:7054 --caname ca-hospital1 --tls.certfiles ${PWD}/organizations/fabric-ca/hospital1/tls-cert.pem
   set +x
 
   echo 'NodeOUs:
@@ -120,7 +120,7 @@ function createOrg2 {
 #  rm -rf $FABRIC_CA_CLIENT_HOME/msp
 
   set -x
-  fabric-ca-client enroll -u https://admin:adminpw@localhost:8054 --caname ca-hospital2 --tls.certfiles ${PWD}/organizations/fabric-ca/hospital2/tls-cert.pem
+  fabric-ca-client enroll -u https://hosp2admin:hosp2adminpw@localhost:8054 --caname ca-hospital2 --tls.certfiles ${PWD}/organizations/fabric-ca/hospital2/tls-cert.pem
   set +x
 
   echo 'NodeOUs:
@@ -227,7 +227,7 @@ function createOrderer {
 #  rm -rf $FABRIC_CA_CLIENT_HOME/msp
 
   set -x
-  fabric-ca-client enroll -u https://admin:adminpw@localhost:9054 --caname ca-orderer --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
+  fabric-ca-client enroll -u https://ordereradmin:ordereradminpw@localhost:9054 --caname ca-orderer --tls.certfiles ${PWD}/organizations/fabric-ca/ordererOrg/tls-cert.pem
   set +x
 
   echo 'NodeOUs:

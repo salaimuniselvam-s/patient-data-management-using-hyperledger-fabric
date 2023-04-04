@@ -1,15 +1,15 @@
 const FabricCAServices = require("fabric-ca-client");
-const { buildCCPHosp1, buildWallet, buildCCPHosp2 } = require("../AppUtil");
-const { enrollAdmin, buildCAClient } = require("../CAUtil");
+const { buildCCPHosp1, buildWallet, buildCCPHosp2 } = require("./AppUtil");
+const { enrollAdmin, buildCAClient } = require("./CAUtil");
 const {
   registerUser,
   connectToNetwork,
   invoke,
   getAllDoctorsByHospitalId,
-} = require("../app");
+} = require("./app");
 const { Wallets } = require("fabric-network");
 const path = require("path");
-const patientRecord = require("../../../hospital-chaincode/lib/initLedger.json");
+const patientRecord = require("../../hospital-chaincode/lib/initLedger.json");
 
 const walletPath = path.join(process.cwd(), "../../fabric-network/wallet/");
 async function buildWallets() {
@@ -18,10 +18,8 @@ async function buildWallets() {
 
 async function createAdminIdentity(orgId) {
   const orgMspId = `Hospital${orgId}MSP`;
-  // const adminUserId = `hosp${orgId}admin`;
-  // const adminUserPasswd = `hosp${orgId}adminpw`;
-  const adminUserId = `admin`;
-  const adminUserPasswd = `adminpw`;
+  const adminUserId = `hosp${orgId}admin`;
+  const adminUserPasswd = `hosp${orgId}adminpw`;
   const wallet = await buildWallets();
 
   const ccp = orgId == 1 ? buildCCPHosp1() : buildCCPHosp2();
@@ -43,6 +41,7 @@ async function listWallet() {
 
 async function ValidateChaincodeFunction(networkObj) {
   // Validating Query Functions in Contract
+
   // PrimaryContract
   // invoke(networkObj, true, "readPatient", ["PID4"]);
   // invoke(networkObj, true, "patientExists", ["PID10"]);
@@ -54,7 +53,7 @@ async function ValidateChaincodeFunction(networkObj) {
   // invoke(networkObj, false, "AdminContract:deletePatient", [
   //   jsonStringify("PID5"),
   // ]);
-  // invoke(networkObj, true, "AdminContract:queryAllPatients", "");
+  invoke(networkObj, true, "AdminContract:queryAllPatients", "");
   // invoke(networkObj, true, "AdminContract:queryPatientsByFirstName", [
   //   "Monica",
   // ]);
@@ -67,7 +66,7 @@ async function ValidateChaincodeFunction(networkObj) {
   //     ...patientRecord[3],
   //     firstName: "sms6",
   //     lastName: "76",
-  //     patientId: "PID5",
+  //     patientId: "PID6",
   //   }),
   // ]);
   // Doctor Contract
@@ -80,7 +79,7 @@ async function ValidateChaincodeFunction(networkObj) {
 
 const DOCTOR = jsonStringify({
   hospitalId: 1,
-  userId: "sms7",
+  userId: "sms8",
   firstName: "Rajesh",
   lastName: "Kumar",
   speciality: "Neurosurgery",
@@ -90,18 +89,19 @@ const DOCTOR = jsonStringify({
 async function main() {
   // Creating Admin Identities
   // createAdminIdentity(1);
+  // createAdminIdentity(2);
 
   // List Wallets
-  // listWallet();
+  listWallet();
 
   // Connecting to the Fabric Network
-  const networkObj = await connectToNetwork("admin");
+  const networkObj = await connectToNetwork("hosp1admin");
 
   // Validating Chaincode
   // ValidateChaincodeFunction(networkObj);
 
   // Register Doctor
-  // registerUser(DOCTOR);
+  registerUser(DOCTOR);
   // GetAllDoctorsByHospital
   console.log(await getAllDoctorsByHospitalId(networkObj, 1));
 }

@@ -12,7 +12,7 @@ function createOrg3 {
 #  rm -rf $FABRIC_CA_CLIENT_HOME/msp
 
   set -x
-  fabric-ca-client enroll -u https://admin:adminpw@localhost:11054 --caname ca-hospital3 --tls.certfiles ${PWD}/fabric-ca/hospital3/tls-cert.pem
+  fabric-ca-client enroll -u https://hosp3admin:hosp3adminpw@localhost:11054 --caname ca-hospital3 --tls.certfiles ${PWD}/fabric-ca/hospital3/tls-cert.pem
   set +x
 
   echo 'NodeOUs:
