@@ -96,6 +96,7 @@ exports.registerAndEnrollUser = async (
 ) => {
   try {
     // Check to see if we've already enrolled the user
+
     const userIdentity = await wallet.get(userId);
     if (userIdentity) {
       console.log(
@@ -166,6 +167,7 @@ exports.registerAndEnrollUser = async (
       },
       adminUser
     );
+
     const enrollment = await caClient.enroll({
       enrollmentID: userId,
       enrollmentSecret: secret,

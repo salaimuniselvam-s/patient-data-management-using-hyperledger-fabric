@@ -15,7 +15,7 @@ const {
   buildWallet,
 } = require("./AppUtil.js");
 
-const channelName = "hospitalchannel";
+const channelName = "hospital-channel";
 const chaincodeName = "hospitalcontract";
 const mspHosp1 = "Hospital1MSP";
 const mspHosp2 = "Hospital2MSP";
@@ -40,6 +40,7 @@ exports.connectToNetwork = async function (doctorID) {
     const wallet = await buildWallet(Wallets, walletPath);
 
     const userExists = await wallet.get(doctorID);
+
     if (!userExists) {
       console.log(
         "An identity for the user " + doctorID + " does not exist in the wallet"
@@ -107,7 +108,7 @@ exports.invoke = async function (networkObj, isQuery, func, args = "") {
         func,
         args
       );
-      console.log(response);
+      console.log(response.toString("utf8"));
       await networkObj.gateway.disconnect();
       return response;
     } else {
@@ -160,7 +161,7 @@ exports.registerUser = async function (attributes) {
         wallet,
         mspHosp1,
         userId,
-        "hosp1admin",
+        "admin", // identities in the fabric-ca-server-config.yaml
         attributes
       );
     } else if (hospitalId === 2) {
@@ -273,6 +274,7 @@ exports.getAllDoctorsByHospitalId = async function (networkObj, hospitalId) {
     response.error = error;
     return response;
   }
+
   return result.filter(function (result) {
     return result.role === "doctor";
   });
