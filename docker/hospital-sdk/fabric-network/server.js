@@ -11,7 +11,7 @@ const { Wallets } = require("fabric-network");
 const path = require("path");
 const patientRecord = require("../../hospital-chaincode/lib/initLedger.json");
 
-const walletPath = path.join(process.cwd(), "../../fabric-network/wallet/");
+const walletPath = path.join(process.cwd(), "/wallet/");
 async function buildWallets() {
   return buildWallet(Wallets, walletPath);
 }
@@ -95,13 +95,13 @@ async function main() {
   listWallet();
 
   // Connecting to the Fabric Network
-  const networkObj = await connectToNetwork("hosp1admin");
+  const networkObj = await connectToNetwork("hosp2admin");
 
   // Validating Chaincode
-  // ValidateChaincodeFunction(networkObj);
+  ValidateChaincodeFunction(networkObj);
 
   // Register Doctor
-  registerUser(DOCTOR);
+  // registerUser(DOCTOR);
   // GetAllDoctorsByHospital
   console.log(await getAllDoctorsByHospitalId(networkObj, 1));
 }

@@ -1,7 +1,6 @@
 /**
  * @author Salai Muni Selvam
  * @desc NodeJS APIs to interact with the fabric network.
- * @desc Look into API docs for the documentation of the routes
  */
 
 // Classes for Node Express
@@ -28,8 +27,10 @@ const authRoutes = require("./routes/auth");
 
 /* ROUTES */
 app.use("/admin", adminRoutes);
-app.use("/doctor", doctorRoutes);
-app.use("/patient", patientRoutes);
+app.use("/doctors", doctorRoutes);
+app.use("/patients", patientRoutes);
 app.use("/auth", authRoutes);
+
+app.get("/", (req, res) => res.send("Welcome to the Fabric-Node-Server"));
 
 app.listen(3001, () => console.log("Backend server running on 3001"));

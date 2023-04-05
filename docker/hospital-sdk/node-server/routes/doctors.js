@@ -15,7 +15,8 @@ router.patch(
   updatePatientMedicalDetails
 );
 router.get(
-  "/doctors/:hospitalId([0-9]+)/:doctorId(HOSP[0-9]+-DOC[0-9]+)",
+  // "/:hospitalId([0-9]+)/:doctorId(HOSP[0-9]+-DOC[0-9]+)",
+  "/:hospitalId/:doctorId",
   authenticateJWT,
   getDoctorById
 );

@@ -528,7 +528,7 @@ chaincode:
 
   # Timeout duration for starting up a container and waiting for Register
   # to come through.
-  startuptimeout: 300s
+  startuptimeout: 30000s
 
   # Timeout duration for Invoke and Init calls to prevent runaway.
   # This timeout is used by all chaincodes in all the channels, including
@@ -538,7 +538,7 @@ chaincode:
   # build the image, which might take more time. In production environment,
   # the chaincode image is unlikely to be deleted, so the timeout could be
   # reduced accordingly.
-  executetimeout: 30s
+  executetimeout: 3000s
 
   # There are 2 modes: "dev" and "net".
   # In dev mode, user runs the chaincode after starting peer from

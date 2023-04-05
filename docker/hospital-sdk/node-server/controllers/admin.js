@@ -16,9 +16,11 @@ const network = require("../../fabric-network/app.js");
 const createPatient = async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
-  await validateRole([ROLE_ADMIN], userRole, res);
+  const isValidate = await validateRole([ROLE_ADMIN], userRole, res);
+  if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
   // Set up and connect to Fabric Gateway using the username in header
   const networkObj = await network.connectToNetwork(req.headers.username);
+  if (networkObj.error) return res.status(400).send(networkObj.error);
 
   // Generally we create patient id by ourself so if patient id is not present in the request then fetch last id
   // from ledger and increment it by one. Since we follow patient id pattern as "PID0", "PID1", ...
@@ -37,6 +39,7 @@ const createPatient = async (req, res) => {
   }
 
   // When password is not provided in the request while creating a patient record.
+
   if (
     !("password" in req.body) ||
     req.body.password === null ||
@@ -51,19 +54,21 @@ const createPatient = async (req, res) => {
   const data = JSON.stringify(req.body);
   const args = [data];
   // Invoke the smart contract function
+
   const createPatientRes = await network.invoke(
     networkObj,
     false,
     capitalize(userRole) + "Contract:createPatient",
     args
   );
+
   if (createPatientRes.error) {
-    res.status(400).send(response.error);
+    return res.status(400).send(createPatientRes.error);
   }
 
   // Enrol and register the user with the CA and adds the user to the wallet.
   const userData = JSON.stringify({
-    hospitalId: req.headers.username.slice(4, 5),
+    hospitalId: req.body.hospitalId,
     userId: req.body.patientId,
   });
   const registerUserRes = await network.registerUser(userData);
@@ -74,7 +79,7 @@ const createPatient = async (req, res) => {
       capitalize(userRole) + "Contract:deletePatient",
       req.body.patientId
     );
-    res.send(registerUserRes.error);
+    return res.send(registerUserRes.error);
   }
 
   res
@@ -100,7 +105,8 @@ const createDoctor = async (req, res) => {
   let { hospitalId, username, password } = req.body;
   hospitalId = parseInt(hospitalId);
 
-  await validateRole([ROLE_ADMIN], userRole, res);
+  const isValidate = await validateRole([ROLE_ADMIN], userRole, res);
+  if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
 
   req.body.userId = username;
   req.body.role = ROLE_DOCTOR;
@@ -110,10 +116,9 @@ const createDoctor = async (req, res) => {
   // Enrol and register the user with the CA and adds the user to the wallet.
   const response = await network.registerUser(args);
   if (response.error) {
-    (await redisClient).DEL(username);
-    res.status(400).send(response.error);
+    return res.status(400).send(response.error);
   }
-  res.status(201).send(getMessage(false, response, username, password));
+  return res.status(201).send(getMessage(false, response, username, password));
 };
 
 /**
@@ -122,20 +127,32 @@ const createDoctor = async (req, res) => {
  * @description Retrieves all the assets(patients) in the ledger
  */
 const getAllPatients = async (req, res) => {
-  // User role from the request header is validated
-  const userRole = req.headers.role;
-  await validateRole([ROLE_ADMIN, ROLE_DOCTOR], userRole, res);
-  // Set up and connect to Fabric Gateway using the username in header
-  const networkObj = await network.connectToNetwork(req.headers.username);
-  // Invoke the smart contract function
-  const response = await network.invoke(
-    networkObj,
-    true,
-    capitalize(userRole) + "Contract:queryAllPatients",
-    userRole === ROLE_DOCTOR ? req.headers.username : ""
-  );
-  const parsedResponse = await JSON.parse(response);
-  res.status(200).send(parsedResponse);
+  try {
+    // User role from the request header is validated
+    const userRole = req.headers.role;
+    const isValidate = await validateRole(
+      [ROLE_ADMIN, ROLE_DOCTOR],
+      userRole,
+      res
+    );
+    if (isValidate)
+      return res.status(401).json({ message: "Unauthorized Role" });
+    // Set up and connect to Fabric Gateway using the username in header
+    const networkObj = await network.connectToNetwork(req.headers.username);
+    if (networkObj.error) return res.status(400).send(networkObj.error);
+    // Invoke the smart contract function
+    const response = await network.invoke(
+      networkObj,
+      true,
+      capitalize(userRole) + "Contract:queryAllPatients",
+      userRole === ROLE_DOCTOR ? req.headers.username : [""]
+    );
+    const parsedResponse = await JSON.parse(response);
+    res.status(200).send(parsedResponse);
+  } catch (err) {
+    console.log(err);
+    res.status(400).send("Unable to Get All Patient Records..");
+  }
 };
 
 module.exports = { getAllPatients, createDoctor, createPatient };

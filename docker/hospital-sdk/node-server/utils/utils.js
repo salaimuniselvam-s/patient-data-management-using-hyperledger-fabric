@@ -13,7 +13,7 @@ const CHANGE_TMP_PASSWORD = "CHANGE_TMP_PASSWORD";
  * @description Return a simple JSON message based on success or failure
  * @example returns {success:message} or {error:message}
  */
-const getMessage = function (isError, message, id = "", password = "") {
+const getMessage = (isError, message, id = "", password = "") => {
   if (isError) {
     return { error: message };
   } else {
@@ -28,7 +28,7 @@ const getMessage = function (isError, message, id = "", password = "") {
  * @description Validation of the role
  * @example roles - 'patient|doctor' reqRole - 'admin' returns 401
  */
-const validateRole = async function (roles, reqRole, res) {
+const validateRole = async (roles, reqRole, res) => {
   if (
     !reqRole ||
     !roles ||
@@ -37,7 +37,7 @@ const validateRole = async function (roles, reqRole, res) {
     !roles.includes(reqRole)
   ) {
     // user's role is not authorized
-    return res.sendStatus(401).json({ message: "Unauthorized Role" });
+    return true;
   }
 };
 
@@ -46,7 +46,7 @@ const validateRole = async function (roles, reqRole, res) {
  * @return {String} First letter capitalized string
  * @description Capitalizes the first letter of the string
  */
-const capitalize = function (s) {
+const capitalize = (s) => {
   if (typeof s !== "string") return "";
   return s.charAt(0).toUpperCase() + s.slice(1);
 };

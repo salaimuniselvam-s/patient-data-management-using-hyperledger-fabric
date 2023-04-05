@@ -6,24 +6,32 @@ const {
   capitalize,
   CHANGE_TMP_PASSWORD,
   getMessage,
+  ROLE_DOCTOR,
+  ROLE_ADMIN,
 } = require("../utils/utils");
 const network = require("../../fabric-network/app");
 const { generateAccessToken } = require("../middleware/verifyJwtToken");
-
-let refreshTokens = [];
+let { ADMIN_DETAILS, REFRESH_TOKEN } = require("../tasks/adminTasks");
 
 /**
  * @description Login and create a session with and add two variables to the session
  */
 const Login = async (req, res) => {
   // Read username and password from request body
-  let { username, password, hospitalId, role } = req.body;
-  hospitalId = parseInt(hospitalId);
+  let { username, password, role } = req.body;
   let user;
+
+  if (role === ROLE_DOCTOR || role === ROLE_ADMIN) {
+    const value = ADMIN_DETAILS.filter((data) => data.userName == username);
+    // comparing passwords
+    user = value[0].password === password;
+  }
 
   if (role === ROLE_PATIENT) {
     const networkObj = await network.connectToNetwork(username);
-    const newPassword = req.body.newPassword;
+    const newPassword = req.body.newPassword || password;
+
+    if (networkObj.error) return res.status(400).send(networkObj.error);
 
     if (newPassword === null || newPassword === "") {
       const value = crypto.createHash("sha256").update(password).digest("hex");
@@ -48,6 +56,7 @@ const Login = async (req, res) => {
         patientId: username,
         newPassword: newPassword,
       };
+
       args = [JSON.stringify(args)];
       const response = await network.invoke(
         networkObj,
@@ -55,7 +64,8 @@ const Login = async (req, res) => {
         capitalize(role) + "Contract:updatePatientPassword",
         args
       );
-      response.error ? res.status(500).send(response.error) : (user = true);
+      if (response.error) return res.status(500).send(response.error);
+      else user = true;
     }
   }
 
@@ -64,9 +74,10 @@ const Login = async (req, res) => {
     const accessToken = generateAccessToken(username, role);
     const refreshToken = jwt.sign(
       { username: username, role: role },
-      refreshSecretToken
+      refreshSecretToken,
+      { expiresIn: "24h" }
     );
-    refreshTokens.push(refreshToken);
+    REFRESH_TOKEN.push(refreshToken);
     // Once the password is matched a session is created with the username and password
     res.status(200);
     res.json({
@@ -88,7 +99,7 @@ const RefreshToken = (req, res) => {
     return res.sendStatus(401);
   }
 
-  if (!refreshTokens.includes(token)) {
+  if (!REFRESH_TOKEN.includes(token)) {
     return res.sendStatus(403);
   }
 
@@ -108,10 +119,10 @@ const RefreshToken = (req, res) => {
 };
 
 /**
- * @description Logout to remove refreshTokens
+ * @description Logout to remove REFRESH_TOKEN
  */
 const Logout = (req, res) => {
-  refreshTokens = refreshTokens.filter((token) => token !== req.headers.token);
+  REFRESH_TOKEN = REFRESH_TOKEN.filter((token) => token !== req.headers.token);
   res.sendStatus(204);
 };
 

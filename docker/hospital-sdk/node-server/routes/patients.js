@@ -1,32 +1,37 @@
 const express = require("express");
 const { authenticateJWT } = require("../middleware/verifyJwtToken");
+const {
+  getPatientById,
+  updatePatientPersonalDetails,
+  getPatientHistoryById,
+  getDoctorsByHospitalId,
+  grantAccessToDoctor,
+  revokeAccessFromDoctor,
+} = require("../controllers/patients");
 
 const router = express.Router();
 
 //  Patient Routes //
-router.get("/patients/:patientId", authenticateJWT, getPatientById);
+router.get("/:patientId", authenticateJWT, getPatientById);
 router.patch(
-  "/patients/:patientId/details/personal",
+  "/:patientId/details/personal",
   authenticateJWT,
   updatePatientPersonalDetails
 );
+router.get("/:patientId/history", authenticateJWT, getPatientHistoryById);
 router.get(
-  "/patients/:patientId/history",
-  authenticateJWT,
-  getPatientHistoryById
-);
-router.get(
-  "/doctors/:hospitalId([0-9]+)/_all",
+  // "/doctors/:hospitalId([0-9]+)/_all",
+  "/doctors/:hospitalId/_all",
   authenticateJWT,
   getDoctorsByHospitalId
 );
 router.patch(
-  "/patients/:patientId/grant/:doctorId",
+  "/:patientId/grant/:doctorId",
   authenticateJWT,
   grantAccessToDoctor
 );
 router.patch(
-  "/patients/:patientId/revoke/:doctorId",
+  "/:patientId/revoke/:doctorId",
   authenticateJWT,
   revokeAccessFromDoctor
 );

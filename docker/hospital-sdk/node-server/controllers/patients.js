@@ -16,10 +16,18 @@ const network = require("../../fabric-network/app.js");
 const getPatientById = async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
-  await validateRole([ROLE_DOCTOR, ROLE_PATIENT], userRole, res);
+  const isValidate = await validateRole(
+    [ROLE_DOCTOR, ROLE_PATIENT],
+    userRole,
+    res
+  );
+  if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
+
   const patientId = req.params.patientId;
+  console.log(patientId);
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
+  if (networkObj.error) return res.status(400).send(networkObj.error);
   // Invoke the smart contract function
   const response = await network.invoke(
     networkObj,
@@ -40,7 +48,9 @@ const getPatientById = async (req, res) => {
 const updatePatientPersonalDetails = async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
-  await validateRole([ROLE_PATIENT], userRole, res);
+  const isValidate = await validateRole([ROLE_PATIENT], userRole, res);
+  if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
+
   // The request present in the body is converted into a single json string
   let args = req.body;
   args.patientId = req.params.patientId;
@@ -48,6 +58,7 @@ const updatePatientPersonalDetails = async (req, res) => {
   args = [JSON.stringify(args)];
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
+  if (networkObj.error) return res.status(400).send(networkObj.error);
   // Invoke the smart contract function
   const response = await network.invoke(
     networkObj,
@@ -68,10 +79,16 @@ const updatePatientPersonalDetails = async (req, res) => {
 const getPatientHistoryById = async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
-  await validateRole([ROLE_DOCTOR, ROLE_PATIENT], userRole, res);
+  const isValidate = await validateRole(
+    [ROLE_DOCTOR, ROLE_PATIENT],
+    userRole,
+    res
+  );
+  if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
   const patientId = req.params.patientId;
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
+  if (networkObj.error) return res.status(400).send(networkObj.error);
   // Invoke the smart contract function
   const response = await network.invoke(
     networkObj,
@@ -93,7 +110,12 @@ const getPatientHistoryById = async (req, res) => {
 const getDoctorsByHospitalId = async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
-  await validateRole([ROLE_PATIENT, ROLE_ADMIN], userRole, res);
+  const isValidate = await validateRole(
+    [ROLE_PATIENT, ROLE_ADMIN],
+    userRole,
+    res
+  );
+  if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
   const hospitalId = parseInt(req.params.hospitalId);
   // Set up and connect to Fabric Gateway
   userId =
@@ -103,6 +125,7 @@ const getDoctorsByHospitalId = async (req, res) => {
       ? "hosp2admin"
       : "hosp3admin";
   const networkObj = await network.connectToNetwork(userId);
+  if (networkObj.error) return res.status(400).send(networkObj.error);
   // Use the gateway and identity service to get all users enrolled by the CA
   const response = await network.getAllDoctorsByHospitalId(
     networkObj,
@@ -120,13 +143,16 @@ const getDoctorsByHospitalId = async (req, res) => {
 const grantAccessToDoctor = async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
-  await validateRole([ROLE_PATIENT], userRole, res);
+  const isValidate = await validateRole([ROLE_PATIENT], userRole, res);
+  if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
+
   const patientId = req.params.patientId;
   const doctorId = req.params.doctorId;
   let args = { patientId: patientId, doctorId: doctorId };
   args = [JSON.stringify(args)];
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
+  if (networkObj.error) return res.status(400).send(networkObj.error);
   // Invoke the smart contract function
   const response = await network.invoke(
     networkObj,
@@ -146,13 +172,15 @@ const grantAccessToDoctor = async (req, res) => {
 const revokeAccessFromDoctor = async (req, res) => {
   // User role from the request header is validated
   const userRole = req.headers.role;
-  await validateRole([ROLE_PATIENT], userRole, res);
+  const isValidate = await validateRole([ROLE_PATIENT], userRole, res);
+  if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
   const patientId = req.params.patientId;
   const doctorId = req.params.doctorId;
   let args = { patientId: patientId, doctorId: doctorId };
   args = [JSON.stringify(args)];
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
+  if (networkObj.error) return res.status(400).send(networkObj.error);
   // Invoke the smart contract function
   const response = await network.invoke(
     networkObj,

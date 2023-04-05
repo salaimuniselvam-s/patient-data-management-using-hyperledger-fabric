@@ -10,7 +10,7 @@ const {
   buildWallet,
 } = require("../../fabric-network/AppUtil.js");
 const adminHospital1 = "hosp1admin";
-const adminHospital1Passwd = "hosp1lithium";
+const adminHospital1Passwd = "hosp1adminpw";
 
 const mspHosp1 = "Hospital1MSP";
 const walletPath = path.join(__dirname, "../../fabric-network/wallet");

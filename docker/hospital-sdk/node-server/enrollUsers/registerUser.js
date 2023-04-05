@@ -5,7 +5,7 @@ const {
   buildCAClient,
   registerAndEnrollUser,
 } = require("../../fabric-network/CAUtil.js");
-const walletPath = path.join(__dirname, "/../../fabric-network/wallet");
+const walletPath = path.join(__dirname, "../../fabric-network/wallet");
 const {
   buildCCPHosp1,
   buildCCPHosp2,
@@ -33,7 +33,11 @@ exports.enrollRegisterUser = async function (hospitalId, userId, attributes) {
 
       // build an instance of the fabric ca services client based on
       // the information in the network configuration
-      caClient = buildCAClient(FabricCAServices, ccp, "ca.hosp1.lithium.com");
+      caClient = buildCAClient(
+        FabricCAServices,
+        ccp,
+        "ca.hospital1.geakminds.com"
+      );
 
       mspOrg = "hosp1MSP";
       adminUserId = "hosp1admin";
@@ -43,7 +47,11 @@ exports.enrollRegisterUser = async function (hospitalId, userId, attributes) {
 
       // build an instance of the fabric ca services client based on
       // the information in the network configuration
-      caClient = buildCAClient(FabricCAServices, ccp, "ca.hosp2.lithium.com");
+      caClient = buildCAClient(
+        FabricCAServices,
+        ccp,
+        "ca.hospital2.geakminds.com"
+      );
 
       mspOrg = "hosp2MSP";
       adminUserId = "hosp2admin";
@@ -53,7 +61,11 @@ exports.enrollRegisterUser = async function (hospitalId, userId, attributes) {
 
       // build an instance of the fabric ca services client based on
       // the information in the network configuration
-      caClient = buildCAClient(FabricCAServices, ccp, "ca.hosp3.lithium.com");
+      caClient = buildCAClient(
+        FabricCAServices,
+        ccp,
+        "ca.hospital3.geakminds.com"
+      );
 
       mspOrg = "hosp3MSP";
       adminUserId = "hosp3admin";
@@ -72,8 +84,14 @@ exports.enrollRegisterUser = async function (hospitalId, userId, attributes) {
         userId +
         " and imported it into the wallet"
     );
+    return {
+      status:
+        "msg: Successfully enrolled user " +
+        userId +
+        " and imported it into the wallet",
+    };
   } catch (error) {
     console.error(`Failed to register user "${userId}": ${error}`);
-    process.exit(1);
+    return { error: `Failed to register user "${userId}": ${error}` };
   }
 };
