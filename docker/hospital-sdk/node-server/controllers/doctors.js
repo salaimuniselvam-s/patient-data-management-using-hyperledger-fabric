@@ -32,7 +32,9 @@ const updatePatientMedicalDetails = async (req, res) => {
   );
   response.error
     ? res.status(500).send(response.error)
-    : res.status(200).send(getMessage(false, "Successfully Updated Patient."));
+    : res
+        .status(200)
+        .send(getMessage(false, "Successfully Updated Patient Details."));
 };
 
 /**

@@ -123,7 +123,7 @@ const RefreshToken = (req, res) => {
  */
 const Logout = (req, res) => {
   REFRESH_TOKEN = REFRESH_TOKEN.filter((token) => token !== req.headers.token);
-  res.sendStatus(204);
+  res.status(204).send("Successfully Logged out the user");
 };
 
 module.exports = { Login, Logout, RefreshToken };

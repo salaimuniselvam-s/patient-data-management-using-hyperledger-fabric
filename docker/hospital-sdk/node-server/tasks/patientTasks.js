@@ -2,7 +2,7 @@
 
 // Login Patient
 // http://localhost:3001/auth/login - Bearer -
-// {"role":"patient","username":"PID10","password":"plm6ggto"}
+// {"role":"patient","username":"PID6","password":"n93b2xlk"}
 
 // getPatientById - Bearer -  role & username in header
 // http://localhost:3001/patients/PID1

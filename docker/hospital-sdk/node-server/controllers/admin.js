@@ -151,7 +151,7 @@ const getAllPatients = async (req, res) => {
     res.status(200).send(parsedResponse);
   } catch (err) {
     console.log(err);
-    res.status(400).send("Unable to Get All Patient Records..");
+    res.status(405).send("Unable to Get All Patient Records..");
   }
 };
 

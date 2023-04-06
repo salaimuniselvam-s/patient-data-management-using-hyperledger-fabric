@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const helmet = require("helmet");
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
 
 // Express Application init
 const app = express();
@@ -24,6 +26,10 @@ const patientRoutes = require("./routes/patients");
 const doctorRoutes = require("./routes/doctors");
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
+
+// Swagger Docs
+const swaggerDocument = YAML.load("./docs/swaggerConfig.yaml");
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 /* ROUTES */
 app.use("/admin", adminRoutes);

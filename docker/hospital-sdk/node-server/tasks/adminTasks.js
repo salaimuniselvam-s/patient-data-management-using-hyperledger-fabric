@@ -20,14 +20,14 @@ const ADMIN_DETAILS = [
 
 // Create Doctor
 // req.headers.role="admin"
-const REGISTER_DOCTOR = {
-  hospitalId: 1,
-  username: "ramesh",
-  password: "sms7",
-  firstName: "rajesh",
-  lastName: "kumar",
-  speciality: "Neurosurgery",
-};
+// const REGISTER_DOCTOR = {
+//   "hospitalId": 1,
+//   "username:" "ramesh",
+//   "password": "sms7",
+//   "firstName": "rajesh",
+//   "lastName": "kumar",
+//   "speciality": "Neurosurgery",
+// };
 // {
 //     "success": "Successfully registered user: ramesh",
 //     "id": "ramesh",
@@ -36,14 +36,14 @@ const REGISTER_DOCTOR = {
 
 // Create PATIENT
 // req.headers.role="admin"
-const REGISTER_PATIENT = {
-  hospitalId: 1,
-  username: "RAJ",
-};
+// const REGISTER_PATIENT = {
+//   "hospitalId": 1,
+//   "username": "RAJ",
+// };
 // {
-//     "success": "Successfully registered Patient.",
-//     "id": "PID10",
-//     "password": "plm6ggto"
+//   "success": "Successfully registered Patient.",
+//   "id": "PID6",
+//   "password": "n93b2xlk"
 // }
 
 let REFRESH_TOKEN = [];

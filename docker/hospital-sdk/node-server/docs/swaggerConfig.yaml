@@ -1,0 +1,705 @@
+openapi: 3.0.0
+info:
+  title: Patient Data Management API Documentation
+  description: This API documentation serves as a guide for developers to interact with a Hyperledger Fabric network for managing patient data. It outlines the endpoints and functionality available for managing patient information, including granting and revoking access to medical data for authorized doctors. This API aims to provide secure and efficient management of patient data, ensuring confidentiality and accessibility for authorized parties.
+  version: 1.0.0
+servers:
+  - url: http://localhost:3001
+paths:
+  /auth/login:
+    post:
+      summary: Login to the Network
+      description: This API endpoint allows users to authenticate and obtain a bearer token for accessing protected resources. Users must provide valid credentials (username, password, and role) in the request body, and if authenticated, the API returns an access token and refresh token.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  default: hosp1admin
+                password:
+                  type: string
+                  default: hosp1adminpw
+                role:
+                  type: string
+                  default: admin
+      responses:
+        "200":
+          description: Bearer token returned successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+              example:
+                accessToken: ""
+                refreshToken: ""
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Username or password incorrect!
+        "500":
+          description: Internal Server Error
+  /auth/logout:
+    delete:
+      summary: Logout from the network
+      description: This endpoint is used to log out users and revoke their bearer token. The API expects an admin role header in the request, and if authenticated, the API returns a 204 No Content response indicating a successful logout.
+      tags:
+        - Authentication
+      responses:
+        "204":
+          description: Successfully Logged out the user
+      parameters:
+        - $ref: "#/components/parameters/headerAdminRole"
+  /auth/refreshToken:
+    post:
+      summary: Refresh the Bearer token using Refresh Token
+      description: This endpoint is used to refresh the bearer token using a refresh token. The API expects a valid refreshToken in the request body, and if authenticated, the API returns a new accessToken and a new refreshToken. If the refreshToken is invalid, expired, or otherwise not found, the API returns an appropriate error message. If the request is unauthorized, the API returns a 403 Forbidden response.
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        "200":
+          description: Bearer token refreshed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refreshToken:
+                    type: string
+              example:
+                refreshToken: ""
+        "401":
+          description: refresh token not found
+        "403":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      parameters:
+        - $ref: "#/components/parameters/headerAdminRole"
+  /admin/doctors/register:
+    post:
+      summary: Register New Doctors into the network
+      description: This endpoint allows administrators to register new doctors into the system by providing necessary details such as hospital ID, username, password and specialty. The response includes the success message along with the generated ID and password for the newly registered doctor.
+      tags:
+        - Admin Routes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hospitalId:
+                  type: integer
+                  format: int32
+                  default: 1
+                username:
+                  type: string
+                  default: ramesh
+                password:
+                  type: string
+                  default: sms7
+                speciality:
+                  type: string
+                  default: Neurosurgery
+      responses:
+        "200":
+          description: Successfully registered user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  id:
+                    type: string
+                  password:
+                    type: string
+              example:
+                success: "Successfully registered user"
+                id: ""
+                password: ""
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role!
+        "500":
+          description: Internal Server Error
+      parameters:
+        - $ref: "#/components/parameters/headerAdminRole"
+      security:
+        - bearerAuth: []
+  /admin/patients/register:
+    post:
+      summary: Register New Patients into the network
+      description: This endpoint allows admins to register new patients into the system by providing their hospital ID and username. Upon successful registration, the API returns a success message and the patient's ID and password. If there are any errors, appropriate error responses are returned.
+      tags:
+        - Admin Routes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hospitalId:
+                  type: integer
+                  format: int32
+                  default: 1
+                username:
+                  type: string
+                  default: RAJ
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Successfully registered Patient.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: string
+                  id:
+                    type: string
+                  password:
+                    type: string
+              example:
+                success: "Successfully registered Patient."
+                id: ""
+                password: ""
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role
+        "500":
+          description: Internal Server Error
+      parameters:
+        - $ref: "#/components/parameters/headerAdminRole"
+        - $ref: "#/components/parameters/headerAdminUserName"
+      security:
+        - bearerAuth: []
+  /admin/patients/_all:
+    get:
+      summary: Get All Patients registered in the network
+      description: This API endpoint allows an admin to retrieve a list of all patients registered in the system. The response returns a JSON object containing the patient's ID, first name, last name, phone number, and emergency phone number
+      tags:
+        - Admin Routes
+      responses:
+        "200":
+          description: Returns List of All Patients Registered on the system.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  patientId:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  phoneNumber:
+                    type: string
+                  emergPhoneNumber:
+                    type: string
+              example:
+                - patientId: 1
+                  firstName: Rajesh
+                  lastName: Kumar
+                  phoneNumber: 8723612021
+                  emergPhoneNumber: 8234567821
+                - patientId: 2
+                  firstName: Sunil
+                  lastName: Kumar
+                  phoneNumber: 8721212021
+                  emergPhoneNumber: 9234467821
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role
+        "405":
+          description: "Unable to Get All Patient Records.."
+        "500":
+          description: Internal Server Error
+      parameters:
+        - $ref: "#/components/parameters/headerAdminRole"
+        - $ref: "#/components/parameters/headerAdminUserName"
+      security:
+        - bearerAuth: []
+  /doctors/patients/{patientId}/details/medical:
+    patch:
+      summary: Update medical details of a patient
+      description: This API endpoint allows doctors to update the medical details of a patient with a given ID. The endpoint requires a JSON request body with updated medical information, and it returns the updated patient details in the response. Authentication and error handling are also implemented.
+      tags:
+        - Doctor Routes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                symptoms:
+                  type: string
+                  default: Cholesterol, Total 250 mg/dl
+                diagnosis:
+                  type: string
+                  default: High Cholesterol
+                treatment:
+                  type: string
+                  default: Vasolip 10 mg everyday
+                followup:
+                  type: string
+                  default: 3 Months
+      responses:
+        "200":
+          description: Returns the Doctor Details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  patientId:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  phoneNumber:
+                    type: string
+                  emergPhoneNumber:
+                    type: string
+              example:
+                - patientId: 1
+                  firstName: Rajesh
+                  lastName: Kumar
+                  phoneNumber: 8723612021
+                  emergPhoneNumber: 8234567821
+                - patientId: 2
+                  firstName: Sunil
+                  lastName: Kumar
+                  phoneNumber: 8721212021
+                  emergPhoneNumber: 9234467821
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role
+        "500":
+          description: Internal Server Error
+      parameters:
+        - name: patientId
+          in: path
+          description: The ID of the patient to update medical details for
+          required: true
+          type: string
+        - $ref: "#/components/parameters/headerDoctorRole"
+        - $ref: "#/components/parameters/headerDoctorUserName"
+      security:
+        - bearerAuth: []
+  /doctors/{hospitalId}/{doctorId}:
+    get:
+      summary: Get Doctor Details
+      description: This API route allows a doctor to get their personal details by providing their doctorId and hospitalId
+      tags:
+        - Doctor Routes
+      responses:
+        "200":
+          description: Returns the Doctor Details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  role:
+                    type: string
+                  speciality:
+                    type: string
+              example:
+                - id: 1
+                  firstName: Rajesh
+                  lastName: Kumar
+                  role: doctor
+                  spectiality: Neurosurgery
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role
+        "500":
+          description: Internal Server Error
+      parameters:
+        - name: doctorId
+          in: path
+          description: The ID of the doctor to get the personal details for
+          required: true
+          type: string
+          default: ramesh
+        - name: hospitalId
+          in: path
+          description: The ID of the hospital which doctor is enrolled
+          required: true
+          type: string
+          default: 1
+        - $ref: "#/components/parameters/headerDoctorRole"
+      security:
+        - bearerAuth: []
+  /patients/{patientId}:
+    get:
+      summary: Get Patient Details
+      description: This route allows authenticated users with the patient role to retrieve the personal details of a patient with the given ID. The endpoint returns the patient's allergies, symptoms, diagnosis, treatment, follow-up, and permission granted to other users.
+      tags:
+        - Patient Routes
+      responses:
+        "200":
+          description: Returns the Patient Details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  patientId:
+                    type: string
+                  allergies:
+                    type: string
+                  symptoms:
+                    type: string
+                  diagnosis:
+                    type: string
+                  treatment:
+                    type: string
+                  followup:
+                    type: string
+                  permissionGranted:
+                    type: array
+                    items:
+                      type: string
+                  password:
+                    type: string
+                  pwdTemp:
+                    type: boolean
+              example:
+                - patientId: 1
+                  allergies: No
+                  symptoms: Cholesterol, Total 250 mg/dl
+                  diagnosis: High Cholesterol
+                  treatment: Vasolip 10 mg everyday
+                  followup: 6 Months
+                  permissionGranted: ["hosp1admin"]
+                  password: hash
+                  pwdTemp: false
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role
+        "500":
+          description: Internal Server Error
+      parameters:
+        - name: patientId
+          in: path
+          description: The ID of the patient to get the personal details for
+          required: true
+          type: string
+          default: PID6
+        - $ref: "#/components/parameters/headerPatientRole"
+        - $ref: "#/components/parameters/headerAdminUserName"
+      security:
+        - bearerAuth: []
+  /patients/{patientId}/details/personal:
+    patch:
+      summary: Update Personal Details
+      description: This route allows updating personal details of a patient identified by their patientId. The request body should contain the fields to be updated such as firstName, lastName, age, phoneNumber, emergPhoneNumber, allergy and address.
+      tags:
+        - Patient Routes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                patientId:
+                  type: string
+                  default: PID6
+                firstName:
+                  type: string
+                  default: vignesh
+                lastName:
+                  type: string
+                  default: balaji
+                age:
+                  type: string
+                  default: 40
+                phoneNumber:
+                  type: string
+                  default: 8765432104
+                emergPhoneNumber:
+                  type: string
+                  default: 9865432104
+                allergy:
+                  type: string
+                  default: No
+                address:
+                  type: string
+                  default: 153,East New Street
+      responses:
+        "200":
+          description: Successfully Updated Patient.
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role
+        "500":
+          description: Internal Server Error
+      parameters:
+        - name: patientId
+          in: path
+          description: The ID of the patient to get the personal details for
+          required: true
+          type: string
+          default: PID6
+        - $ref: "#/components/parameters/headerPatientRole"
+        - $ref: "#/components/parameters/headerPatientUserName"
+      security:
+        - bearerAuth: []
+  /patients/{patientId}/history:
+    get:
+      summary: Get History of the Patient Record for the given PatientId
+      description: This API route allows users to retrieve the history of a patient record by their ID. The response includes details such as the patient's name, age, contact information, symptoms, diagnosis, treatment, and follow-up information.
+      tags:
+        - Patient Routes
+      responses:
+        "200":
+          description: Return the History of the Patient Record.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  age:
+                    type: integer
+                    format: int32
+                  address:
+                    type: string
+                  phoneNumber:
+                    type: string
+                  emergPhoneNumber:
+                    type: string
+                  symptoms:
+                    type: string
+                  diagnosis:
+                    type: string
+                  treatment:
+                    type: string
+                  followUp:
+                    type: string
+              example:
+                - firstName: Sunil
+                  lastName: Kumar
+                  age: 32
+                  address: 153,East New Street
+                  phoneNumber: 8721212021
+                  emergPhoneNumber: 9234467821
+                  symptoms: Cholesterol, Total 250 mg/dl
+                  diagnosis: High Cholesterol
+                  treatment: Vasolip 10 mg everyday
+                  followup: 6 Months
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role
+        "500":
+          description: Internal Server Error
+      parameters:
+        - name: patientId
+          in: path
+          description: The ID of the patient to get the personal details for
+          required: true
+          type: string
+          default: PID6
+        - $ref: "#/components/parameters/headerPatientRole"
+        - $ref: "#/components/parameters/headerPatientUserName"
+      security:
+        - bearerAuth: []
+  /patients/doctors/{hospitalId}/_all:
+    get:
+      summary: Get All Doctors for Specific Hospital
+      description: This endpoint allows patients to get a list of doctors working in a specific hospital by providing the hospitalId. The API returns an array of JSON objects containing the id, firstName, lastName, role, and speciality of each doctor.
+      tags:
+        - Patient Routes
+      responses:
+        "200":
+          description: Return the List of Doctors available in the Hospital.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  role:
+                    type: string
+                  speciality:
+                    type: string
+              example:
+                - id: Sunil Sha
+                  firstName: Sunil
+                  lastName: Kumar
+                  role: doctor
+                  speciality: Neurosurgery
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role
+        "500":
+          description: Internal Server Error
+      parameters:
+        - name: hospitalId
+          in: path
+          description: The ID of the hospital to get the list of doctors present in the hospital
+          required: true
+          type: string
+          default: 1
+        - $ref: "#/components/parameters/headerPatientRole"
+        - $ref: "#/components/parameters/headerPatientUserName"
+      security:
+        - bearerAuth: []
+  /patients/{patientId}/grant/{doctorId}:
+    patch:
+      summary: Grant Access to the Doctor
+      description: This endpoint allows a patient to grant access to a specific doctor to update the patient's medical details.
+      tags:
+        - Patient Routes
+      responses:
+        "200":
+          description: Access granted to the Doctor
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role
+        "500":
+          description: Internal Server Error
+      parameters:
+        - name: patientId
+          in: path
+          description: The ID of the Patient
+          required: true
+          type: string
+          default: PID6
+        - name: doctorId
+          in: path
+          description: The ID of the Doctor Whom you want to give the access
+          required: true
+          type: string
+          default: ramesh
+        - $ref: "#/components/parameters/headerPatientRole"
+        - $ref: "#/components/parameters/headerPatientUserName"
+      security:
+        - bearerAuth: []
+  /patients/{patientId}/revoke/{doctorId}:
+    patch:
+      summary: Revoke Access From the Doctor
+      description: This endpoint is for revoking access from a doctor
+      tags:
+        - Patient Routes
+      responses:
+        "200":
+          description: Revoked Access From the Doctor
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role
+        "500":
+          description: Internal Server Error
+      parameters:
+        - name: patientId
+          in: path
+          description: The ID of the Patient
+          required: true
+          type: string
+          default: PID6
+        - name: doctorId
+          in: path
+          description: The ID of the Doctor Whom you want to give the revoke the access
+          required: true
+          type: string
+          default: ramesh
+        - $ref: "#/components/parameters/headerPatientRole"
+        - $ref: "#/components/parameters/headerPatientUserName"
+      security:
+        - bearerAuth: []
+components:
+  parameters:
+    role:
+      name: role
+      in: header
+      schema:
+        type: string
+        required: true
+        description: the user's role
+    username:
+      name: username
+      in: header
+      schema:
+        type: string
+        required: true
+        description: the user's username
+
+    headerAdminRole:
+      $ref: "#/components/parameters/role"
+      default: admin
+    headerDoctorRole:
+      $ref: "#/components/parameters/role"
+      default: doctor
+    headerPatientRole:
+      $ref: "#/components/parameters/role"
+      default: patient
+
+    headerAdminUserName:
+      $ref: "#/components/parameters/username"
+      default: hosp1admin
+    headerPatientUserName:
+      $ref: "#/components/parameters/username"
+      default: PID6
+    headerDoctorUserName:
+      $ref: "#/components/parameters/username"
+      default: ramesh
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
