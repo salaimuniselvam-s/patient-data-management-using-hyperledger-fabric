@@ -4,8 +4,6 @@ const {
   refreshSecretToken,
   ROLE_PATIENT,
   capitalize,
-  CHANGE_TMP_PASSWORD,
-  getMessage,
   ROLE_DOCTOR,
   ROLE_ADMIN,
 } = require("../utils/utils");
@@ -29,43 +27,26 @@ const Login = async (req, res) => {
 
   if (role === ROLE_PATIENT) {
     const networkObj = await network.connectToNetwork(username);
-    const newPassword = req.body.newPassword || password;
 
     if (networkObj.error) return res.status(400).send(networkObj.error);
 
-    if (newPassword === null || newPassword === "") {
-      const value = crypto.createHash("sha256").update(password).digest("hex");
-      const response = await network.invoke(
-        networkObj,
-        true,
-        capitalize(role) + "Contract:getPatientPassword",
-        username
-      );
-      if (response.error) {
-        res.status(400).send(response.error);
-      } else {
-        const parsedResponse = await JSON.parse(response);
-        if (parsedResponse.password.toString("utf8") === value) {
-          !parsedResponse.pwdTemp
-            ? (user = true)
-            : res.status(200).send(getMessage(false, CHANGE_TMP_PASSWORD));
-        }
-      }
-    } else {
-      let args = {
-        patientId: username,
-        newPassword: newPassword,
-      };
+    const response = await network.invoke(
+      networkObj,
+      true,
+      capitalize(role) + "Contract:getPatientPassword",
+      username
+    );
 
-      args = [JSON.stringify(args)];
-      const response = await network.invoke(
-        networkObj,
-        false,
-        capitalize(role) + "Contract:updatePatientPassword",
-        args
-      );
-      if (response.error) return res.status(500).send(response.error);
-      else user = true;
+    if (response.error) {
+      res.status(400).send(response.error);
+    } else {
+      const parsedResponse = await JSON.parse(response);
+      if (
+        parsedResponse?.password?.toString("utf8") ===
+        crypto.createHash("sha256").update(password).digest("hex")
+      ) {
+        user = true;
+      }
     }
   }
 

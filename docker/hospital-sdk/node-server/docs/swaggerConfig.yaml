@@ -171,6 +171,7 @@ paths:
                   default: RAJ
                 password:
                   type: string
+                  default: sms72213
       responses:
         "200":
           description: Successfully registered Patient.
@@ -193,6 +194,8 @@ paths:
           description: Unable to Connect to the Fabric Network using the given username
         "401":
           description: Unauthorized role
+        "405":
+          description: Password Cannot be null.Please Enter Valid Password & Try Again.
         "500":
           description: Internal Server Error
       parameters:

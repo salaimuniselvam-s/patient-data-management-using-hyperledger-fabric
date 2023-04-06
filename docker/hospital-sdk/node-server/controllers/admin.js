@@ -22,33 +22,20 @@ const createPatient = async (req, res) => {
   const networkObj = await network.connectToNetwork(req.headers.username);
   if (networkObj.error) return res.status(400).send(networkObj.error);
 
-  // Generally we create patient id by ourself so if patient id is not present in the request then fetch last id
-  // from ledger and increment it by one. Since we follow patient id pattern as "PID0", "PID1", ...
-  // 'slice' method omits first three letters and take number
-  if (
-    !("patientId" in req.body) ||
-    req.body.patientId === null ||
-    req.body.patientId === ""
-  ) {
-    const lastId = await network.invoke(
-      networkObj,
-      true,
-      capitalize(userRole) + "Contract:getLatestPatientId"
-    );
-    req.body.patientId = "PID" + (parseInt(lastId.slice(3)) + 1);
-  }
+  req.body.patientId = req.body.username;
 
-  // When password is not provided in the request while creating a patient record.
-
+  // When password is not provided in the request
   if (
     !("password" in req.body) ||
     req.body.password === null ||
     req.body.password === ""
   ) {
-    req.body.password = Math.random().toString(36).slice(-8);
+    return res
+      .status(405)
+      .send(
+        "Password Cannot be null.Please Enter Valid Password & Try Again.."
+      );
   }
-
-  req.body.changedBy = req.headers.username;
 
   // The request present in the body is converted into a single json string
   const data = JSON.stringify(req.body);
