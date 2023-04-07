@@ -51,12 +51,15 @@ const capitalize = (s) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
-const jwtSecretToken = "password";
-const refreshSecretToken = "refreshpassword";
+const generateHospitalAdmin = (hospitalId) => {
+  let admins = {
+    1: "hosp1admin",
+    2: "hosp2admin",
+  };
+  return admins[hospitalId] || "";
+};
 
 module.exports = {
-  jwtSecretToken,
-  refreshSecretToken,
   CHANGE_TMP_PASSWORD,
   ROLE_ADMIN,
   ROLE_DOCTOR,
@@ -64,4 +67,5 @@ module.exports = {
   capitalize,
   validateRole,
   getMessage,
+  generateHospitalAdmin,
 };

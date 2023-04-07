@@ -51,7 +51,9 @@ class DoctorContract extends AdminContract {
     let updatedBy = args.changedBy;
 
     const patient = await PrimaryContract.prototype.readPatient(ctx, patientId);
-
+    if (!patient.permissionGranted.includes(args.doctorId)) {
+      throw new Error(`Unauthorized Doctor Trying To Update Patient Details`);
+    }
     if (
       newSymptoms !== null &&
       newSymptoms !== "" &&

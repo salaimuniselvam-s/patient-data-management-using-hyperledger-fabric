@@ -6,7 +6,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const crypto = require("crypto");
+
 
 class Patient {
   constructor(
@@ -29,7 +29,7 @@ class Patient {
     this.patientId = patientId;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.password = crypto.createHash("sha256").update(password).digest("hex");
+    this.password = password;
     this.age = age;
     this.phoneNumber = phoneNumber;
     this.emergPhoneNumber = emergPhoneNumber;

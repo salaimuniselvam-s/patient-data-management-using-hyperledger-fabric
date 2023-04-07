@@ -81,7 +81,10 @@ function ValidateChaincodeonPeers() {
 }
 
 function createHospitalNetwork_DeployChaincode(){
+  echo "Removing Old Wallets"
+  rm -rf ../hospital-sdk/fabric-network/wallet/*
 
+  echo "Creating Hospital Network"
   createHospitalNetwork
   setEnvPeer 1
   peer channel list

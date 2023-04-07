@@ -4,8 +4,10 @@ const {
   capitalize,
   getMessage,
   validateRole,
+  ROLE_PATIENT,
 } = require("../utils/utils.js");
 const network = require("../../fabric-network/app.js");
+const UserDetails = require("../db/schema.js");
 
 /**
  * @param  {Request} req Body must be a patient json and role in the header
@@ -40,8 +42,8 @@ const createPatient = async (req, res) => {
   // The request present in the body is converted into a single json string
   const data = JSON.stringify(req.body);
   const args = [data];
-  // Invoke the smart contract function
 
+  // Invoke the smart contract function
   const createPatientRes = await network.invoke(
     networkObj,
     false,
@@ -68,6 +70,29 @@ const createPatient = async (req, res) => {
     );
     return res.send(registerUserRes.error);
   }
+
+  const patientDetails = new UserDetails({
+    username: req.body.username,
+    password: req.body.password,
+    role: ROLE_PATIENT,
+  });
+
+  patientDetails
+    .save()
+    .then(() => console.log("Patient Details saved to database"))
+    .catch((error) => {
+      console.error(error);
+      return res
+        .status(406)
+        .send(
+          getMessage(
+            false,
+            "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database",
+            username,
+            password
+          )
+        );
+    });
 
   res
     .status(201)
@@ -105,6 +130,28 @@ const createDoctor = async (req, res) => {
   if (response.error) {
     return res.status(400).send(response.error);
   }
+  const doctorDetails = new UserDetails({
+    username: username,
+    password: password,
+    role: ROLE_DOCTOR,
+  });
+
+  doctorDetails
+    .save()
+    .then(() => console.log("Doctor Details saved to database"))
+    .catch((error) => {
+      console.error(error);
+      return res
+        .status(406)
+        .send(
+          getMessage(
+            false,
+            "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database",
+            username,
+            password
+          )
+        );
+    });
   return res.status(201).send(getMessage(false, response, username, password));
 };
 

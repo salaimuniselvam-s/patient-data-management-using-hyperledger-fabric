@@ -103,7 +103,7 @@ async function main() {
   // Register Doctor
   // registerUser(DOCTOR);
   // GetAllDoctorsByHospital
-  console.log(await getAllDoctorsByHospitalId(networkObj, 1));
+  // console.log(await getAllDoctorsByHospitalId(networkObj, 1));
 }
 
 main();

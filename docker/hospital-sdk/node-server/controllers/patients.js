@@ -23,7 +23,7 @@ const getPatientById = async (req, res) => {
   );
   if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
 
-  const patientId = req.params.patientId;
+  const patientId = req.headers.username;
   console.log(patientId);
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
@@ -53,8 +53,8 @@ const updatePatientPersonalDetails = async (req, res) => {
 
   // The request present in the body is converted into a single json string
   let args = req.body;
-  args.patientId = req.params.patientId;
-  args.changedBy = req.params.patientId;
+  args.patientId = req.headers.username;
+  args.changedBy = req.headers.username;
   args = [JSON.stringify(args)];
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
@@ -85,7 +85,7 @@ const getPatientHistoryById = async (req, res) => {
     res
   );
   if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
-  const patientId = req.params.patientId;
+  const patientId = req.headers.username;
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
   if (networkObj.error) return res.status(400).send(networkObj.error);
@@ -146,7 +146,7 @@ const grantAccessToDoctor = async (req, res) => {
   const isValidate = await validateRole([ROLE_PATIENT], userRole, res);
   if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
 
-  const patientId = req.params.patientId;
+  const patientId = req.headers.username;
   const doctorId = req.params.doctorId;
   let args = { patientId: patientId, doctorId: doctorId };
   args = [JSON.stringify(args)];
@@ -174,7 +174,7 @@ const revokeAccessFromDoctor = async (req, res) => {
   const userRole = req.headers.role;
   const isValidate = await validateRole([ROLE_PATIENT], userRole, res);
   if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
-  const patientId = req.params.patientId;
+  const patientId = req.headers.username;
   const doctorId = req.params.doctorId;
   let args = { patientId: patientId, doctorId: doctorId };
   args = [JSON.stringify(args)];

@@ -11,6 +11,10 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const swaggerUi = require("swagger-ui-express");
 const YAML = require("yamljs");
+const chalk = require("chalk");
+const open = require("open");
+const mongoose = require("mongoose");
+require("dotenv").config();
 
 // Express Application init
 const app = express();
@@ -26,6 +30,7 @@ const patientRoutes = require("./routes/patients");
 const doctorRoutes = require("./routes/doctors");
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
+const deleteRoute = require("./db/deleteRecords");
 
 // Swagger Docs
 const swaggerDocument = YAML.load("./docs/swaggerConfig.yaml");
@@ -36,7 +41,25 @@ app.use("/admin", adminRoutes);
 app.use("/doctors", doctorRoutes);
 app.use("/patients", patientRoutes);
 app.use("/auth", authRoutes);
+app.use("/deleteRecords", deleteRoute);
 
 app.get("/", (req, res) => res.send("Welcome to the Fabric-Node-Server"));
 
-app.listen(3001, () => console.log("Backend server running on 3001"));
+// Mongodb Connection
+const uri = `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@cluster0.ndk0ctm.mongodb.net/?retryWrites=true&w=majority`;
+
+const port = 3001;
+
+console.log("Connecting To MongoDb...");
+mongoose
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("Connected to MongoDB");
+    // Starting Server
+    app.listen(port, () => {
+      const serverUrl = `http://localhost:${port}`;
+      console.log(`Server running at ${chalk.blue.bold(serverUrl)}`);
+      // open(`${serverUrl}/api-docs`);
+    });
+  })
+  .catch((error) => console.error(error));

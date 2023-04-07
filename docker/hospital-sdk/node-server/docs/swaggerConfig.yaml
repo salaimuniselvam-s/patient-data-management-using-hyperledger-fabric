@@ -46,24 +46,27 @@ paths:
         "400":
           description: Unable to Connect to the Fabric Network using the given username
         "401":
-          description: Username or password incorrect!
+          description: Username or password or role is Incorrect!
         "500":
           description: Internal Server Error
   /auth/logout:
     delete:
       summary: Logout from the network
-      description: This endpoint is used to log out users and revoke their bearer token. The API expects an admin role header in the request, and if authenticated, the API returns a 204 No Content response indicating a successful logout.
+      description: This endpoint is used to log out users and revoke their bearer token. The API expects an Users role and the username in the header request, and if authenticated, the API returns a 204 No Content response indicating a successful logout.
       tags:
         - Authentication
       responses:
         "204":
           description: Successfully Logged out the user
       parameters:
-        - $ref: "#/components/parameters/headerAdminRole"
+        - $ref: "#/components/parameters/role"
+        - $ref: "#/components/parameters/username"
+      security:
+        - bearerAuth: []
   /auth/refreshToken:
     post:
       summary: Refresh the Bearer token using Refresh Token
-      description: This endpoint is used to refresh the bearer token using a refresh token. The API expects a valid refreshToken in the request body, and if authenticated, the API returns a new accessToken and a new refreshToken. If the refreshToken is invalid, expired, or otherwise not found, the API returns an appropriate error message. If the request is unauthorized, the API returns a 403 Forbidden response.
+      description: This endpoint is used to refresh the bearer token using a refresh token. The API expects a valid refreshToken in the request body and the users role and username in the header of the request and if authenticated, the API returns a new accessToken and a new refreshToken. If the refreshToken is invalid, expired, or otherwise not found, the API returns an appropriate error message. If the request is unauthorized, the API returns a 403 Forbidden response.
       tags:
         - Authentication
       requestBody:
@@ -94,7 +97,10 @@ paths:
         "500":
           description: Internal Server Error
       parameters:
-        - $ref: "#/components/parameters/headerAdminRole"
+        - $ref: "#/components/parameters/role"
+        - $ref: "#/components/parameters/username"
+      security:
+        - bearerAuth: []
   /admin/doctors/register:
     post:
       summary: Register New Doctors into the network
@@ -114,10 +120,10 @@ paths:
                   default: 1
                 username:
                   type: string
-                  default: ramesh
+                  default: raj
                 password:
                   type: string
-                  default: sms7
+                  default: raj123
                 speciality:
                   type: string
                   default: Neurosurgery
@@ -143,10 +149,13 @@ paths:
           description: Unable to Connect to the Fabric Network using the given username
         "401":
           description: Unauthorized role!
+        "406":
+          description: Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database
         "500":
           description: Internal Server Error
       parameters:
         - $ref: "#/components/parameters/headerAdminRole"
+        - $ref: "#/components/parameters/headerAdminUserName"
       security:
         - bearerAuth: []
   /admin/patients/register:
@@ -168,10 +177,10 @@ paths:
                   default: 1
                 username:
                   type: string
-                  default: RAJ
+                  default: siva
                 password:
                   type: string
-                  default: sms72213
+                  default: siva123
       responses:
         "200":
           description: Successfully registered Patient.
@@ -196,6 +205,8 @@ paths:
           description: Unauthorized role
         "405":
           description: Password Cannot be null.Please Enter Valid Password & Try Again.
+        "406":
+          description: Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database
         "500":
           description: Internal Server Error
       parameters:
@@ -371,6 +382,7 @@ paths:
           type: string
           default: 1
         - $ref: "#/components/parameters/headerDoctorRole"
+        - $ref: "#/components/parameters/headerDoctorUserName"
       security:
         - bearerAuth: []
   /patients/{patientId}:

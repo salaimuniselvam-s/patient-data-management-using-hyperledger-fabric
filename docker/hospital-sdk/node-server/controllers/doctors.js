@@ -19,6 +19,7 @@ const updatePatientMedicalDetails = async (req, res) => {
   let args = req.body;
   args.patientId = req.params.patientId;
   args.changedBy = req.headers.username;
+  args.doctorId = req.headers.username;
   args = [JSON.stringify(args)];
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
@@ -55,7 +56,7 @@ const getDoctorById = async (req, res) => {
       : hospitalId === 2
       ? "hosp2admin"
       : "hosp3admin";
-  const doctorId = req.params.doctorId;
+  const doctorId = req.headers.username;
   const networkObj = await network.connectToNetwork(userId);
   if (networkObj.error) return res.status(400).send(networkObj.error);
   // Use the gateway and identity service to get all users enrolled by the CA

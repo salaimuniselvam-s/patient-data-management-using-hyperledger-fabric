@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
-const { jwtSecretToken } = require("../utils/utils");
+require("dotenv").config();
+
+const jwtSecretToken = process.env.JWT_SECRET_TOKEN;
 
 const authenticateJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -11,7 +13,11 @@ const authenticateJWT = (req, res, next) => {
       return res.status(401).send("Unauthorized request: Token is missing");
     }
     jwt.verify(token, jwtSecretToken, (err, user) => {
-      if (err) {
+      if (
+        err ||
+        req.headers.username != user.username ||
+        req.headers.role != user.role
+      ) {
         return res
           .status(403)
           .send("Unauthorized request: Wrong or expired token found");

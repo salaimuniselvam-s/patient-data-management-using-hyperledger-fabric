@@ -9,6 +9,8 @@ const {
   buildCCPHosp1,
   buildWallet,
 } = require("../../fabric-network/AppUtil.js");
+const { ROLE_ADMIN } = require("../utils/utils.js");
+const UserDetails = require("../db/schema.js");
 const adminHospital1 = "hosp1admin";
 const adminHospital1Passwd = "hosp1adminpw";
 
@@ -48,6 +50,22 @@ exports.enrollAdminHosp1 = async function () {
         adminHospital1 +
         " and imported it into the wallet"
     );
+
+    const adminDetails = new UserDetails({
+      username: adminHospital1,
+      password: adminHospital1Passwd,
+      role: ROLE_ADMIN,
+    });
+
+    adminDetails
+      .save()
+      .then(() => console.log("Admin Details saved to database"))
+      .catch((error) => {
+        console.error(error);
+        console.log(
+          "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database"
+        );
+      });
   } catch (error) {
     console.error(
       `Failed to enroll admin user ' + ${adminHospital1} + : ${error}`

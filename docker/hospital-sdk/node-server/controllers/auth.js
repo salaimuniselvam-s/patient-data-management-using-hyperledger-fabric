@@ -1,15 +1,10 @@
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const {
-  refreshSecretToken,
-  ROLE_PATIENT,
-  capitalize,
-  ROLE_DOCTOR,
-  ROLE_ADMIN,
-} = require("../utils/utils");
-const network = require("../../fabric-network/app");
 const { generateAccessToken } = require("../middleware/verifyJwtToken");
-let { ADMIN_DETAILS, REFRESH_TOKEN } = require("../tasks/adminTasks");
+let { REFRESH_TOKEN } = require("../tasks/adminTasks");
+const UserDetails = require("../db/schema");
+require("dotenv").config();
+
+const refreshSecretToken = process.env.REFRESH_SECRET_TOKEN;
 
 /**
  * @description Login and create a session with and add two variables to the session
@@ -18,36 +13,17 @@ const Login = async (req, res) => {
   // Read username and password from request body
   let { username, password, role } = req.body;
   let user;
-
-  if (role === ROLE_DOCTOR || role === ROLE_ADMIN) {
-    const value = ADMIN_DETAILS.filter((data) => data.userName == username);
-    // comparing passwords
-    user = value[0].password === password;
-  }
-
-  if (role === ROLE_PATIENT) {
-    const networkObj = await network.connectToNetwork(username);
-
-    if (networkObj.error) return res.status(400).send(networkObj.error);
-
-    const response = await network.invoke(
-      networkObj,
-      true,
-      capitalize(role) + "Contract:getPatientPassword",
-      username
-    );
-
-    if (response.error) {
-      res.status(400).send(response.error);
-    } else {
-      const parsedResponse = await JSON.parse(response);
-      if (
-        parsedResponse?.password?.toString("utf8") ===
-        crypto.createHash("sha256").update(password).digest("hex")
-      ) {
-        user = true;
-      }
-    }
+  try {
+    const [userDetail] = await UserDetails.find({ username: username });
+    user =
+      userDetail?.password == password &&
+      userDetail?.username == username &&
+      userDetail?.role == role;
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(400)
+      .send({ error: "Username or password or role is incorrect!" });
   }
 
   if (user) {
@@ -66,7 +42,9 @@ const Login = async (req, res) => {
       refreshToken,
     });
   } else {
-    res.status(400).send({ error: "Username or password incorrect!" });
+    res
+      .status(400)
+      .send({ error: "Username or password or role is incorrect!" });
   }
 };
 
