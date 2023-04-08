@@ -31,6 +31,7 @@ const doctorRoutes = require("./routes/doctors");
 const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
 const deleteRoute = require("./db/deleteRecords");
+const storeAdminCredentials = require("./db/storeAdminCredentials");
 
 // Swagger Docs
 const swaggerDocument = YAML.load("./docs/swaggerConfig.yaml");
@@ -42,6 +43,7 @@ app.use("/doctors", doctorRoutes);
 app.use("/patients", patientRoutes);
 app.use("/auth", authRoutes);
 app.use("/deleteRecords", deleteRoute);
+app.use("/storeAdminCredentials", storeAdminCredentials);
 
 app.get("/", (req, res) => res.send("Welcome to the Fabric-Node-Server"));
 
@@ -59,7 +61,7 @@ mongoose
     app.listen(port, () => {
       const serverUrl = `http://localhost:${port}`;
       console.log(`Server running at ${chalk.blue.bold(serverUrl)}`);
-      // open(`${serverUrl}/api-docs`);
+      open(`${serverUrl}/api-docs`);
     });
   })
   .catch((error) => console.error(error));

@@ -9,8 +9,8 @@ const {
   buildCCPHosp2,
   buildWallet,
 } = require("../../fabric-network/AppUtil.js");
+const storeAdminCredentials = require("./storeAdminCredentials.js");
 const { ROLE_ADMIN } = require("../utils/utils.js");
-const UserDetails = require("../db/schema.js");
 const adminHospital2 = "hosp2admin";
 const adminHospital2Passwd = "hosp2adminpw";
 
@@ -20,7 +20,7 @@ const walletPath = path.join(__dirname, "../../fabric-network/wallet");
 /**
  * @description This functions enrolls the admin of Hospital 2
  */
-exports.enrollAdminHosp2 = async function () {
+async function enrollAdminHosp2() {
   try {
     // build an in memory object with the network configuration (also known as a connection profile)
     const ccp = buildCCPHosp2();
@@ -50,25 +50,18 @@ exports.enrollAdminHosp2 = async function () {
         adminHospital2 +
         " and imported it into the wallet"
     );
-    const adminDetails = new UserDetails({
+
+    await storeAdminCredentials({
       username: adminHospital2,
       password: adminHospital2Passwd,
       role: ROLE_ADMIN,
     });
-
-    adminDetails
-      .save()
-      .then(() => console.log("Admin Details saved to database"))
-      .catch((error) => {
-        console.error(error);
-        console.log(
-          "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database"
-        );
-      });
   } catch (error) {
     console.error(
       `Failed to enroll admin user ' + ${adminHospital2} + : ${error}`
     );
     process.exit(1);
   }
-};
+}
+
+module.exports = enrollAdminHosp2;

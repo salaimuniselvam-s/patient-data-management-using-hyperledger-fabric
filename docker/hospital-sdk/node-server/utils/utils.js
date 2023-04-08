@@ -59,6 +59,16 @@ const generateHospitalAdmin = (hospitalId) => {
   return admins[hospitalId] || "";
 };
 
+const TEMP_PASSWORD = "temp-password";
+
+function waitSeconds(time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, time);
+  });
+}
+
 module.exports = {
   CHANGE_TMP_PASSWORD,
   ROLE_ADMIN,
@@ -68,4 +78,6 @@ module.exports = {
   validateRole,
   getMessage,
   generateHospitalAdmin,
+  TEMP_PASSWORD,
+  waitSeconds,
 };

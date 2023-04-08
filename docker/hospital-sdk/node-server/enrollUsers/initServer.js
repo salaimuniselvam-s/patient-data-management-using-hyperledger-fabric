@@ -1,17 +1,21 @@
-const fs = require("fs");
-const PatientDetails = require("./initPatients.json");
-const DoctorDetails = require("./initDoctors.json");
+const PatientDetails = require("./initPatients");
+const DoctorDetails = require("./initDoctors");
+const enrollAdminHosp1 = require("./enrollAdmin-Hospital1.js");
+const enrollAdminHosp2 = require("./enrollAdmin-Hospital2");
+const { registerPatients } = require("./registerPatients");
+const { registerDoctors } = require("./registerDoctors");
+const { waitSeconds } = require("../utils/utils");
 
 /**
  * @description Register and Enroll Patients on the initPatients json.
  */
 async function initPatients() {
   try {
-    PatientDetails.map((data) => {
-      console.log(data);
-    });
+    for (const details of PatientDetails) {
+      await registerPatients(details);
+    }
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 }
 
@@ -20,11 +24,11 @@ async function initPatients() {
  */
 async function initDoctors() {
   try {
-    DoctorDetails.map((data) => {
-      console.log(data);
-    });
+    for (const details of DoctorDetails) {
+      await registerDoctors(details);
+    }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -32,9 +36,15 @@ async function initDoctors() {
  * @description Function to initialise the backend server, enrolls and regsiter the admins and initPatients.
  */
 async function main() {
-  // await enrollAdminHosp1();
-  // await enrollAdminHosp2();
+  await enrollAdminHosp1();
+  await enrollAdminHosp2();
+
+  await waitSeconds(5000);
+
   await initPatients();
+
+  await waitSeconds(2000);
+
   await initDoctors();
 }
 

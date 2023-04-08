@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.3.5",
     "body-parser": "^1.20.2",
     "chalk": "^2.4.2",
     "cors": "^2.8.5",
@@ -24,6 +23,7 @@
     "mongoose": "^7.0.3",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "node-fetch": "^3.3.1",
     "open": "^6.4.0",
     "swagger-ui-express": "^4.6.2",
     "yamljs": "^0.3.0"
