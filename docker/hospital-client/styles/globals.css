@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Roboto&family=Roboto+Slab&display=swap");
+
+body {
+  background: #f5f5f5;
+  color: #000;
+}
+
+.header {
+  background: #f9fafb;
+}
+
+.dark .header {
+  background: #374151;
+}
+
+.dark body {
+  background: #111827;
+  color: #fff;
+}
+
+* {
+  font-family: "Lexend Deca", sans-serif;
+  cursor: auto;
+}
+
+@media (max-width: 1140px) {
+  .flex-row-at-1100 {
+    flex-direction: column !important;
+  }
+  .flex-row-at-1100 > p {
+    margin-bottom: 3px;
+  }
+}

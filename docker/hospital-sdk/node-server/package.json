@@ -1,13 +1,17 @@
 {
   "name": "hospital-node-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Node Sever for Patient Data Management Using Hyperledger fabric",
+  "author": "salaimuniselvam",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "enroll": "node enrollUsers/initServer.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "Hyperledger Fabric",
+    "Patient Data Management"
+  ],
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
