@@ -1,5 +1,6 @@
 import { withAuth } from "@/components/Auth";
 
+// Profile Page for Admins
 function AdminProfilePage() {
   return (
     <div className="flex flex-col justify-center gap-6 text-xl items-center mt-12">

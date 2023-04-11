@@ -17,6 +17,10 @@ body {
   background: #374151;
 }
 
+.button-text {
+  user-select: none;
+}
+
 .dark body {
   background: #111827;
   color: #fff;

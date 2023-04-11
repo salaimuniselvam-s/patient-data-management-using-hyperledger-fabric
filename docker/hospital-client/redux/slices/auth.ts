@@ -11,7 +11,10 @@ import { logInUser, logOutUser, registerUser } from "../actions/authActions";
 export const auth = createSlice({
   name: "auth",
   initialState: {
-    loggedIn: !!getAuthCookies().accessToken,
+    loggedIn:
+      !!getAuthCookies().accessToken &&
+      !!getUserDetails().username &&
+      !!getUserDetails().role,
     loading: false,
     error: "",
     username: getUserDetails().username || "",

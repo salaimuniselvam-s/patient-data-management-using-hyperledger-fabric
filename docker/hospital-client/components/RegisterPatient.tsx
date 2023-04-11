@@ -18,6 +18,7 @@ const RegisterPatient = () => {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const authState = useAppSelector((state) => state.auth);
+  console.log(authState);
 
   function togglePasswordVisibility() {
     setShowPassword(!showPassword);
