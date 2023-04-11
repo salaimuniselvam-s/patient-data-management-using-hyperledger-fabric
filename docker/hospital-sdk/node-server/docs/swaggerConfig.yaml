@@ -40,9 +40,15 @@ paths:
                     type: string
                   refreshToken:
                     type: string
+                  username:
+                    type: string
+                  role:
+                    type: string
               example:
                 accessToken: ""
                 refreshToken: ""
+                username: "sms"
+                role: "doctor"
         "400":
           description: Unable to Connect to the Fabric Network using the given username
         "401":
@@ -86,10 +92,16 @@ paths:
               schema:
                 type: object
                 properties:
-                  refreshToken:
+                  accessToken:
+                    type: string
+                  username:
+                    type: string
+                  role:
                     type: string
               example:
-                refreshToken: ""
+                accessToken: ""
+                username: "sms"
+                role: "doctor"
         "401":
           description: refresh token not found
         "403":
@@ -99,14 +111,13 @@ paths:
       parameters:
         - $ref: "#/components/parameters/role"
         - $ref: "#/components/parameters/username"
-      security:
-        - bearerAuth: []
   /admin/doctors/register:
     post:
       summary: Register New Doctors into the network
       description: This endpoint allows administrators to register new doctors into the system by providing necessary details such as hospital ID, username, password and specialty. The response includes the success message along with the generated ID and password for the newly registered doctor.
       tags:
-        - Admin Routes
+        # - Admin Routes
+        - Registration Routes
       requestBody:
         required: true
         content:
@@ -135,16 +146,19 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
+                  username:
                     type: string
-                  id:
+                  role:
                     type: string
-                  password:
+                  accessToken:
+                    type: string
+                  refreshToken:
                     type: string
               example:
-                success: "Successfully registered user"
-                id: ""
-                password: ""
+                username: "sms"
+                role: "doctor"
+                accessToken: ""
+                refreshToken: ""
         "400":
           description: Unable to Connect to the Fabric Network using the given username
         "401":
@@ -153,17 +167,18 @@ paths:
           description: Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database
         "500":
           description: Internal Server Error
-      parameters:
-        - $ref: "#/components/parameters/headerAdminRole"
-        - $ref: "#/components/parameters/headerAdminUserName"
-      security:
-        - bearerAuth: []
+      # parameters:
+      #   - $ref: "#/components/parameters/headerAdminRole"
+      #   - $ref: "#/components/parameters/headerAdminUserName"
+      # security:
+      #   - bearerAuth: []
   /admin/patients/register:
     post:
       summary: Register New Patients into the network
       description: This endpoint allows admins to register new patients into the system by providing their hospital ID and username. Upon successful registration, the API returns a success message and the patient's ID and password. If there are any errors, appropriate error responses are returned.
       tags:
-        - Admin Routes
+        # - Admin Routes
+        - Registration Routes
       requestBody:
         required: true
         content:
@@ -189,16 +204,19 @@ paths:
               schema:
                 type: object
                 properties:
-                  success:
+                  username:
                     type: string
-                  id:
+                  role:
                     type: string
-                  password:
+                  accessToken:
+                    type: string
+                  refreshToken:
                     type: string
               example:
-                success: "Successfully registered Patient."
-                id: ""
-                password: ""
+                username: "sms"
+                role: "patient"
+                accessToken: ""
+                refreshToken: ""
         "400":
           description: Unable to Connect to the Fabric Network using the given username
         "401":
@@ -207,13 +225,15 @@ paths:
           description: Password Cannot be null.Please Enter Valid Password & Try Again.
         "406":
           description: Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database
+        "407":
+          description: Username Already Taken.Please Try Different Username
         "500":
           description: Internal Server Error
-      parameters:
-        - $ref: "#/components/parameters/headerAdminRole"
-        - $ref: "#/components/parameters/headerAdminUserName"
-      security:
-        - bearerAuth: []
+      # parameters:
+      #   - $ref: "#/components/parameters/headerAdminRole"
+      #   - $ref: "#/components/parameters/headerAdminUserName"
+      # security:
+      #   - bearerAuth: []
   /admin/patients/_all:
     get:
       summary: Get All Patients registered in the network

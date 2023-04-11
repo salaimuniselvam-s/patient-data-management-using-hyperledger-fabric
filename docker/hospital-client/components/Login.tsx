@@ -1,8 +1,22 @@
+import { USER_CREDETIALS } from "@/constants/constants";
+import { logInUserAction } from "@/redux/actions/authActions";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { UserCredentialsFields } from "@/types/auth";
+import { redirectToProfilePage } from "@/utils/routeUtils";
 import Link from "next/link";
-import React, { FormEvent, useState } from "react";
+import { useRouter } from "next/router";
+import React, { FormEvent, useEffect, useState } from "react";
 
 const Login = () => {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
   const [showPassword, setShowPassword] = useState(false);
+  const authState = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (authState.loggedIn) router.push(redirectToProfilePage(authState.role));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authState]);
 
   function togglePasswordVisibility() {
     setShowPassword(!showPassword);
@@ -10,11 +24,14 @@ const Login = () => {
 
   const LoginUser = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const formData = new FormData(event.target as HTMLFormElement);
-    const username = formData.get("username");
-    const password = formData.get("password");
-    const role = formData.get("role");
-    console.log(username, password, role, formData);
+    let userDetails = {} as UserCredentialsFields;
+    USER_CREDETIALS.map((field) => {
+      userDetails[field] = formData.get(field);
+    });
+
+    dispatch(logInUserAction(userDetails));
   };
   return (
     <div className="flex justify-center mt-16">
@@ -86,6 +103,7 @@ const Login = () => {
                 </option>
                 <option value="doctor">Doctor</option>
                 <option value="patient">Patient</option>
+                <option value="admin">Admin</option>
               </select>
             </div>
             <button
@@ -97,7 +115,7 @@ const Login = () => {
             <p className="text-sm font-light text-gray-500 dark:text-gray-400 float-right pb-6">
               Don’t have an account yet?{" "}
               <Link
-                href="/register-doctor"
+                href="/register-patient"
                 className="font-medium ml-1 text-primary hover:underline dark:text-primary cursor-pointer"
               >
                 Sign up

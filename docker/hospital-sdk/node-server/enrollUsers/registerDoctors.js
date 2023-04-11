@@ -13,8 +13,8 @@ const registerDoctors = async (records) => {
         Accept: "application/json",
         "Content-Type": "application/json;charset=UTF-8",
         Authorization: `Bearer ${accessToken}`,
-        role: ROLE_ADMIN,
-        username: `${generateHospitalAdmin(records.hospitalId)}`,
+        // role: ROLE_ADMIN,
+        // username: `${generateHospitalAdmin(records.hospitalId)}`,
       },
       body: JSON.stringify(records),
     };

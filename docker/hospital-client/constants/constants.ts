@@ -13,11 +13,11 @@ export const DOCTOR_DESIGNATION = [
 export const HOSPITAL_LIST = [
   {
     name: "Hospital-1",
-    value: "hosp1admin",
+    value: "1",
   },
   {
     name: "Hospital-2",
-    value: "hosp2admin",
+    value: "2",
   },
 ];
 
@@ -33,3 +33,30 @@ export const BLOOD_GROUP = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 //   "AB positive",
 //   "AB negative",
 // ];
+
+export const DOCTOR_FIELDS = [
+  "username",
+  "password",
+  "hospitalId",
+  "speciality",
+];
+
+export const PATIENT_FIELDS = [
+  "username",
+  "password",
+  "hospitalId",
+  "age",
+  "bloodGroup",
+  "phoneNumber",
+  "address",
+];
+
+export const USER_CREDETIALS = ["username", "password", "role"];
+
+export const API_BASE_URL = "http://localhost:3001";
+
+export const ROLE_PATIENT = "patient";
+
+export const ROLE_DOCTOR = "doctor";
+
+export const ROLE_ADMIN = "admin";

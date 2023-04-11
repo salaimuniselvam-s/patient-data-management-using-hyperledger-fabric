@@ -1,9 +1,27 @@
-import { DOCTOR_DESIGNATION, HOSPITAL_LIST } from "@/constants/constants";
+import {
+  DOCTOR_DESIGNATION,
+  DOCTOR_FIELDS,
+  HOSPITAL_LIST,
+  ROLE_DOCTOR,
+} from "@/constants/constants";
+import { registerUserAction } from "@/redux/actions/authActions";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { DoctorRegistrationFields } from "@/types/doctor";
+import { redirectToProfilePage } from "@/utils/routeUtils";
 import Link from "next/link";
-import React, { FormEvent, useState } from "react";
+import { useRouter } from "next/router";
+import React, { FormEvent, useEffect, useState } from "react";
 
 const RegisterDoctor = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
+  const authState = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (authState.loggedIn) router.push(redirectToProfilePage(authState.role));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authState]);
 
   function togglePasswordVisibility() {
     setShowPassword(!showPassword);
@@ -11,8 +29,14 @@ const RegisterDoctor = () => {
 
   const RegisterAsDoctor = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const formData = new FormData(event.target as HTMLFormElement);
-    console.log(formData);
+    let doctorDetails = {} as DoctorRegistrationFields;
+    DOCTOR_FIELDS.map((field) => {
+      doctorDetails[field] = formData.get(field);
+    });
+
+    dispatch(registerUserAction(ROLE_DOCTOR, doctorDetails));
   };
   return (
     <div className="flex justify-center mt-8">
@@ -62,14 +86,14 @@ const RegisterDoctor = () => {
             </div>
             <div>
               <label
-                htmlFor="hospitals"
+                htmlFor="hospitalId"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Hospital
               </label>
               <select
-                name="hospitals"
-                id="hospitals"
+                name="hospitalId"
+                id="hospitalId"
                 required={true}
                 className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               >
@@ -80,7 +104,7 @@ const RegisterDoctor = () => {
                   selected
                   hidden
                 >
-                  Hopsital Under You Want To Register
+                  Select Hospital
                 </option>
                 {HOSPITAL_LIST.map((hospital, index) => (
                   <option value={hospital.value} key={index}>

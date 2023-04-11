@@ -1,9 +1,4 @@
-const {
-  ROLE_DOCTOR,
-  capitalize,
-  getMessage,
-  validateRole,
-} = require("../utils/utils.js");
+const { ROLE_DOCTOR, capitalize, validateRole } = require("../utils/utils.js");
 const network = require("../../fabric-network/app.js");
 
 /**
@@ -33,9 +28,7 @@ const updatePatientMedicalDetails = async (req, res) => {
   );
   response.error
     ? res.status(500).send(response.error)
-    : res
-        .status(200)
-        .send(getMessage(false, "Successfully Updated Patient Details."));
+    : res.status(200).send("Successfully Updated Patient Details.");
 };
 
 /**

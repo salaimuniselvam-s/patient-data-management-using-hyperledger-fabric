@@ -5,23 +5,6 @@ const ROLE_PATIENT = "patient";
 const CHANGE_TMP_PASSWORD = "CHANGE_TMP_PASSWORD";
 
 /**
- * @param  {Boolean} isError Returns a success msg if False else a success message
- * @param  {String} message Content of the message
- * @param {String} id username/userId of the user
- * @param  {String} password Password of the user
- * @return {JSON} Json message
- * @description Return a simple JSON message based on success or failure
- * @example returns {success:message} or {error:message}
- */
-const getMessage = (isError, message, id = "", password = "") => {
-  if (isError) {
-    return { error: message };
-  } else {
-    return { success: message, id: id, password: password };
-  }
-};
-
-/**
  * @param  {string[]} roles The roles delimited by | against which the validation needs to be done
  * @param  {String} reqRole The role to be validated
  * @param  {Response} res 401 is reqRole is not present n roles
@@ -76,7 +59,6 @@ module.exports = {
   ROLE_PATIENT,
   capitalize,
   validateRole,
-  getMessage,
   generateHospitalAdmin,
   TEMP_PASSWORD,
   waitSeconds,

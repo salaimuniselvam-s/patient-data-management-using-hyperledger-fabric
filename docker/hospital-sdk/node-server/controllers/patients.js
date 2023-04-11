@@ -3,7 +3,6 @@ const {
   ROLE_DOCTOR,
   ROLE_PATIENT,
   capitalize,
-  getMessage,
   validateRole,
 } = require("../utils/utils.js");
 const network = require("../../fabric-network/app.js");
@@ -68,7 +67,7 @@ const updatePatientPersonalDetails = async (req, res) => {
   );
   response.error
     ? res.status(500).send(response.error)
-    : res.status(200).send(getMessage(false, "Successfully Updated Patient."));
+    : res.status(200).send("Successfully Updated Patient.");
 };
 
 /**
@@ -162,7 +161,7 @@ const grantAccessToDoctor = async (req, res) => {
   );
   response.error
     ? res.status(500).send(response.error)
-    : res.status(200).send(getMessage(false, `Access granted to ${doctorId}`));
+    : res.status(200).send(`Access granted to ${doctorId}`);
 };
 /**
  * @param  {Request} req Role in the header. patientId, doctorId in the url
@@ -190,9 +189,7 @@ const revokeAccessFromDoctor = async (req, res) => {
   );
   response.error
     ? res.status(500).send(response.error)
-    : res
-        .status(200)
-        .send(getMessage(false, `Access revoked from ${doctorId}`));
+    : res.status(200).send(`Access revoked from ${doctorId}`);
 };
 
 module.exports = {

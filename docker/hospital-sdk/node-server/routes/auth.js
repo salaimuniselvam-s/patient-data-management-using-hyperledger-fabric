@@ -5,7 +5,7 @@ const { authenticateJWT } = require("../middleware/verifyJwtToken.js");
 const router = express.Router();
 
 router.post("/login", Login);
-router.post("/refreshToken", authenticateJWT, RefreshToken);
+router.post("/refreshToken", RefreshToken);
 router.delete("/logout", authenticateJWT, Logout);
 
 module.exports = router;

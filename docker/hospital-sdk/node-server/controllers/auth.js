@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
-const { generateAccessToken } = require("../middleware/verifyJwtToken");
+const {
+  generateAccessToken,
+  generateTokens,
+} = require("../middleware/verifyJwtToken");
 let { REFRESH_TOKEN } = require("../tasks/adminTasks");
 const UserDetails = require("../db/schema");
 require("dotenv").config();
@@ -28,16 +31,13 @@ const Login = async (req, res) => {
 
   if (user) {
     // Generate an access token
-    const accessToken = generateAccessToken(username, role);
-    const refreshToken = jwt.sign(
-      { username: username, role: role },
-      refreshSecretToken,
-      { expiresIn: "24h" }
-    );
-    REFRESH_TOKEN.push(refreshToken);
+    const { accessToken, refreshToken } = generateTokens(username, role);
+
     // Once the password is matched a session is created with the username and password
     res.status(200);
     res.json({
+      username,
+      role,
       accessToken,
       refreshToken,
     });
@@ -63,7 +63,11 @@ const RefreshToken = (req, res) => {
   }
 
   jwt.verify(token, refreshSecretToken, (err, username) => {
-    if (err) {
+    if (
+      err ||
+      req.headers.username != user.username ||
+      req.headers.role != user.role
+    ) {
       return res.sendStatus(403);
     }
 
@@ -73,6 +77,8 @@ const RefreshToken = (req, res) => {
     });
     res.json({
       accessToken,
+      username,
+      role: req.headers.role,
     });
   });
 };

@@ -2,6 +2,9 @@ import { useTheme } from "../context/Themeprovider";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useAppSelector } from "@/redux/store";
+import { redirectToProfilePage } from "@/utils/routeUtils";
+import HomeButtons from "./Helper/HomeButtons";
 
 export default function Home() {
   const { isTheme, toggleTheme } = useTheme();
@@ -32,16 +35,7 @@ export default function Home() {
             </p>
           </div>
           <div className="flex justify-center pt-3 md:justify-normal gap-6">
-            <Link href="/register-patient">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                Register
-              </button>
-            </Link>
-            <Link href="/login">
-              <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                Sign In
-              </button>
-            </Link>
+            <HomeButtons />
           </div>
         </div>
         <div className="md:w-1/2">

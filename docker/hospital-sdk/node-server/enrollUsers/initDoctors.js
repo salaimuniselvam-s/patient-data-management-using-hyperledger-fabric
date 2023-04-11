@@ -22,7 +22,7 @@ const DOCTOR_DETAILS = [
     firstName: "Deepak",
     lastName: "Chakravarthy",
     speciality: "Cardiology",
-    username: "Rajesh Kumar",
+    username: "Deepak Chakravarthy",
     password: TEMP_PASSWORD,
   },
   {
@@ -30,7 +30,7 @@ const DOCTOR_DETAILS = [
     firstName: "Mahesh",
     lastName: "Babu",
     speciality: "Neurosurgery",
-    username: "Rajesh Kumar",
+    username: "Mahesh Babu",
     password: TEMP_PASSWORD,
   },
 ];

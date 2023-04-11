@@ -2,12 +2,13 @@ const {
   ROLE_ADMIN,
   ROLE_DOCTOR,
   capitalize,
-  getMessage,
   validateRole,
   ROLE_PATIENT,
+  generateHospitalAdmin,
 } = require("../utils/utils.js");
 const network = require("../../fabric-network/app.js");
 const UserDetails = require("../db/schema.js");
+const { generateTokens } = require("../middleware/verifyJwtToken.js");
 
 /**
  * @param  {Request} req Body must be a patient json and role in the header
@@ -17,11 +18,12 @@ const UserDetails = require("../db/schema.js");
 
 const createPatient = async (req, res) => {
   // User role from the request header is validated
-  const userRole = req.headers.role;
-  const isValidate = await validateRole([ROLE_ADMIN], userRole, res);
-  if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
+  // const userRole = req.headers.role;
+  // const isValidate = await validateRole([ROLE_ADMIN], userRole, res);
+  // if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
   // Set up and connect to Fabric Gateway using the username in header
-  const networkObj = await network.connectToNetwork(req.headers.username);
+  const getHospitalAdmin = generateHospitalAdmin(parseInt(req.body.hospitalId));
+  const networkObj = await network.connectToNetwork(getHospitalAdmin);
   if (networkObj.error) return res.status(400).send(networkObj.error);
 
   req.body.patientId = req.body.username;
@@ -47,11 +49,16 @@ const createPatient = async (req, res) => {
   const createPatientRes = await network.invoke(
     networkObj,
     false,
-    capitalize(userRole) + "Contract:createPatient",
+    // capitalize(userRole) + "Contract:createPatient",
+    "AdminContract:createPatient",
     args
   );
 
   if (createPatientRes.error) {
+    if (createPatientRes.error.message.includes("already exists"))
+      return res
+        .status(407)
+        .send("Username Already Taken.Please Try Different Username");
     return res.status(400).send(createPatientRes.error);
   }
 
@@ -65,12 +72,11 @@ const createPatient = async (req, res) => {
     await network.invoke(
       networkObj,
       false,
-      capitalize(userRole) + "Contract:deletePatient",
+      "AdminContract:deletePatient",
       req.body.patientId
     );
-    return res.send(registerUserRes.error);
+    return res.status(400).send(registerUserRes.error);
   }
-
   const patientDetails = new UserDetails({
     username: req.body.username,
     password: req.body.password,
@@ -85,25 +91,21 @@ const createPatient = async (req, res) => {
       return res
         .status(406)
         .send(
-          getMessage(
-            false,
-            "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database",
-            username,
-            password
-          )
+          "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database"
         );
     });
 
-  res
-    .status(201)
-    .send(
-      getMessage(
-        false,
-        "Successfully registered Patient.",
-        req.body.patientId,
-        req.body.password
-      )
-    );
+  const { accessToken, refreshToken } = generateTokens(
+    req.body.username,
+    ROLE_PATIENT
+  );
+
+  return res.status(201).send({
+    username: req.body.username,
+    role: ROLE_PATIENT,
+    accessToken,
+    refreshToken,
+  });
 };
 
 /**
@@ -113,12 +115,12 @@ const createPatient = async (req, res) => {
  */
 const createDoctor = async (req, res) => {
   // User role from the request header is validated
-  const userRole = req.headers.role;
+  // const userRole = req.headers.role;
   let { hospitalId, username, password } = req.body;
   hospitalId = parseInt(hospitalId);
 
-  const isValidate = await validateRole([ROLE_ADMIN], userRole, res);
-  if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
+  // const isValidate = await validateRole([ROLE_ADMIN], userRole, res);
+  // if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
 
   req.body.userId = username;
   req.body.role = ROLE_DOCTOR;
@@ -144,15 +146,15 @@ const createDoctor = async (req, res) => {
       return res
         .status(406)
         .send(
-          getMessage(
-            false,
-            "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database",
-            username,
-            password
-          )
+          "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database"
         );
     });
-  return res.status(201).send(getMessage(false, response, username, password));
+
+  const { accessToken, refreshToken } = generateTokens(username, ROLE_DOCTOR);
+
+  return res
+    .status(201)
+    .send({ username, role: ROLE_DOCTOR, accessToken, refreshToken });
 };
 
 /**
@@ -178,7 +180,7 @@ const getAllPatients = async (req, res) => {
     const response = await network.invoke(
       networkObj,
       true,
-      capitalize(userRole) + "Contract:queryAllPatients",
+      "AdminContract:queryAllPatients",
       userRole === ROLE_DOCTOR ? req.headers.username : [""]
     );
     const parsedResponse = await JSON.parse(response);
