@@ -3,12 +3,11 @@ export interface PatientDetails {
 }
 
 export interface PatientRegistrationFields {
-  [key: string]: string | number | FormDataEntryValue | null;
   username: string;
   password: string;
-  hospitalId: number;
-  age: number;
+  hospitalId: string;
+  age: string;
   address: string;
   bloodGroup: string;
-  phoneNumber: number;
+  phoneNumber: string;
 }

@@ -44,11 +44,14 @@ paths:
                     type: string
                   role:
                     type: string
+                  hospitalId:
+                    type: string
               example:
                 accessToken: ""
                 refreshToken: ""
                 username: "sms"
                 role: "doctor"
+                hospitalId: "2"
         "400":
           description: Unable to Connect to the Fabric Network using the given username
         "401":
@@ -154,11 +157,14 @@ paths:
                     type: string
                   refreshToken:
                     type: string
+                  hospitalId:
+                    type: string
               example:
                 username: "sms"
                 role: "doctor"
                 accessToken: ""
                 refreshToken: ""
+                hospitalId: "1"
         "400":
           description: Unable to Connect to the Fabric Network using the given username
         "401":
@@ -212,11 +218,14 @@ paths:
                     type: string
                   refreshToken:
                     type: string
+                  hospitalId:
+                    type: string
               example:
                 username: "sms"
                 role: "patient"
                 accessToken: ""
                 refreshToken: ""
+                hospitalId: "1"
         "400":
           description: Unable to Connect to the Fabric Network using the given username
         "401":

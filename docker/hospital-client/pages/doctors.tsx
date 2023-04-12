@@ -1,12 +1,37 @@
 import { withAuth } from "@/components/Auth";
+import Doctor_Admin_ProfileCard from "@/components/Doctor_Admin_ProfileCard";
+import { getDoctorDetailsAction } from "@/redux/actions/doctorActions";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 // Profile Page for Doctors
 function DoctorProfilePage() {
+  const doctorDetails = useAppSelector((state) => state.doctor);
+  const [doctorDetail, setDoctorDetail] = useState({
+    username: "",
+    speciality: "",
+    hospitalId: "",
+  });
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getDoctorDetailsAction());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    setDoctorDetail({
+      username: doctorDetails.username,
+      speciality: doctorDetails.speciality,
+      hospitalId: doctorDetails.hospitalId,
+    });
+  }, [doctorDetails]);
   return (
-    <div className="flex flex-col justify-center gap-6 text-xl items-center mt-12">
-      <h1>Doctor Profile Page</h1>
-      <p>Welcome to the Doctor Profile Page..!</p>
-    </div>
+    <Doctor_Admin_ProfileCard
+      imgSrc="/DoctorProfilePicture.avif"
+      {...doctorDetail}
+    />
   );
 }
 

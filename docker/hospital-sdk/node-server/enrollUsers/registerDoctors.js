@@ -1,4 +1,3 @@
-const { ROLE_ADMIN, generateHospitalAdmin } = require("../utils/utils");
 const { fetchAccessToken } = require("./registerPatients");
 
 const registerDoctors = async (records) => {

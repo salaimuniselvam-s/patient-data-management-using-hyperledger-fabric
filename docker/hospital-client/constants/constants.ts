@@ -60,3 +60,5 @@ export const ROLE_PATIENT = "patient";
 export const ROLE_DOCTOR = "doctor";
 
 export const ROLE_ADMIN = "admin";
+
+export const SAMPLE_SALT = "$2a$10$4vJ4X9gYcu5CJU5y6wnSue";

@@ -36,18 +36,33 @@ export const getAuthCookies = (): AuthCookiesResponse => {
 interface UserDetails {
   username: string;
   role: string;
+  hospitalId: string;
 }
 
-export const setUserDetails = ({ username, role }: UserDetails): void => {
+export const setUserDetails = ({
+  username,
+  role,
+  hospitalId,
+}: UserDetails): void => {
   if (typeof window === "undefined") return;
   sessionStorage.setItem("username", username);
   sessionStorage.setItem("role", role);
+  sessionStorage.setItem("hospitalId", hospitalId);
 };
 
 export const getUserDetails = (): UserDetails => {
-  if (typeof window === "undefined") return { username: "", role: "" };
+  if (typeof window === "undefined")
+    return { username: "", role: "", hospitalId: "" };
   return {
     username: sessionStorage.getItem("username") || "",
     role: sessionStorage.getItem("role") || "",
+    hospitalId: sessionStorage.getItem("hospitalId") || "",
   };
+};
+
+export const removeUserDetails = (): void => {
+  if (typeof window === "undefined") return;
+  sessionStorage.setItem("username", "");
+  sessionStorage.setItem("role", "");
+  sessionStorage.setItem("hospitalId", "");
 };

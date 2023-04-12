@@ -11,6 +11,10 @@ const {
 } = require("../../fabric-network/AppUtil.js");
 const storeAdminCredentials = require("./storeAdminCredentials.js");
 const { ROLE_ADMIN } = require("../utils/utils.js");
+const { hashPassword } = require("../utils/hashPassword.js");
+require("dotenv").config();
+const salt = process.env.SAMPLE_SALT;
+
 const adminHospital2 = "hosp2admin";
 const adminHospital2Passwd = "hosp2adminpw";
 
@@ -53,8 +57,9 @@ async function enrollAdminHosp2() {
 
     await storeAdminCredentials({
       username: adminHospital2,
-      password: adminHospital2Passwd,
+      password: hashPassword(adminHospital2Passwd, salt),
       role: ROLE_ADMIN,
+      hospitalId: "2",
     });
   } catch (error) {
     console.error(

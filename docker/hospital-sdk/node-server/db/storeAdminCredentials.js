@@ -1,13 +1,15 @@
 const express = require("express");
 const UserDetails = require("./schema");
+const { hashPassword } = require("../utils/hashPassword");
 const router = express.Router();
 
 router.post("/", (req, res) => {
   // Storing Admin Credentials into the Mongodb Database
   const adminDetail = new UserDetails({
     username: req.body.username,
-    password: req.body.password,
+    password: hashPassword(req.body.password),
     role: req.body.role,
+    hospitalId: req.body.hospitalId,
   });
 
   adminDetail

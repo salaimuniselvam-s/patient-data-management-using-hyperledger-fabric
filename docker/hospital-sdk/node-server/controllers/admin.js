@@ -9,6 +9,7 @@ const {
 const network = require("../../fabric-network/app.js");
 const UserDetails = require("../db/schema.js");
 const { generateTokens } = require("../middleware/verifyJwtToken.js");
+const { hashPassword } = require("../utils/hashPassword.js");
 
 /**
  * @param  {Request} req Body must be a patient json and role in the header
@@ -42,6 +43,7 @@ const createPatient = async (req, res) => {
   }
 
   // The request present in the body is converted into a single json string
+  req.body.password = hashPassword(req.body.password);
   const data = JSON.stringify(req.body);
   const args = [data];
 
@@ -81,6 +83,7 @@ const createPatient = async (req, res) => {
     username: req.body.username,
     password: req.body.password,
     role: ROLE_PATIENT,
+    hospitalId: req.body.hospitalId,
   });
 
   patientDetails
@@ -105,6 +108,7 @@ const createPatient = async (req, res) => {
     role: ROLE_PATIENT,
     accessToken,
     refreshToken,
+    hospitalId: req.body.hospitalId,
   });
 };
 
@@ -124,6 +128,7 @@ const createDoctor = async (req, res) => {
 
   req.body.userId = username;
   req.body.role = ROLE_DOCTOR;
+  password = hashPassword(password);
   req.body = JSON.stringify(req.body);
   const args = [req.body];
 
@@ -136,6 +141,8 @@ const createDoctor = async (req, res) => {
     username: username,
     password: password,
     role: ROLE_DOCTOR,
+    hospitalId,
+    speciality: req.body.speciality,
   });
 
   doctorDetails
@@ -152,9 +159,13 @@ const createDoctor = async (req, res) => {
 
   const { accessToken, refreshToken } = generateTokens(username, ROLE_DOCTOR);
 
-  return res
-    .status(201)
-    .send({ username, role: ROLE_DOCTOR, accessToken, refreshToken });
+  return res.status(201).send({
+    username,
+    role: ROLE_DOCTOR,
+    accessToken,
+    refreshToken,
+    hospitalId,
+  });
 };
 
 /**

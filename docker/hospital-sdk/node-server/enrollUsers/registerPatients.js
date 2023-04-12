@@ -1,4 +1,7 @@
+const { hashPassword } = require("../utils/hashPassword");
 const { ROLE_ADMIN, generateHospitalAdmin } = require("../utils/utils");
+require("dotenv").config();
+const salt = process.env.SAMPLE_SALT;
 
 const fetchAccessToken = async (hospitalId) => {
   console.log("Fetching Access Token..");
@@ -12,7 +15,7 @@ const fetchAccessToken = async (hospitalId) => {
     },
     body: JSON.stringify({
       username: `${generateHospitalAdmin(hospitalId)}`,
-      password: `${generateHospitalAdmin(hospitalId)}pw`,
+      password: hashPassword(`${generateHospitalAdmin(hospitalId)}pw`, salt),
       role: ROLE_ADMIN,
     }),
   };

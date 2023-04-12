@@ -6,7 +6,6 @@ import {
   setAuthCookies,
   setUserDetails,
 } from "../utils/cookies";
-import { logInUser, logOutUser, registerUser } from "../actions/authActions";
 
 export const auth = createSlice({
   name: "auth",
@@ -21,55 +20,54 @@ export const auth = createSlice({
     role: getUserDetails().role || "",
   },
   reducers: {
+    isPending: (state, actions) => {
+      toast.dismiss();
+      toast.info(actions.payload);
+      state.loading = true;
+    },
+    isFullfilled: (state) => {
+      state.loading = false;
+    },
+    isError: (state, actions) => {
+      toast.dismiss();
+      toast.error(actions.payload, { autoClose: 3000 });
+      state.error = actions.payload;
+    },
     registerUser: (state, actions) => {
-      const { username, role, accessToken, refreshToken } = actions.payload;
+      const { username, role, accessToken, refreshToken, hospitalId } =
+        actions.payload;
       setAuthCookies({ accessToken, refreshToken });
-      setUserDetails({ username, role });
+      setUserDetails({ username, role, hospitalId });
       state.username = username;
+      state.loading = false;
       state.role = role;
       state.loggedIn = true;
+      toast.dismiss();
       toast.success(`Successfully Registered ${actions.payload.username}..!`);
     },
     logIn: (state, actions) => {
-      const { username, role, accessToken, refreshToken } = actions.payload;
+      const { username, role, accessToken, refreshToken, hospitalId } =
+        actions.payload;
       setAuthCookies({ accessToken, refreshToken });
-      setUserDetails({ username, role });
+      setUserDetails({ username, role, hospitalId });
       state.username = username;
       state.role = role;
+      state.loading = false;
       state.loggedIn = true;
+      toast.dismiss();
       toast.success(`Successfully Logged In ${actions.payload.username}..!`);
     },
     logOut: (state) => {
       setAuthCookies({ accessToken: "", refreshToken: "" });
-      setUserDetails({ username: "", role: "" });
+      setUserDetails({ username: "", role: "", hospitalId: "" });
       state.username = "";
       state.role = "";
+      state.loading = false;
       state.loggedIn = false;
+      toast.dismiss();
       toast.success(`Successfully Logged Out..!`);
       window.location.href = "/";
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(
-        registerUser.pending || logOutUser.pending || logInUser.pending,
-        (state) => {
-          state.loading = true;
-        }
-      )
-      .addCase(
-        registerUser.fulfilled || logOutUser.fulfilled || logInUser.fulfilled,
-        (state, action) => {
-          state.loading = false;
-        }
-      )
-      .addCase(
-        registerUser.rejected || logOutUser.rejected || logInUser.rejected,
-        (state, action) => {
-          state.loading = false;
-          state.error = `${action.error.message}`;
-        }
-      );
   },
 });
 

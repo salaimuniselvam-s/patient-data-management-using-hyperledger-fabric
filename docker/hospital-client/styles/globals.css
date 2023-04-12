@@ -21,6 +21,15 @@ body {
   user-select: none;
 }
 
+.dark select option {
+  background-color: #1f2937;
+  color: #fff;
+}
+
+.dark select option:hover {
+  background-color: #111827 !important;
+}
+
 .dark body {
   background: #111827;
   color: #fff;

@@ -14,6 +14,13 @@ const userDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  hospitalId: {
+    type: String,
+    required: true,
+  },
+  speciality: {
+    type: String,
+  },
 });
 
 // Create a model for the user details schema

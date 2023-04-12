@@ -3,9 +3,8 @@ export interface DoctorDetails {
 }
 
 export interface DoctorRegistrationFields {
-  [key: string]: string | number | FormDataEntryValue | null;
   username: string;
   password: string;
-  hospitalId: number;
+  hospitalId: string;
   speciality: string;
 }

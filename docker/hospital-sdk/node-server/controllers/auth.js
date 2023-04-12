@@ -5,6 +5,7 @@ const {
 } = require("../middleware/verifyJwtToken");
 let { REFRESH_TOKEN } = require("../tasks/adminTasks");
 const UserDetails = require("../db/schema");
+const { comparePassword } = require("../utils/hashPassword");
 require("dotenv").config();
 
 const refreshSecretToken = process.env.REFRESH_SECRET_TOKEN;
@@ -16,12 +17,14 @@ const Login = async (req, res) => {
   // Read username and password from request body
   let { username, password, role } = req.body;
   let user;
+  let hospitalId;
   try {
     const [userDetail] = await UserDetails.find({ username: username });
     user =
-      userDetail?.password == password &&
+      comparePassword(password, userDetail?.password) &&
       userDetail?.username == username &&
       userDetail?.role == role;
+    hospitalId = userDetail?.hospitalId;
   } catch (error) {
     console.error(error);
     return res
@@ -40,6 +43,7 @@ const Login = async (req, res) => {
       role,
       accessToken,
       refreshToken,
+      hospitalId,
     });
   } else {
     res
