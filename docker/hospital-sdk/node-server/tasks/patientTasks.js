@@ -8,7 +8,7 @@
 // http://localhost:3001/patients/PID1
 
 // updatePatientPersonalDetails - Bearer - role & username in header
-// http://localhost:3001/patients/PID1/details/personal
+// http://localhost:3001/patients/PID1/update/personaldetails
 // {"patientId":"PID1",
 // "firstName":"salaimuniselvam7",
 // "lastName":"324",

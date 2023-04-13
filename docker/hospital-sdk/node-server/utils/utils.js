@@ -48,6 +48,11 @@ const generateHospitalAdmin = (hospitalId) => {
 
 const TEMP_PASSWORD = hashPassword("temp-password", salt);
 
+const HOSPITALS = [
+  { hospitalId: 1, hospitalAdmin: "hosp1admin" },
+  { hospitalId: 2, hospitalAdmin: "hosp2admin" },
+];
+
 function waitSeconds(time) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -61,6 +66,7 @@ module.exports = {
   ROLE_ADMIN,
   ROLE_DOCTOR,
   ROLE_PATIENT,
+  HOSPITALS,
   capitalize,
   validateRole,
   generateHospitalAdmin,

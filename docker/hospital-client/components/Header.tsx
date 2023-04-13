@@ -6,6 +6,7 @@ import { useAppSelector } from "@/redux/store";
 import { useRouter } from "next/router";
 import { navbarRoutes } from "@/utils/navbarRoutes";
 import { Transition } from "@headlessui/react";
+import { isPageActive } from "@/utils/routeUtils";
 
 export default function Header() {
   const router = useRouter();
@@ -49,12 +50,12 @@ export default function Header() {
                     <Link href={page.href} key={page.name}>
                       <button
                         className={`${
-                          router.pathname === page.href
+                          isPageActive(router.pathname, page.href)
                             ? "text-gray-900 dark:text-gray-100"
                             : "text-gray-700 dark:text-gray-300"
                         } hover:text-gray-900 dark:hover:text-gray-100 text-xl font-semibold button-text cursor-pointer`}
                       >
-                        {router.pathname === page.href ? (
+                        {isPageActive(router.pathname, page.href) ? (
                           <span className="border-b-2 border-black dark:border-white p-2 cursor-pointer">
                             {" "}
                             <i
@@ -168,14 +169,14 @@ export default function Header() {
                             href={page.href}
                             key={page.name}
                             className={` p-3  flex justify-center items-center rounded-md hover:bg-gray-50 dark:hover:bg-gray-900/50 button-text ${
-                              router.pathname === page.href
+                              isPageActive(router.pathname, page.href)
                                 ? "bg-gray-50 dark:bg-gray-900/50"
                                 : "text-gray-900 dark:text-gray-100"
                             }`}
                           >
                             <i
                               className={`${
-                                router.pathname === page.href
+                                isPageActive(router.pathname, page.href)
                                   ? page.icon.active
                                   : page.icon.default
                               } text-black dark:text-white button-text`}

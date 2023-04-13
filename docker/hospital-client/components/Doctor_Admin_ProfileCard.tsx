@@ -6,6 +6,9 @@ interface profileCard {
   username: string;
   speciality: string;
   hospitalId: string;
+  isPatient: boolean;
+  isAccessGranted?: boolean;
+  AccessControl?: (isAccessGranted: boolean, username: string) => void;
 }
 
 const Doctor_Admin_ProfileCard = ({
@@ -13,16 +16,19 @@ const Doctor_Admin_ProfileCard = ({
   username,
   speciality,
   hospitalId,
+  isPatient,
+  isAccessGranted,
+  AccessControl,
 }: profileCard) => {
   return (
     <div className="flex mt-12 justify-center">
       <div className="w-full p-8 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="flex flex-col items-center">
           <Image
-            className="mb-6 w-64 h-60 rounded-full shadow-lg"
+            className="mb-6 w-36 h-36 rounded-full shadow-lg"
             src={imgSrc}
-            width={720}
-            height={720}
+            width={1080}
+            height={1080}
             alt="Doctor Profile Image"
           />
           <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
@@ -31,10 +37,33 @@ const Doctor_Admin_ProfileCard = ({
           <span className="text-sm text-gray-500 dark:text-gray-400">
             {speciality}
           </span>
-          <div className="flex items-center mt-6">
+          <div className="flex items-center mt-3">
             <i className="fas fa-hospital dark:text-white text-black pr-3"></i>{" "}
             Hospital - {hospitalId}
           </div>
+          {isPatient && (
+            <div className="flex items-center mt-4">
+              {!isAccessGranted ? (
+                <button
+                  onClick={() =>
+                    AccessControl && AccessControl(!!isAccessGranted, username)
+                  }
+                  className="bg-green-700 hover:bg-green-800 text-white font-normal p-2 rounded"
+                >
+                  Grant Access
+                </button>
+              ) : (
+                <button
+                  onClick={() =>
+                    AccessControl && AccessControl(!!isAccessGranted, username)
+                  }
+                  className="bg-red-700 hover:bg-red-800 text-white font-normal p-2 rounded flex items-center"
+                >
+                  Revoke Access
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

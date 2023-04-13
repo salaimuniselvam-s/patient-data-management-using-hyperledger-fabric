@@ -1,8 +1,6 @@
 import {
   BLOOD_GROUP,
   HOSPITAL_LIST,
-  PATIENT_FIELDS,
-  ROLE_DOCTOR,
   ROLE_PATIENT,
 } from "@/constants/constants";
 import { registerUserAction } from "@/redux/actions/authActions";

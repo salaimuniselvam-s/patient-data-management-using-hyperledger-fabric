@@ -1,10 +1,10 @@
 const {
   ROLE_ADMIN,
   ROLE_DOCTOR,
-  capitalize,
   validateRole,
   ROLE_PATIENT,
   generateHospitalAdmin,
+  HOSPITALS,
 } = require("../utils/utils.js");
 const network = require("../../fabric-network/app.js");
 const UserDetails = require("../db/schema.js");
@@ -202,4 +202,30 @@ const getAllPatients = async (req, res) => {
   }
 };
 
-module.exports = { getAllPatients, createDoctor, createPatient };
+/**
+ * @param  {Request} req role in the header and hospitalId
+ * @param  {Response} res A 200 response if it is called by admin else a 500 response with a error json
+ * @description This method retrives all  doctors in the network
+ */
+const getAllDoctors = async (req, res) => {
+  // User role from the request header is validated
+  const userRole = req.headers.role;
+  const isValidate = await validateRole([ROLE_ADMIN], userRole, res);
+  if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
+
+  const networkObj = await network.connectToNetwork(req.headers.username);
+  if (networkObj.error) return res.status(400).send(networkObj.error);
+  // Use the gateway and identity service to get all users enrolled by the CA
+
+  const response = await network.getAllDoctorsByHospitalId(
+    networkObj,
+    HOSPITALS.filter((data) => data.hospitalAdmin == req.headers.username)[0]
+      .hospitalId || 1
+  );
+  // Filter the result using the doctorId
+  response.error
+    ? res.status(500).send(response.error)
+    : res.status(200).send(response);
+};
+
+module.exports = { getAllPatients, createDoctor, getAllDoctors, createPatient };

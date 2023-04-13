@@ -26,7 +26,13 @@ function AdminProfilePage() {
       hospitalId: adminDetails.hospitalId,
     });
   }, [adminDetails]);
-  return <Doctor_Admin_ProfileCard imgSrc="/Admin.avif" {...adminDetail} />;
+  return (
+    <Doctor_Admin_ProfileCard
+      imgSrc="/Admin.avif"
+      {...adminDetail}
+      isPatient={false}
+    />
+  );
 }
 
 export default withAuth(AdminProfilePage);

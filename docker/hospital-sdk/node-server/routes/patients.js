@@ -14,7 +14,7 @@ const router = express.Router();
 //  Patient Routes //
 router.get("/:patientId", authenticateJWT, getPatientById);
 router.patch(
-  "/:patientId/details/personal",
+  "/:patientId/update/personaldetails",
   authenticateJWT,
   updatePatientPersonalDetails
 );

@@ -291,6 +291,54 @@ paths:
         - $ref: "#/components/parameters/headerAdminUserName"
       security:
         - bearerAuth: []
+  /admin/doctors/_all:
+    get:
+      summary: Get All Doctors registered in the network
+      description: This API endpoint allows an admin to retrieve a list of all doctors registered in the system. The response returns a JSON object containing the doctor's ID, first name, last name, role, and speciality
+      tags:
+        - Admin Routes
+      responses:
+        "200":
+          description: Returns List of All Patients Registered on the system.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  firstName:
+                    type: string
+                  lastName:
+                    type: string
+                  role:
+                    type: string
+                  speciality:
+                    type: string
+              example:
+                - id: 1
+                  firstName: Mishal
+                  lastName: Raj
+                  role: Doctor
+                  speciality: Neurologist
+                - id: 2
+                  firstName: Madhan
+                  lastName: Kumar
+                  role: Doctor
+                  speciality: Cardiology
+        "400":
+          description: Unable to Connect to the Fabric Network using the given username
+        "401":
+          description: Unauthorized role
+        "405":
+          description: "Unable to Get All Doctor Records.."
+        "500":
+          description: Internal Server Error
+      parameters:
+        - $ref: "#/components/parameters/headerAdminRole"
+        - $ref: "#/components/parameters/headerAdminUserName"
+      security:
+        - bearerAuth: []
   /doctors/patients/{patientId}/details/medical:
     patch:
       summary: Update medical details of a patient
@@ -475,7 +523,7 @@ paths:
         - $ref: "#/components/parameters/headerAdminUserName"
       security:
         - bearerAuth: []
-  /patients/{patientId}/details/personal:
+  /patients/{patientId}/update/personaldetails:
     patch:
       summary: Update Personal Details
       description: This route allows updating personal details of a patient identified by their patientId. The request body should contain the fields to be updated such as firstName, lastName, age, phoneNumber, emergPhoneNumber, allergy and address.

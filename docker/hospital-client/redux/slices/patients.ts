@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getUserDetails } from "../utils/cookies";
+import { patientPersonalDetails } from "@/utils/patients";
 
-export const admin = createSlice({
-  name: "admin",
+export const patient = createSlice({
+  name: "patient",
   initialState: {
     loading: false,
     error: "",
     username: getUserDetails().username || "",
     role: getUserDetails().role || "",
-    patients: [],
-    doctors: [],
+    patientPersonalDetails: patientPersonalDetails,
+    patientHistory: [],
+    doctorsByHospital: [],
     hospitalId: getUserDetails().hospitalId || "",
   },
   reducers: {
@@ -22,24 +24,13 @@ export const admin = createSlice({
     isError: (state, actions) => {
       state.error = actions.payload;
     },
-    getAdminPersonalDetails: (state, actions) => {
+    getPatientPersonalDetails: (state, actions) => {
       const { username, hospitalId } = getUserDetails();
       state.username = username;
       state.hospitalId = hospitalId;
-    },
-    getAllPatientDetails: (state, actions) => {
-      const { username, hospitalId } = getUserDetails();
-      state.username = username;
-      state.hospitalId = hospitalId;
-      state.patients = actions.payload;
-    },
-    getAllDoctorsDetails: (state, actions) => {
-      const { username, hospitalId } = getUserDetails();
-      state.username = username;
-      state.hospitalId = hospitalId;
-      state.doctors = actions.payload;
+      state.patientPersonalDetails = actions.payload;
     },
   },
 });
 
-export default admin.reducer;
+export default patient.reducer;

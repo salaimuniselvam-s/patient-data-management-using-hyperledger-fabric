@@ -18,3 +18,14 @@ export const DoctorValidationSchema = Yup.object({
   hospitalId: Yup.string().required("Hospital is required"),
   speciality: Yup.string().required("Speciality is required"),
 });
+
+const doctorImage = [
+  "/doctor1.jpg",
+  "/doctor2.avif",
+  "/DoctorProfilePicture.avif",
+];
+
+export const doctorProfilePicture = (index: number, hospitalId: string) => {
+  const imgIndex = (index + parseInt(hospitalId) || 0) % doctorImage.length;
+  return doctorImage[imgIndex];
+};

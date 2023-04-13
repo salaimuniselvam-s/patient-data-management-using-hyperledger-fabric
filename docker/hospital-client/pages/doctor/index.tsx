@@ -2,7 +2,6 @@ import { withAuth } from "@/components/Auth";
 import Doctor_Admin_ProfileCard from "@/components/Doctor_Admin_ProfileCard";
 import { getDoctorDetailsAction } from "@/redux/actions/doctorActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 // Profile Page for Doctors
@@ -31,6 +30,7 @@ function DoctorProfilePage() {
     <Doctor_Admin_ProfileCard
       imgSrc="/DoctorProfilePicture.avif"
       {...doctorDetail}
+      isPatient={false}
     />
   );
 }

@@ -4,6 +4,7 @@ const {
   createDoctor,
   getAllPatients,
   createPatient,
+  getAllDoctors,
 } = require("../controllers/admin");
 
 const router = express.Router();
@@ -14,6 +15,7 @@ const router = express.Router();
 // router.post("/doctors/register", authenticateJWT, createDoctor);
 // router.post("/patients/register", authenticateJWT, createPatient);
 router.get("/patients/_all", authenticateJWT, getAllPatients);
+router.get("/doctors/_all", authenticateJWT, getAllDoctors);
 router.post("/doctors/register", createDoctor);
 router.post("/patients/register", createPatient);
 

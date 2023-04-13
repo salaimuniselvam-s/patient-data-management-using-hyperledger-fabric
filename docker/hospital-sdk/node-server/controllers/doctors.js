@@ -57,7 +57,6 @@ const getDoctorById = async (req, res) => {
     networkObj,
     hospitalId
   );
-  console.log(response, hospitalId, doctorId);
   // Filter the result using the doctorId
   response.error
     ? res.status(500).send(response.error)

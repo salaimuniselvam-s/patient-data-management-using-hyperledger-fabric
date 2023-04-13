@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../slices/auth";
 import doctorReducer from "../slices/doctor";
 import adminReducer from "../slices/admin";
+import patientsReducer from "../slices/patients";
 import { TypedUseSelectorHook, useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
@@ -10,6 +11,7 @@ const store = configureStore({
     auth: authReducer,
     doctor: doctorReducer,
     admin: adminReducer,
+    patient: patientsReducer,
   },
 });
 
