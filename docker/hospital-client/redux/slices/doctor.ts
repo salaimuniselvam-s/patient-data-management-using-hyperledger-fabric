@@ -4,12 +4,13 @@ import { getUserDetails } from "../utils/cookies";
 export const doctor = createSlice({
   name: "doctor",
   initialState: {
-    loading: false,
+    loading: true,
     error: "",
     username: getUserDetails().username || "",
     role: getUserDetails().role || "",
     speciality: "",
     hospitalId: getUserDetails().hospitalId || "",
+    patients: [],
   },
   reducers: {
     isPending: (state) => {
@@ -27,6 +28,9 @@ export const doctor = createSlice({
       state.speciality = speciality;
       state.username = username;
       state.hospitalId = hospitalId;
+    },
+    getPatientsUnderDoctor: (state, actions) => {
+      state.patients = actions.payload;
     },
   },
 });

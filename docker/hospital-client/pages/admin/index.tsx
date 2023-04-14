@@ -1,5 +1,6 @@
 import { withAuth } from "@/components/Auth";
 import Doctor_Admin_ProfileCard from "@/components/Doctor_Admin_ProfileCard";
+import Loader from "@/components/Helper/Loader";
 import { getAdminPersonalDetails } from "@/redux/actions/adminActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useEffect, useState } from "react";
@@ -26,6 +27,11 @@ function AdminProfilePage() {
       hospitalId: adminDetails.hospitalId,
     });
   }, [adminDetails]);
+
+  if (adminDetails.loading) {
+    return <Loader />;
+  }
+
   return (
     <Doctor_Admin_ProfileCard
       imgSrc="/Admin.avif"

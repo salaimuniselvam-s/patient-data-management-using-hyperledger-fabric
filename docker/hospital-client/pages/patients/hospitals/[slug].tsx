@@ -9,6 +9,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { toast } from "react-toastify";
 import { getUserDetails } from "@/redux/utils/cookies";
 import { getPatientPersonalDetailsAction } from "@/redux/actions/patientActions";
+import Loader from "@/components/Helper/Loader";
+import { withAuth } from "@/components/Auth";
 
 type DoctorDetails = {
   id: string;
@@ -100,6 +102,10 @@ const DoctorByHospital = () => {
     }
   };
 
+  if (isFetching) {
+    return <Loader />;
+  }
+
   return (
     <div className="flex flex-wrap flex-col sm:flex-row gap-6 px-6">
       {doctorDetail.map((doctorDetail, index: number) => {
@@ -177,4 +183,4 @@ const DoctorByHospital = () => {
   );
 };
 
-export default DoctorByHospital;
+export default withAuth(DoctorByHospital);

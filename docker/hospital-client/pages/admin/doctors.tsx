@@ -1,23 +1,41 @@
+import { withAuth } from "@/components/Auth";
+import Doctor_Admin_ProfileCard from "@/components/Doctor_Admin_ProfileCard";
+import Loader from "@/components/Helper/Loader";
 import { getAllDoctorsDetailsAction } from "@/redux/actions/adminActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { doctorProfilePicture } from "@/utils/doctors";
 import React, { useEffect } from "react";
 
 const AllDoctors = () => {
-  const doctorDetails = useAppSelector((state) => state.admin.doctors);
+  const doctorDetails = useAppSelector((state) => state.admin);
   const dispatch = useAppDispatch();
-  console.log(doctorDetails);
 
   useEffect(() => {
     dispatch(getAllDoctorsDetailsAction());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (doctorDetails.loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="flex flex-col justify-center gap-6 text-xl items-center mt-12">
-      <h1>All Doctors Page</h1>
-      <p>List of All Doctors ...!</p>
+    <div className="flex flex-wrap flex-col sm:flex-row mt-3 px-6 gap-6">
+      {doctorDetails.doctors.map(
+        (doctorDetail: { id: string; speciality: string }, index: number) => {
+          return (
+            <Doctor_Admin_ProfileCard
+              imgSrc={doctorProfilePicture(index, `${index}`)}
+              key={index}
+              username={doctorDetail.id}
+              speciality={doctorDetail.speciality}
+              isAdmin={true}
+            />
+          );
+        }
+      )}
     </div>
   );
 };
 
-export default AllDoctors;
+export default withAuth(AllDoctors);

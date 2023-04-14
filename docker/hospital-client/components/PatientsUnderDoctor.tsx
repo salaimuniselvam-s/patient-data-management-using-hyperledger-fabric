@@ -1,47 +1,43 @@
-import { withAuth } from "@/components/Auth";
+import { PatientDetailsUpdateByDoctor } from "@/types/patient";
 import { Dialog, Transition } from "@headlessui/react";
-import { getPatientPersonalDetailsAction } from "@/redux/actions/patientActions";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { getUserDetails } from "@/redux/utils/cookies";
-import { patientPersonalDetails } from "@/utils/patients";
 import Image from "next/image";
-import { useEffect, useState, Fragment } from "react";
-import UpdatePatientPersonalDetail from "@/components/UpdatePatientPersonalDetails";
-import Loader from "@/components/Helper/Loader";
+import React, { Fragment, useState } from "react";
+import UpdatePatientDetailsByDoctor from "./UpdatePatientDetailsByDoctor";
+import PatientHistoryRecords from "./PatientHistoryRecords";
+import { useAppDispatch } from "@/redux/store";
 
-// Profile Page for Patients
-function PatientProfilePage() {
-  const patientDetails = useAppSelector((state) => state.patient);
-  const [patientDetail, setPatientDetail] = useState(patientPersonalDetails);
+const PatientsUnderDoctor = ({
+  patientDetail,
+}: {
+  patientDetail: PatientDetailsUpdateByDoctor;
+}) => {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
+  const closeModal = () => setIsOpen(false);
 
-  function openModal() {
-    setIsOpen(true);
-  }
+  const openModal = () => setIsOpen(true);
 
-  useEffect(() => {
-    dispatch(getPatientPersonalDetailsAction(getUserDetails().username));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const closeHistoryModal = () => {
+    dispatch({
+      type: "doctor/getPatientHistory",
+      payload: [],
+    });
+    setIsHistoryOpen(false);
+  };
 
-  useEffect(() => {
-    setPatientDetail({ ...patientDetails.patientPersonalDetails });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [patientDetails]);
-
-  if (patientDetails.loading) {
-    return <Loader />;
-  }
+  const openHistoryModal = () => {
+    setIsHistoryOpen(true);
+  };
 
   return (
     <>
-      <div className="flex  justify-center items-center mt-6">
-        <div className="max-w-7xl  px-4 pb-6 sm:px-6 lg:px-8 bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+      <div className="flex justify-center items-center mt-6">
+        <div
+          className="max-w-7xl   px-2 pb-6 sm:px-4 lg:px-4 bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700"
+          style={{ width: "900px" }}
+        >
           <div className="px-6 py-4">
             <div className="flex justify-between  flex-col sm:flex-row">
               <div className="flex  mb-4">
@@ -61,8 +57,14 @@ function PatientProfilePage() {
               </div>
               <div className="mb-4">
                 <button
+                  onClick={openHistoryModal}
+                  className=" text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  View History
+                </button>
+                <button
                   onClick={openModal}
-                  className="w-full text-white bg-primary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  className="ml-4 text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 >
                   Update Details
                 </button>
@@ -75,17 +77,7 @@ function PatientProfilePage() {
                   <span className=" text-lg">Age:</span>
                   <span className="ml-2">{patientDetail.age}</span>
                 </p>
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-phone mr-2"></i>
-                  <span className=" text-lg">Phone:</span>
-                  <span className="ml-2">{patientDetail.phoneNumber}</span>
-                </p>
 
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-map-marker-alt mr-2"></i>
-                  <span className=" text-lg">Address:</span>
-                  <span className="ml-2">{patientDetail.address}</span>
-                </p>
                 <p className=" text-base flex flex-wrap items-center">
                   <i className="fas fa-notes-medical mr-2"></i>
                   <span className=" text-lg">Symptoms:</span>
@@ -103,12 +95,6 @@ function PatientProfilePage() {
                   <i className="fas fa-tint mr-2"></i>
                   <span className=" text-lg">Blood Group:</span>
                   <span className="ml-2">{patientDetail.bloodGroup}</span>
-                </p>
-
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-exclamation-triangle mr-2"></i>
-                  <span className=" text-lg">Emergency Phone:</span>
-                  <span className="ml-2">{patientDetail.emergPhoneNumber}</span>
                 </p>
 
                 <p className=" text-base flex flex-wrap  items-center">
@@ -158,7 +144,7 @@ function PatientProfilePage() {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="  overflow-hidden transform  rounded-2xl px-4 pb-6 sm:px-6 lg:px-8  p-6 text-left shadow-xl transition-all">
-                  <UpdatePatientPersonalDetail
+                  <UpdatePatientDetailsByDoctor
                     patientDetail={patientDetail}
                     closeModal={closeModal}
                   />
@@ -168,8 +154,41 @@ function PatientProfilePage() {
           </div>
         </Dialog>
       </Transition>
+      <Transition appear show={isHistoryOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={closeHistoryModal}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="  overflow-hidden transform  rounded-2xl px-4 pb-6 sm:px-6 lg:px-8  p-6 text-left shadow-xl transition-all">
+                  <PatientHistoryRecords patientId={patientDetail.patientId} />
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
     </>
   );
-}
+};
 
-export default withAuth(PatientProfilePage);
+export default PatientsUnderDoctor;

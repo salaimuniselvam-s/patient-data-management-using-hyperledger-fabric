@@ -1,3 +1,4 @@
+import { withAuth } from "@/components/Auth";
 import HospitalCard from "@/components/HospitalCard";
 import { HOSPITAL_LIST } from "@/utils/hospitalts";
 import React from "react";
@@ -12,4 +13,4 @@ const Hospitals = () => {
   );
 };
 
-export default Hospitals;
+export default withAuth(Hospitals);

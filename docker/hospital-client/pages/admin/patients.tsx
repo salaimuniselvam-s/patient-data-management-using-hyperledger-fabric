@@ -1,22 +1,30 @@
+import { withAuth } from "@/components/Auth";
+import Loader from "@/components/Helper/Loader";
+import PatientCard from "@/components/PatientCard";
 import { getAllPatientDetailsAction } from "@/redux/actions/adminActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import React, { useEffect } from "react";
 
 const AllPatients = () => {
-  const patientDetails = useAppSelector((state) => state.admin.patients);
+  const patientDetails = useAppSelector((state) => state.admin);
   const dispatch = useAppDispatch();
-  console.log(patientDetails);
 
   useEffect(() => {
     dispatch(getAllPatientDetailsAction());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (patientDetails.loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="flex flex-col justify-center gap-6 text-xl items-center mt-12">
-      <h1>All Patients Page</h1>
-      <p>List of All Patients ...!</p>
+    <div className="flex flex-wrap flex-col sm:flex-row mt-3 px-6 gap-6">
+      {patientDetails.patients.map((props, index: number) => {
+        return <PatientCard patientDetails={props} key={index} />;
+      })}
     </div>
   );
 };
 
-export default AllPatients;
+export default withAuth(AllPatients);

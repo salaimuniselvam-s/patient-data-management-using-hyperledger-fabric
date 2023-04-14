@@ -4,7 +4,7 @@ import { getUserDetails } from "../utils/cookies";
 export const admin = createSlice({
   name: "admin",
   initialState: {
-    loading: false,
+    loading: true,
     error: "",
     username: getUserDetails().username || "",
     role: getUserDetails().role || "",
@@ -26,6 +26,7 @@ export const admin = createSlice({
       const { username, hospitalId } = getUserDetails();
       state.username = username;
       state.hospitalId = hospitalId;
+      state.loading = false;
     },
     getAllPatientDetails: (state, actions) => {
       const { username, hospitalId } = getUserDetails();

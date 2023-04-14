@@ -10,6 +10,25 @@ export interface PatientUpdatePersonalDetails {
   phoneNumber: string;
 }
 
+export interface DoctorUpdatePatientRecords {
+  followUp: string;
+  bloodGroup: string;
+  allergies: string;
+  diagnosis: string;
+  symptoms: string;
+  treatment: string;
+}
+
+export interface PatientHistory extends DoctorUpdatePatientRecords {
+  changedBy: string;
+  Timestamp: { seconds: string; nanos: string };
+}
+export interface PatientDetailsUpdateByDoctor
+  extends DoctorUpdatePatientRecords {
+  age: string;
+  patientId: string;
+}
+
 export interface PatientRegistrationFields
   extends PatientUpdatePersonalDetails {
   password: string;

@@ -22,12 +22,39 @@ const getDoctorPersonalDetails = createAsyncThunk(
         )
       );
       console.error(error, "error");
-      throw error;
     } finally {
       thunkAPI.dispatch(doctor.actions.isFullfilled());
     }
   }
 );
+
+const getPatientsUnderDoctor = createAsyncThunk(
+  "doctor/getPatientsUnderDoctor",
+  async (_, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(doctor.actions.isPending());
+      const response = await axiosInstance.get(
+        `${API_BASE_URL}/admin/patients/_all`
+      );
+      thunkAPI.dispatch(doctor.actions.getPatientsUnderDoctor(response.data));
+    } catch (error) {
+      thunkAPI.dispatch(
+        doctor.actions.isError(
+          "Fetching Patients Under Doctor Failed. Please Try Again.."
+        )
+      );
+      console.error(error, "error");
+    } finally {
+      thunkAPI.dispatch(doctor.actions.isFullfilled());
+    }
+  }
+);
+
+export const getPatientsUnderDoctorAction = () => {
+  return (dispatch: Dispatch<any>) => {
+    dispatch(getPatientsUnderDoctor());
+  };
+};
 
 export const getDoctorDetailsAction = () => {
   return (dispatch: Dispatch<any>) => {

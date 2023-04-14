@@ -24,7 +24,6 @@ const getAllPatientDetails = createAsyncThunk(
           "Retrieving All Patient Records Failed. Please Try Again.."
         )
       );
-      throw error;
     } finally {
       thunkAPI.dispatch(admin.actions.isFullfilled());
     }
@@ -47,7 +46,6 @@ const getAllDoctorsDetails = createAsyncThunk(
           "Retrieving All Doctor Records Failed. Please Try Again.."
         )
       );
-      throw error;
     } finally {
       thunkAPI.dispatch(admin.actions.isFullfilled());
     }

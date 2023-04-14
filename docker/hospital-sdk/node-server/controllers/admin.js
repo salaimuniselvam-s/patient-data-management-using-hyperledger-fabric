@@ -5,6 +5,7 @@ const {
   ROLE_PATIENT,
   generateHospitalAdmin,
   HOSPITALS,
+  capitalize,
 } = require("../utils/utils.js");
 const network = require("../../fabric-network/app.js");
 const UserDetails = require("../db/schema.js");
@@ -191,7 +192,7 @@ const getAllPatients = async (req, res) => {
     const response = await network.invoke(
       networkObj,
       true,
-      "AdminContract:queryAllPatients",
+      capitalize(userRole) + "Contract:queryAllPatients",
       userRole === ROLE_DOCTOR ? req.headers.username : [""]
     );
     const parsedResponse = await JSON.parse(response);

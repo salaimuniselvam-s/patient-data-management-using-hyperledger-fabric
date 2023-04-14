@@ -84,7 +84,8 @@ const getPatientHistoryById = async (req, res) => {
     res
   );
   if (isValidate) return res.status(401).json({ message: "Unauthorized Role" });
-  const patientId = req.headers.username;
+
+  const patientId = req.params.patientId;
   // Set up and connect to Fabric Gateway
   const networkObj = await network.connectToNetwork(req.headers.username);
   if (networkObj.error) return res.status(400).send(networkObj.error);

@@ -49,7 +49,7 @@ export const navbarRoutes = (isLoggedIn: boolean, role: string) => {
 
   const Doctors = {
     name: "Doctors",
-    href: "/admin/doctor",
+    href: "/admin/doctors",
     icon: {
       default: "fal fa-user-md",
       active: "fas fa-user-md",

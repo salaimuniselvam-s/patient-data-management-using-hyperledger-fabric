@@ -34,7 +34,6 @@ const registerUser = createAsyncThunk(
       thunkAPI.dispatch(
         auth.actions.isError("Registration Failed. Please Try Again..")
       );
-      throw error;
     } finally {
       thunkAPI.dispatch(auth.actions.isFullfilled());
     }
@@ -56,7 +55,6 @@ const logInUser = createAsyncThunk(
         auth.actions.isError("Login Failed. Please Try Again..")
       );
       console.error(error, "error");
-      throw error;
     } finally {
       thunkAPI.dispatch(auth.actions.isFullfilled());
     }
@@ -75,7 +73,6 @@ const logOutUser = createAsyncThunk("auth/logOut", async (_, thunkAPI) => {
       auth.actions.isError("Logout Failed. Please Try Again..")
     );
     console.error(error, "error");
-    throw error;
   } finally {
     thunkAPI.dispatch(auth.actions.isFullfilled());
   }

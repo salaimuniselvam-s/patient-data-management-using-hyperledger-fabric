@@ -5,7 +5,7 @@ import { patientPersonalDetails } from "@/utils/patients";
 export const patient = createSlice({
   name: "patient",
   initialState: {
-    loading: false,
+    loading: true,
     error: "",
     username: getUserDetails().username || "",
     role: getUserDetails().role || "",

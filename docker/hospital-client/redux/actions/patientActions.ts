@@ -22,7 +22,6 @@ const getPatientPersonalDetails = createAsyncThunk(
           "Retrieving All Patient Records Failed. Please Try Again.."
         )
       );
-      throw error;
     } finally {
       thunkAPI.dispatch(patient.actions.isFullfilled());
     }

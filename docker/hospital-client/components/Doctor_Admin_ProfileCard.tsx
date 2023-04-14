@@ -5,9 +5,10 @@ interface profileCard {
   imgSrc: string;
   username: string;
   speciality: string;
-  hospitalId: string;
-  isPatient: boolean;
+  hospitalId?: string;
+  isPatient?: boolean;
   isAccessGranted?: boolean;
+  isAdmin?: boolean;
   AccessControl?: (isAccessGranted: boolean, username: string) => void;
 }
 
@@ -19,6 +20,7 @@ const Doctor_Admin_ProfileCard = ({
   isPatient,
   isAccessGranted,
   AccessControl,
+  isAdmin,
 }: profileCard) => {
   return (
     <div className="flex mt-12 justify-center">
@@ -37,10 +39,12 @@ const Doctor_Admin_ProfileCard = ({
           <span className="text-sm text-gray-500 dark:text-gray-400">
             {speciality}
           </span>
-          <div className="flex items-center mt-3">
-            <i className="fas fa-hospital dark:text-white text-black pr-3"></i>{" "}
-            Hospital - {hospitalId}
-          </div>
+          {!isAdmin && (
+            <div className="flex items-center mt-3">
+              <i className="fas fa-hospital dark:text-white text-black pr-3"></i>{" "}
+              Hospital - {hospitalId}
+            </div>
+          )}
           {isPatient && (
             <div className="flex items-center mt-4">
               {!isAccessGranted ? (
