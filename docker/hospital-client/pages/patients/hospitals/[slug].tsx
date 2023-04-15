@@ -1,4 +1,4 @@
-import Doctor_Admin_ProfileCard from "@/components/Doctor_Admin_ProfileCard";
+import Doctor_Admin_ProfileCard from "@/components/Admin/Doctor_Admin_ProfileCard";
 import { API_BASE_URL } from "@/constants/constants";
 import axiosInstance from "@/redux/axios/axiosInterceptor";
 import { useAppDispatch, useAppSelector } from "@/redux/store";

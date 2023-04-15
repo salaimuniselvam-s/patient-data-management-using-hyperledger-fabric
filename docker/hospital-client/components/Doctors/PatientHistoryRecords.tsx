@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "@/constants/constants";
 import axiosInstance from "@/redux/axios/axiosInterceptor";
 import React, { useEffect, useState } from "react";
-import Loader from "./Helper/Loader";
+import Loader from "../Helper/Loader";
 import { PatientHistory } from "@/types/patient";
 import { capitalize, convertTimestamp } from "@/utils/convertTime";
 
@@ -28,7 +28,12 @@ const PatientHistoryRecords = ({ patientId }: { patientId: string }) => {
   }, []);
 
   const HistoryOfPatient = () => {
-    if (loading) return <Loader isCard />;
+    if (loading)
+      return (
+        <div className="flex justify-center h-96">
+          <Loader isCard />
+        </div>
+      );
 
     if (patientHistory.length === 0)
       return <div> No History For {patientId}</div>;
@@ -49,7 +54,10 @@ const PatientHistoryRecords = ({ patientId }: { patientId: string }) => {
           <tbody>
             {patientHistory.map((data: PatientHistory, index: number) => {
               return (
-                <tr key={index}>
+                <tr
+                  key={index}
+                  className="hover:bg-gray-100 dark:hover:bg-gray-800"
+                >
                   <td>{data.bloodGroup}</td>
                   <td>{data.allergies}</td>
                   <td>{data.symptoms}</td>
@@ -70,9 +78,10 @@ const PatientHistoryRecords = ({ patientId }: { patientId: string }) => {
   };
 
   return (
-    <div className="header w-full rounded-3xl  px-3 py-1">
+    <div className="header w-2/3 min-w-fit rounded-3xl  px-3 py-1">
       <div className="p-3">
-        Patient History - <span className="font-semibold">{patientId}</span>
+        <i className="fas fa-book mr-1"></i> Patient History -{" "}
+        <span className="font-semibold">{patientId}</span>
       </div>
       <div className="p-3">
         <HistoryOfPatient />

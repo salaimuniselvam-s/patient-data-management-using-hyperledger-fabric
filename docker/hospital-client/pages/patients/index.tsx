@@ -6,7 +6,7 @@ import { getUserDetails } from "@/redux/utils/cookies";
 import { patientPersonalDetails } from "@/utils/patients";
 import Image from "next/image";
 import { useEffect, useState, Fragment } from "react";
-import UpdatePatientPersonalDetail from "@/components/UpdatePatientPersonalDetails";
+import UpdatePatientPersonalDetail from "@/components/Patients/UpdatePatientPersonalDetails";
 import Loader from "@/components/Helper/Loader";
 
 // Profile Page for Patients

@@ -179,7 +179,7 @@ const PatientsUnderDoctor = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="  overflow-hidden transform  rounded-2xl px-4 pb-6 sm:px-6 lg:px-8  p-6 text-left shadow-xl transition-all">
+                <Dialog.Panel className="  overflow-hidden transform  rounded-2xl px-4 pb-6 sm:px-6 lg:px-8  p-6 text-left shadow-xl transition-all w-full flex justify-center ">
                   <PatientHistoryRecords patientId={patientDetail.patientId} />
                 </Dialog.Panel>
               </Transition.Child>

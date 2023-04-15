@@ -66,7 +66,7 @@ const RefreshToken = (req, res) => {
     return res.sendStatus(403);
   }
 
-  jwt.verify(token, refreshSecretToken, (err, username) => {
+  jwt.verify(token, refreshSecretToken, (err, user) => {
     if (
       err ||
       req.headers.username != user.username ||
@@ -76,12 +76,12 @@ const RefreshToken = (req, res) => {
     }
 
     const accessToken = generateAccessToken({
-      username: username,
+      username: req.headers.username,
       role: req.headers.role,
     });
     res.json({
       accessToken,
-      username,
+      username: req.headers.username,
       role: req.headers.role,
     });
   });

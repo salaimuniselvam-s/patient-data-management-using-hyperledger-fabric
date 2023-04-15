@@ -4,11 +4,10 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        {/* bug */}
-        {/* <link
+        <link
           href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css"
           rel="stylesheet"
-        /> */}
+        />
       </Head>
       <body>
         <Main />

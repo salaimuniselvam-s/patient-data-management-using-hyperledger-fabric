@@ -17,10 +17,10 @@ const HospitalCard = ({ name, address, city, img, id }: hospitalCard) => {
       className="flex mt-6 justify-center"
       onClick={() => router.push(`/patients/hospitals/${id}`)}
     >
-      <div className="w-full rounded-lg   max-w-sm bg-white border border-x-white  shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="w-full rounded-xl   max-w-sm bg-white border border-x-white  shadow-md hover:shadow-xl dark:bg-gray-800 dark:border-gray-700">
         <div className="flex flex-col cursor-pointer items-center">
           <Image
-            className="mb-6 w-64 cursor-pointer h-60"
+            className="mb-6 rounded-t-xl w-64 cursor-pointer h-60"
             src={img}
             width={720}
             height={720}

@@ -9,9 +9,10 @@ import { API_BASE_URL } from "@/constants/constants";
 
 // Function to refresh the access token
 const refreshToken = async () => {
+  console.log("refeshToken");
   try {
     const response = await axios.post(
-      "/auth/refreshToken",
+      `${API_BASE_URL}/auth/refreshToken`,
       {
         token: getAuthCookies().refreshToken,
       },
@@ -62,7 +63,7 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         await refreshToken();

@@ -15,6 +15,7 @@ import {
   RegisterAsPatientSchema,
   RegisterPatientInitialValues,
 } from "@/utils/patients";
+import SelectField from "../Helper/FormSelect";
 
 const RegisterPatient = () => {
   const dispatch = useAppDispatch();
@@ -104,26 +105,12 @@ const RegisterPatient = () => {
                       Hospital
                     </label>
                     <Field
-                      as="select"
                       name="hospitalId"
-                      id="hospitalId"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      <option
-                        className="text-gray-300"
-                        value=""
-                        disabled
-                        selected
-                        hidden
-                      >
-                        Select Hospital
-                      </option>
-                      {HOSPITAL_LIST.map((hospital, index) => (
-                        <option value={hospital.value} key={index}>
-                          {hospital.name}
-                        </option>
-                      ))}
-                    </Field>
+                      placeholder="Select Hospital"
+                      component={SelectField}
+                      options={HOSPITAL_LIST}
+                    />
+
                     <ErrorMessage
                       name="hospitalId"
                       component="div"
@@ -160,26 +147,11 @@ const RegisterPatient = () => {
                       Blood Group
                     </label>
                     <Field
-                      as="select"
                       name="bloodGroup"
-                      id="bloodGroup"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    >
-                      <option
-                        className="text-gray-300"
-                        value=""
-                        disabled
-                        selected
-                        hidden
-                      >
-                        Select your blood group
-                      </option>
-                      {BLOOD_GROUP.map((group, index) => (
-                        <option value={group} key={index}>
-                          {group}
-                        </option>
-                      ))}
-                    </Field>
+                      placeholder="Select your Blood Group"
+                      component={SelectField}
+                      options={BLOOD_GROUP}
+                    />
                     <ErrorMessage
                       name="bloodGroup"
                       component="div"

@@ -1,6 +1,6 @@
 import { withAuth } from "@/components/Auth";
 import Loader from "@/components/Helper/Loader";
-import PatientCard from "@/components/PatientCard";
+import PatientCard from "@/components/Admin/PatientCard";
 import { getAllPatientDetailsAction } from "@/redux/actions/adminActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import React, { useEffect } from "react";

@@ -1,14 +1,7 @@
-import { useTheme } from "../context/Themeprovider";
-import Link from "next/link";
-import { motion } from "framer-motion";
 import Image from "next/image";
-import { useAppSelector } from "@/redux/store";
-import { redirectToProfilePage } from "@/utils/routeUtils";
-import HomeButtons from "./Helper/HomeButtons";
+import HomeButtons from "../Helper/HomeButtons";
 
 export default function Home() {
-  const { isTheme, toggleTheme } = useTheme();
-
   return (
     <>
       <div className="flex flex-col md:flex-row  text-black/90 dark:text-white/90 max-w-7xl px-6 mx-auto mt-12">

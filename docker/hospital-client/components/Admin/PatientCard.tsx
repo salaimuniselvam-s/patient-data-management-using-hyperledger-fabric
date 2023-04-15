@@ -1,4 +1,3 @@
-import { hashPassword } from "@/utils/hash";
 import Image from "next/image";
 import React from "react";
 import bcrypt from "bcryptjs";
@@ -27,9 +26,6 @@ const PatientCard = ({ patientDetails }: { patientDetails: patient }) => {
           <h5 className="mt-3 text-xl font-medium text-gray-900 dark:text-white">
             {patientDetails.patientId}
           </h5>
-          {/* <span className="text-sm text-gray-500 dark:text-gray-400">
-            patient
-          </span> */}
           <div className="flex items-center mt-1">
             <i className="fas fa-telephone dark:text-white text-black pr-3"></i>{" "}
             {patientDetails.phoneNumber}

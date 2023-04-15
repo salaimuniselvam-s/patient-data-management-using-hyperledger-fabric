@@ -1,4 +1,4 @@
-import RegisterDoctor from "@/components/RegisterDoctor";
+import RegisterDoctor from "@/components/Home/RegisterDoctor";
 
 export default function RegisterDoctors() {
   return <RegisterDoctor />;

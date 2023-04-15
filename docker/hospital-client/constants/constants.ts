@@ -1,4 +1,4 @@
-export const DOCTOR_DESIGNATION = [
+const doctorDesignation = [
   "Cardiologist",
   "Neurologist",
   "Oncologist",
@@ -12,17 +12,50 @@ export const DOCTOR_DESIGNATION = [
 
 export const HOSPITAL_LIST = [
   {
-    name: "Hospital-1",
+    label: "Hospital-1",
     value: "1",
   },
   {
-    name: "Hospital-2",
+    label: "Hospital-2",
     value: "2",
   },
 ];
 
-export const BLOOD_GROUP = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+export const ROLE_LIST = [
+  {
+    label: "Admin",
+    value: "admin",
+  },
+  {
+    label: "Patient",
+    value: "patient",
+  },
+  {
+    label: "Doctor",
+    value: "doctor",
+  },
+];
 
+// [
+//   "A Positive (A+)",
+//   "A Negative (A-)",
+//   "B Positive (B+)",
+//   "B Negative (B-)",
+//   "AB Positive (AB+)",
+//   "AB Negative (AB-)",
+//   "O Positive (O+)",
+//   "O Negative (O-)",
+// ];
+const bloodGroupOptions = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
+
+export const BLOOD_GROUP = bloodGroupOptions.map((value) => ({
+  label: value,
+  value: value,
+}));
+export const DOCTOR_DESIGNATION = doctorDesignation.map((value) => ({
+  label: value,
+  value: value,
+}));
 // const BLOOD_GROUPS = [
 //   "O positive",
 //   "O negative",

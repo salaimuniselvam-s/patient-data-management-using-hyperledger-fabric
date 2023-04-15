@@ -1,5 +1,5 @@
 import { withAuth } from "@/components/Auth";
-import Doctor_Admin_ProfileCard from "@/components/Doctor_Admin_ProfileCard";
+import Doctor_Admin_ProfileCard from "@/components/Admin/Doctor_Admin_ProfileCard";
 import Loader from "@/components/Helper/Loader";
 import { getAllDoctorsDetailsAction } from "@/redux/actions/adminActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";

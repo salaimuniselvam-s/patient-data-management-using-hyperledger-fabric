@@ -1,5 +1,5 @@
 import { withAuth } from "@/components/Auth";
-import HospitalCard from "@/components/HospitalCard";
+import HospitalCard from "@/components/Patients/HospitalCard";
 import { HOSPITAL_LIST } from "@/utils/hospitalts";
 import React from "react";
 
