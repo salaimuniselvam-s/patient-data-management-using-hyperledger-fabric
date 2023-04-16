@@ -4,7 +4,7 @@ import HomeButtons from "../Helper/HomeButtons";
 export default function Home() {
   return (
     <>
-      <div className="flex flex-col md:flex-row  text-black/90 dark:text-white/90 max-w-7xl px-6 mx-auto mt-12">
+      <div className="flex flex-col md:flex-row  text-black/90 dark:text-white/90 max-w-7xl px-6 mx-auto mt-3 xl:mt-9">
         <div className="md:w-1/2 py-6">
           <div className="w-full">
             <h1 className="text-3xl font-bold mb-3">

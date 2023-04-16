@@ -21,7 +21,7 @@ const authenticateJWT = (req, res, next) => {
         req.headers.role != user.role
       ) {
         return res
-          .status(403)
+          .status(401)
           .send("Unauthorized request: Wrong or expired token found");
       }
       req.user = user;

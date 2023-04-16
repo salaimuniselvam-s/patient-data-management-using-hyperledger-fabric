@@ -49,11 +49,11 @@ const UpdatePatientPersonalDetail = ({
   };
 
   return (
-    <div className="flex min-w-[60%] justify-center mt-8">
-      <div className="bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md  xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+    <div className="flex justify-center mt-8">
+      <div className="bg-white rounded-lg shadow dark:border md:mt-0  xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-lg font-semibold leading-tight tracking-tight text-gray-900  dark:text-white">
-            <i className="fas fa-sync-alt mr-2"></i>
+            <i className="fas fa-pencil-alt mr-2"></i>
             Update Details
           </h1>
           <Formik
@@ -76,7 +76,7 @@ const UpdatePatientPersonalDetail = ({
                       name="age"
                       id="age"
                       placeholder="54"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
                     />
                     <ErrorMessage
                       name="age"
@@ -117,7 +117,7 @@ const UpdatePatientPersonalDetail = ({
                       name="phoneNumber"
                       id="phoneNumber"
                       placeholder="7708216211"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
                     />
                     <ErrorMessage
                       name="phoneNumber"
@@ -137,7 +137,7 @@ const UpdatePatientPersonalDetail = ({
                       name="emergPhoneNumber"
                       id="phoneNumber"
                       placeholder="7708216211"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
                     />
                     <ErrorMessage
                       name="emergPhoneNumber"
@@ -158,7 +158,7 @@ const UpdatePatientPersonalDetail = ({
                     name="address"
                     id="address"
                     placeholder="71A,East New Street,Srivilliputtur"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none"
                   />
                   <ErrorMessage
                     name="address"

@@ -7,6 +7,10 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    minWidth: {
+      700: "700px",
+      900: "900px",
+    },
     fontFamily: {
       signature: ["Cedarville+Cursive", "sans-serif"],
     },
@@ -16,7 +20,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        primary: "#0055FF",
+        primary: { DEFAULT: "#0055FF", 600: "#2563EB" },
         secondary: "#0B0A1F",
       },
     },

@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useEffect, useState, Fragment } from "react";
 import UpdatePatientPersonalDetail from "@/components/Patients/UpdatePatientPersonalDetails";
 import Loader from "@/components/Helper/Loader";
+import FormInputReadonly from "@/components/Helper/FormInputReadonly";
 
 // Profile Page for Patients
 function PatientProfilePage() {
@@ -41,9 +42,9 @@ function PatientProfilePage() {
   return (
     <>
       <div className="flex  justify-center items-center mt-6">
-        <div className="max-w-7xl  px-4 pb-6 sm:px-6 lg:px-8 bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+        <div className="md:min-w-[60%] 2xl:min-w-900 px-4 pb-6 sm:px-6 lg:px-8 bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="px-6 py-4">
-            <div className="flex justify-between  flex-col sm:flex-row">
+            <div className="flex justify-between  flex-col md:flex-row">
               <div className="flex  mb-4">
                 <Image
                   className=" w-16 h-16 rounded-full shadow-lg"
@@ -68,65 +69,61 @@ function PatientProfilePage() {
                 </button>
               </div>
             </div>
-            <div className="flex  justify-center gap-12 flex-col sm:flex-row">
-              <div className="sm:w-1/2 min-w-fit flex flex-col gap-6">
-                <p className=" text-base flex flex-wrap items-center ">
-                  <i className="fas fa-birthday-cake mr-2"></i>
-                  <span className=" text-lg">Age:</span>
-                  <span className="ml-2">{patientDetail.age}</span>
-                </p>
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-phone mr-2"></i>
-                  <span className=" text-lg">Phone:</span>
-                  <span className="ml-2">{patientDetail.phoneNumber}</span>
-                </p>
-
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-map-marker-alt mr-2"></i>
-                  <span className=" text-lg">Address:</span>
-                  <span className="ml-2">{patientDetail.address}</span>
-                </p>
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-notes-medical mr-2"></i>
-                  <span className=" text-lg">Symptoms:</span>
-                  <span className="ml-2">{patientDetail.symptoms}</span>
-                </p>
-
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-notes-medical mr-2"></i>
-                  <span className=" text-lg">Treatment:</span>
-                  <span className="ml-2">{patientDetail.treatment}</span>
-                </p>
+            <div className="flex mt-3  justify-center gap-12 flex-col md:flex-row">
+              <div className="md:w-1/2  flex flex-col gap-6">
+                <FormInputReadonly
+                  id="Age"
+                  icon="fas fa-birthday-cake"
+                  value={patientDetail.age}
+                />
+                <FormInputReadonly
+                  id="Phone Number"
+                  icon="fas fa-phone"
+                  value={patientDetail.phoneNumber}
+                />
+                <FormInputReadonly
+                  id="Address"
+                  icon="fas fa-map-marker-alt"
+                  value={patientDetail.address}
+                />
+                <FormInputReadonly
+                  id="Symptoms"
+                  icon="fas fa-notes-medical"
+                  value={patientDetail.symptoms}
+                />
+                <FormInputReadonly
+                  id="Treatment"
+                  icon="fas fa-notes-medical"
+                  value={patientDetail.treatment}
+                />
               </div>
-              <div className="sm:w-1/2 min-w-fit  flex flex-col gap-6">
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-tint mr-2"></i>
-                  <span className=" text-lg">Blood Group:</span>
-                  <span className="ml-2">{patientDetail.bloodGroup}</span>
-                </p>
+              <div className="md:w-1/2   flex flex-col gap-6">
+                <FormInputReadonly
+                  id="Blood Group"
+                  icon="fas fa-tint"
+                  value={patientDetail.bloodGroup}
+                />
+                <FormInputReadonly
+                  id="Emergency Phone Number"
+                  icon="fas fa-exclamation-triangle"
+                  value={patientDetail.emergPhoneNumber}
+                />
+                <FormInputReadonly
+                  id="Allergies"
+                  icon="fas fa-allergies"
+                  value={patientDetail.allergies}
+                />
 
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-exclamation-triangle mr-2"></i>
-                  <span className=" text-lg">Emergency Phone:</span>
-                  <span className="ml-2">{patientDetail.emergPhoneNumber}</span>
-                </p>
-
-                <p className=" text-base flex flex-wrap  items-center">
-                  <i className="fas fa-allergies mr-2"></i>
-                  <span className="text-lg">Allergies:</span>
-                  <span className="ml-2">{patientDetail.allergies}</span>
-                </p>
-                <p className=" text-base flex flex-wrap  items-center">
-                  <i className="fas fa-notes-medical mr-2"></i>
-                  <span className="text-lg">Diagnosis:</span>
-                  <span className="ml-2">{patientDetail.diagnosis}</span>
-                </p>
-
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-notes-medical mr-2"></i>
-                  <span className="text-lg">Follow Up:</span>
-                  <span className="ml-2">{patientDetail.followUp}</span>
-                </p>
+                <FormInputReadonly
+                  id="Diagnosis"
+                  icon="fas fa-notes-medical"
+                  value={patientDetail.diagnosis}
+                />
+                <FormInputReadonly
+                  id="Follow Up"
+                  icon="fas fa-notes-medical"
+                  value={patientDetail.followUp}
+                />
               </div>
             </div>
           </div>
@@ -157,7 +154,7 @@ function PatientProfilePage() {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="  overflow-hidden transform  rounded-2xl px-4 pb-6 sm:px-6 lg:px-8  p-6 text-left shadow-xl transition-all">
+                <Dialog.Panel className="  overflow-hidden transform  rounded-2xl px-4 pb-6 sm:px-6 lg:px-8  p-6 text-left shadow-xl transition-all ">
                   <UpdatePatientPersonalDetail
                     patientDetail={patientDetail}
                     closeModal={closeModal}
