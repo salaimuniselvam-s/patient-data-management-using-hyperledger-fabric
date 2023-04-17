@@ -54,6 +54,12 @@ body {
   border-radius: 12px;
 }
 
+.form-input select option:checked:before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f058";
+  margin-right: 6px;
+}
+
 /* table */
 
 /* table {
@@ -128,6 +134,19 @@ table tbody tr td {
   border-top-color: #fff;
 }
 
+/* custom utilities */
+.max-h-18 {
+  max-height: 4.5rem;
+}
+.min-w-700 {
+  min-width: 700px;
+}
+.min-w-900 {
+  min-width: 900px;
+}
+.min-w-950 {
+  min-width: 950px;
+}
 @keyframes loader-animation {
   to {
     transform: rotate(360deg);

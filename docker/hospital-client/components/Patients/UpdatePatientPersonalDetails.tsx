@@ -16,10 +16,10 @@ type patientDetail = {
   patientDetail: PatientPersonalDetails;
   closeModal: () => void;
 };
-const UpdatePatientPersonalDetail = ({
+const UpdatePatientPersonalDetail: React.FC<patientDetail> = ({
   patientDetail,
   closeModal,
-}: patientDetail) => {
+}) => {
   const dispatch = useAppDispatch();
   const [isSubmitting, setIsSubmitting] = useState(false);
 

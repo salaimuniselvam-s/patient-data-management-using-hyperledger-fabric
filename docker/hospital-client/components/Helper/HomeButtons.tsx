@@ -1,11 +1,9 @@
-import { logOutUserAction } from "@/redux/actions/authActions";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { useAppSelector } from "@/redux/store";
 import { redirectToProfilePage } from "@/utils/routeUtils";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const HomeButtons = () => {
-  const dispatch = useAppDispatch();
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const authState = useAppSelector((state) => state.auth);
 
@@ -21,17 +19,17 @@ const HomeButtons = () => {
             View Profile
           </button>
         </Link>
-        <button
+        {/* <button
           onClick={() => dispatch(logOutUserAction())}
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center"
         >
           Log Out
-        </button>
+        </button> */}
       </>
     );
 
   return (
-    <>
+    <div className="flex flex-wrap gap-6">
       <Link href="/register-patient">
         <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
           Register
@@ -42,7 +40,7 @@ const HomeButtons = () => {
           Sign In
         </button>
       </Link>
-    </>
+    </div>
   );
 };
 

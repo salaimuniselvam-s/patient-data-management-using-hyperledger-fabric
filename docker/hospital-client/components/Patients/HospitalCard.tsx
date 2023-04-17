@@ -10,7 +10,13 @@ interface hospitalCard {
   id: number;
 }
 
-const HospitalCard = ({ name, address, city, img, id }: hospitalCard) => {
+const HospitalCard: React.FC<hospitalCard> = ({
+  name,
+  address,
+  city,
+  img,
+  id,
+}) => {
   const router = useRouter();
   return (
     <div

@@ -12,7 +12,7 @@ interface profileCard {
   AccessControl?: (isAccessGranted: boolean, username: string) => void;
 }
 
-const Doctor_Admin_ProfileCard = ({
+const Doctor_Admin_ProfileCard: React.FC<profileCard> = ({
   imgSrc,
   username,
   speciality,
@@ -21,10 +21,10 @@ const Doctor_Admin_ProfileCard = ({
   isAccessGranted,
   AccessControl,
   isAdmin,
-}: profileCard) => {
+}) => {
   return (
     <div className="flex mt-12 justify-center">
-      <div className="w-full p-8 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="sm:w-full p-4 md:p-8 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <div className="flex flex-col items-center">
           <Image
             className="mb-6 w-36 h-36 rounded-full shadow-lg"

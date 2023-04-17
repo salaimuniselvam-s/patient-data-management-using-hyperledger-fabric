@@ -5,7 +5,9 @@ import Loader from "../Helper/Loader";
 import { PatientHistory } from "@/types/patient";
 import { capitalize, convertTimestamp } from "@/utils/convertTime";
 
-const PatientHistoryRecords = ({ patientId }: { patientId: string }) => {
+const PatientHistoryRecords: React.FC<{ patientId: string }> = ({
+  patientId,
+}) => {
   const [patientHistory, setPatientHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const getPatientHistory = async () => {
@@ -30,7 +32,7 @@ const PatientHistoryRecords = ({ patientId }: { patientId: string }) => {
   const HistoryOfPatient = () => {
     if (loading)
       return (
-        <div className="flex justify-center h-96">
+        <div className="flex justify-center h-32">
           <Loader isCard />
         </div>
       );
@@ -40,7 +42,7 @@ const PatientHistoryRecords = ({ patientId }: { patientId: string }) => {
 
     return (
       <div>
-        <table className="table-auto">
+        <table className="table-auto min-w-950 overflow-auto">
           <thead>
             <tr>
               {Object.keys(patientHistory[0]).map(
@@ -78,7 +80,7 @@ const PatientHistoryRecords = ({ patientId }: { patientId: string }) => {
   };
 
   return (
-    <div className="header w-2/3 min-w-fit rounded-3xl  px-3 py-1">
+    <div className="header min-w-fit rounded-3xl  px-3 py-1">
       <div className="p-3">
         <i className="fas fa-book mr-1"></i> Patient History -{" "}
         <span className="font-semibold">{patientId}</span>

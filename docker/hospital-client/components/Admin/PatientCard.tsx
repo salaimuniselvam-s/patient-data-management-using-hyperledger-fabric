@@ -8,7 +8,9 @@ interface patient {
   phoneNumber: string;
   role: "patient";
 }
-const PatientCard = ({ patientDetails }: { patientDetails: patient }) => {
+const PatientCard: React.FC<{ patientDetails: patient }> = ({
+  patientDetails,
+}) => {
   return (
     <div className="flex mt-3 justify-center">
       <div className="w-full py-4 px-8 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">

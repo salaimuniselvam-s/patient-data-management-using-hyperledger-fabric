@@ -2,14 +2,18 @@ import { useTheme } from "../context/Themeprovider";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Fragment, useEffect, useState } from "react";
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useRouter } from "next/router";
 import { navbarRoutes } from "@/utils/navbarRoutes";
 import { Transition } from "@headlessui/react";
 import { isPageActive } from "@/utils/routeUtils";
+import Profile from "./Profile";
+import { getUserDetails } from "@/redux/utils/cookies";
+import { logOutUserAction } from "@/redux/actions/authActions";
 
 export default function Header() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { isTheme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState({
@@ -28,7 +32,6 @@ export default function Header() {
     <div className="header">
       <div className="max-w-7xl mx-auto  px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-6 ">
-          {/* */}
           <div className="flex items-center gap-4">
             <Link
               href="/"
@@ -78,7 +81,13 @@ export default function Header() {
                 )
               )}
             </nav>
-            <div>
+            <div className="flex gap-8 items-center">
+              <div className="hidden md:flex">
+                <Profile
+                  username={getUserDetails().username}
+                  role={getUserDetails().role}
+                />
+              </div>
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -190,6 +199,16 @@ export default function Header() {
                     )}
                   </nav>
                 </div>
+                {loggedInUser.loggedIn && (
+                  <div className="mt-12 flex justify-center">
+                    <div
+                      className="block px-4 py-2 text-lg text-white cursor-pointer"
+                      onClick={() => dispatch(logOutUserAction())}
+                    >
+                      <i className="fas fa-sign-out-alt mr-2"></i> Sign out
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

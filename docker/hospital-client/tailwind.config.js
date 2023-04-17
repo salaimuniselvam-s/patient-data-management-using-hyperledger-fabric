@@ -7,10 +7,14 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    minWidth: {
-      700: "700px",
-      900: "900px",
-    },
+    // minWidth: {
+    //   700: "700px",
+    //   900: "900px",
+    //   950: "950px"
+    // },
+    // maxHeight: {
+    //   18: "4.5rem",
+    // },
     fontFamily: {
       signature: ["Cedarville+Cursive", "sans-serif"],
     },

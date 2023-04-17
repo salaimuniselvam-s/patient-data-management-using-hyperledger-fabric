@@ -19,7 +19,7 @@ const AllPatients = () => {
   }
 
   return (
-    <div className="flex flex-wrap flex-col sm:flex-row mt-3 px-6 gap-6">
+    <div className="max-w-7xl mx-auto flex flex-wrap flex-col sm:flex-row mt-3 px-6 gap-6">
       {patientDetails.patients.map((props, index: number) => {
         return <PatientCard patientDetails={props} key={index} />;
       })}

@@ -29,12 +29,15 @@ const AuthorisedPatientsForDoctors = () => {
     );
 
   return (
-    <div className="flex flex-wrap flex-col sm:flex-row mt-3 px-6 gap-6">
-      {doctors.patients.map(
-        (data: PatientDetailsUpdateByDoctor, index: number) => {
-          return <PatientsUnderDoctor key={index} patientDetail={data} />;
-        }
-      )}
+    // bug
+    <div className="max-w-7xl mx-auto">
+      <div className="flex flex-wrap justify-center lg:justify-normal flex-col lg:flex-row mt-3 px-6 gap-6">
+        {doctors.patients.map(
+          (data: PatientDetailsUpdateByDoctor, index: number) => {
+            return <PatientsUnderDoctor key={index} patientDetail={data} />;
+          }
+        )}
+      </div>
     </div>
   );
 };

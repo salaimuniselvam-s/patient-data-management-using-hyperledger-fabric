@@ -9,6 +9,7 @@ import { useEffect, useState, Fragment } from "react";
 import UpdatePatientPersonalDetail from "@/components/Patients/UpdatePatientPersonalDetails";
 import Loader from "@/components/Helper/Loader";
 import FormInputReadonly from "@/components/Helper/FormInputReadonly";
+import { generateUserProfilePicture } from "@/utils/generateUserProfilePicture";
 
 // Profile Page for Patients
 function PatientProfilePage() {
@@ -41,14 +42,14 @@ function PatientProfilePage() {
 
   return (
     <>
-      <div className="flex  justify-center items-center mt-6">
-        <div className="md:min-w-[60%] 2xl:min-w-900 px-4 pb-6 sm:px-6 lg:px-8 bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-          <div className="px-6 py-4">
+      <div className="flex max-w-7xl mx-auto justify-center items-center mt-6">
+        <div className="md:min-w-[60%]  2xl:min-w-900 px-4 pb-6 sm:px-6 lg:px-8 bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+          <div className="px-6  py-4">
             <div className="flex justify-between  flex-col md:flex-row">
               <div className="flex  mb-4">
                 <Image
                   className=" w-16 h-16 rounded-full shadow-lg"
-                  src={"/Doctors.png"}
+                  src={generateUserProfilePicture(getUserDetails().username)}
                   width={720}
                   height={720}
                   alt="Doctor Profile Image"
@@ -69,7 +70,7 @@ function PatientProfilePage() {
                 </button>
               </div>
             </div>
-            <div className="flex mt-3  justify-center gap-12 flex-col md:flex-row">
+            <div className="flex mt-3  justify-center gap-6 flex-col md:flex-row">
               <div className="md:w-1/2  flex flex-col gap-6">
                 <FormInputReadonly
                   id="Age"
@@ -88,12 +89,12 @@ function PatientProfilePage() {
                 />
                 <FormInputReadonly
                   id="Symptoms"
-                  icon="fas fa-notes-medical"
+                  icon="fas fa-thermometer-half"
                   value={patientDetail.symptoms}
                 />
                 <FormInputReadonly
                   id="Treatment"
-                  icon="fas fa-notes-medical"
+                  icon="fas fa-medkit"
                   value={patientDetail.treatment}
                 />
               </div>
@@ -116,15 +117,22 @@ function PatientProfilePage() {
 
                 <FormInputReadonly
                   id="Diagnosis"
-                  icon="fas fa-notes-medical"
+                  icon="fas fa-stethoscope"
                   value={patientDetail.diagnosis}
                 />
                 <FormInputReadonly
                   id="Follow Up"
-                  icon="fas fa-notes-medical"
+                  icon="fas fa-calendar-check"
                   value={patientDetail.followUp}
                 />
               </div>
+            </div>
+            <div className="pt-6 w-full">
+              <FormInputReadonly
+                id="Access Granted To"
+                icon="fas fa-user-check"
+                value={patientDetail.permissionGranted}
+              />
             </div>
           </div>
         </div>

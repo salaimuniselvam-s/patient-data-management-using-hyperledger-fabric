@@ -36,16 +36,6 @@ export const ROLE_LIST = [
   },
 ];
 
-// [
-//   "A Positive (A+)",
-//   "A Negative (A-)",
-//   "B Positive (B+)",
-//   "B Negative (B-)",
-//   "AB Positive (AB+)",
-//   "AB Negative (AB-)",
-//   "O Positive (O+)",
-//   "O Negative (O-)",
-// ];
 const bloodGroupOptions = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
 export const BLOOD_GROUP = bloodGroupOptions.map((value) => ({
@@ -56,16 +46,6 @@ export const DOCTOR_DESIGNATION = doctorDesignation.map((value) => ({
   label: value,
   value: value,
 }));
-// const BLOOD_GROUPS = [
-//   "O positive",
-//   "O negative",
-//   "A positive",
-//   "A negative",
-//   "B positive",
-//   "B negative",
-//   "AB positive",
-//   "AB negative",
-// ];
 
 export const DOCTOR_FIELDS = [
   "username",

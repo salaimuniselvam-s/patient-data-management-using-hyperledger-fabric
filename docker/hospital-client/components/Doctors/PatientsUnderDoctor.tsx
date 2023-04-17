@@ -5,12 +5,13 @@ import React, { Fragment, useState } from "react";
 import UpdatePatientDetailsByDoctor from "./UpdatePatientDetailsByDoctor";
 import PatientHistoryRecords from "./PatientHistoryRecords";
 import { useAppDispatch } from "@/redux/store";
+import FormInputReadonly from "../Helper/FormInputReadonly";
+import { getUserDetails } from "@/redux/utils/cookies";
+import { generateUserProfilePicture } from "@/utils/generateUserProfilePicture";
 
-const PatientsUnderDoctor = ({
-  patientDetail,
-}: {
+const PatientsUnderDoctor: React.FC<{
   patientDetail: PatientDetailsUpdateByDoctor;
-}) => {
+}> = ({ patientDetail }) => {
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -34,16 +35,13 @@ const PatientsUnderDoctor = ({
   return (
     <>
       <div className="flex justify-center items-center mt-6">
-        <div
-          className="max-w-7xl   px-2 pb-6 sm:px-4 lg:px-4 bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700"
-          style={{ width: "900px" }}
-        >
+        <div className="max-w-7xl mx-auto  px-2 pb-6 sm:px-4 lg:px-4 bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="px-6 py-4">
             <div className="flex justify-between  flex-col sm:flex-row">
               <div className="flex  mb-4">
                 <Image
                   className=" w-16 h-16 rounded-full shadow-lg"
-                  src={"/Doctors.png"}
+                  src={generateUserProfilePicture(getUserDetails().username)}
                   width={720}
                   height={720}
                   alt="Doctor Profile Image"
@@ -55,7 +53,7 @@ const PatientsUnderDoctor = ({
                   </span>
                 </div>
               </div>
-              <div className="mb-4">
+              <div className="mb-8 sm:mb-4 flex flex-col justify-center gap-3 sm:block">
                 <button
                   onClick={openHistoryModal}
                   className=" text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -64,7 +62,7 @@ const PatientsUnderDoctor = ({
                 </button>
                 <button
                   onClick={openModal}
-                  className="ml-4 text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                  className="sm:ml-4 text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 >
                   Update Details
                 </button>
@@ -72,47 +70,38 @@ const PatientsUnderDoctor = ({
             </div>
             <div className="flex  justify-center gap-12 flex-col sm:flex-row">
               <div className="sm:w-1/2 min-w-fit flex flex-col gap-6">
-                <p className=" text-base flex flex-wrap items-center ">
-                  <i className="fas fa-birthday-cake mr-2"></i>
-                  <span className=" text-lg">Age:</span>
-                  <span className="ml-2">{patientDetail.age}</span>
-                </p>
-
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-notes-medical mr-2"></i>
-                  <span className=" text-lg">Symptoms:</span>
-                  <span className="ml-2">{patientDetail.symptoms}</span>
-                </p>
-
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-notes-medical mr-2"></i>
-                  <span className=" text-lg">Treatment:</span>
-                  <span className="ml-2">{patientDetail.treatment}</span>
-                </p>
+                <FormInputReadonly
+                  id="Blood Group"
+                  icon="fas fa-tint"
+                  value={patientDetail.bloodGroup}
+                />
+                <FormInputReadonly
+                  id="Treatment"
+                  icon="fas fa-medkit"
+                  value={patientDetail.treatment}
+                />
+                <FormInputReadonly
+                  id="Follow Up"
+                  icon="fas fa-calendar-check"
+                  value={patientDetail.followUp}
+                />
               </div>
               <div className="sm:w-1/2 min-w-fit  flex flex-col gap-6">
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-tint mr-2"></i>
-                  <span className=" text-lg">Blood Group:</span>
-                  <span className="ml-2">{patientDetail.bloodGroup}</span>
-                </p>
-
-                <p className=" text-base flex flex-wrap  items-center">
-                  <i className="fas fa-allergies mr-2"></i>
-                  <span className="text-lg">Allergies:</span>
-                  <span className="ml-2">{patientDetail.allergies}</span>
-                </p>
-                <p className=" text-base flex flex-wrap  items-center">
-                  <i className="fas fa-notes-medical mr-2"></i>
-                  <span className="text-lg">Diagnosis:</span>
-                  <span className="ml-2">{patientDetail.diagnosis}</span>
-                </p>
-
-                <p className=" text-base flex flex-wrap items-center">
-                  <i className="fas fa-notes-medical mr-2"></i>
-                  <span className="text-lg">Follow Up:</span>
-                  <span className="ml-2">{patientDetail.followUp}</span>
-                </p>
+                <FormInputReadonly
+                  id="Allergies"
+                  icon="fas fa-allergies"
+                  value={patientDetail.allergies}
+                />
+                <FormInputReadonly
+                  id="Symptoms"
+                  icon="fas fa-thermometer-half"
+                  value={patientDetail.symptoms}
+                />
+                <FormInputReadonly
+                  id="Diagnosis"
+                  icon="fas fa-stethoscope"
+                  value={patientDetail.diagnosis}
+                />
               </div>
             </div>
           </div>
@@ -143,7 +132,7 @@ const PatientsUnderDoctor = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="  overflow-hidden transform  rounded-2xl px-4 pb-6 sm:px-6 lg:px-8  p-6 text-left shadow-xl transition-all">
+                <Dialog.Panel className="  overflow-hidden transform  rounded-2xl  text-left shadow-xl transition-all">
                   <UpdatePatientDetailsByDoctor
                     patientDetail={patientDetail}
                     closeModal={closeModal}
@@ -168,7 +157,7 @@ const PatientsUnderDoctor = ({
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto">
+          <div className="fixed inset-0 overflow-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
               <Transition.Child
                 as={Fragment}
@@ -179,7 +168,7 @@ const PatientsUnderDoctor = ({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="  overflow-hidden transform  rounded-2xl px-4 pb-6 sm:px-6 lg:px-8  p-6 text-left shadow-xl transition-all w-full flex justify-center ">
+                <Dialog.Panel className="transform  rounded-2xl text-left shadow-xl transition-all m-3 overflow-auto">
                   <PatientHistoryRecords patientId={patientDetail.patientId} />
                 </Dialog.Panel>
               </Transition.Child>
