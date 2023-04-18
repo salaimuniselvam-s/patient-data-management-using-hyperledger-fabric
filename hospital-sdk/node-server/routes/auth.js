@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post("/login", Login);
 router.post("/refreshToken", RefreshToken);
-router.delete("/logout", authenticateJWT, Logout);
+router.delete("/logout", Logout);
 
 module.exports = router;

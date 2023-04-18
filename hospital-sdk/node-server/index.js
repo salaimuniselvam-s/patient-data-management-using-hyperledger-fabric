@@ -46,12 +46,15 @@ app.use("/auth", authRoutes);
 app.use("/deleteRecords", deleteRoute);
 app.use("/storeAdminCredentials", storeAdminCredentials);
 
-app.get("/", (req, res) => res.send("Welcome to the Fabric-Node-Server"));
+const port = 3001;
+app.get("/", (req, res) =>
+  res.send(
+    `Welcome to the Fabric-Node-Server.. Visit http://localhost:${port}/api-docs to view all the http endpoint in the node server`
+  )
+);
 
 // Mongodb Connection
 const uri = `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@cluster0.ndk0ctm.mongodb.net/?retryWrites=true&w=majority`;
-
-const port = 3001;
 
 console.log("Connecting To MongoDb...");
 mongoose

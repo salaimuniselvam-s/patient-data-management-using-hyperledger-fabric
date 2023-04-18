@@ -3,9 +3,9 @@ const {
   generateAccessToken,
   generateTokens,
 } = require("../middleware/verifyJwtToken");
-let { REFRESH_TOKEN } = require("../tasks/adminTasks");
-const UserDetails = require("../db/schema");
+const { UserDetails } = require("../db/schema");
 const { comparePassword } = require("../utils/hashPassword");
+const { compareRefreshToken, deleteRefreshToken } = require("../utils/utils");
 require("dotenv").config();
 
 const refreshSecretToken = process.env.REFRESH_SECRET_TOKEN;
@@ -26,7 +26,7 @@ const Login = async (req, res) => {
       userDetail?.role == role;
     hospitalId = userDetail?.hospitalId;
   } catch (error) {
-    console.error(error);
+    console.error(error, "bug");
     return res
       .status(400)
       .send({ error: "Username or password or role is incorrect!" });
@@ -62,7 +62,7 @@ const RefreshToken = (req, res) => {
     return res.sendStatus(401);
   }
 
-  if (!REFRESH_TOKEN.includes(token)) {
+  if (!compareRefreshToken(token)) {
     return res.sendStatus(403);
   }
 
@@ -75,10 +75,11 @@ const RefreshToken = (req, res) => {
       return res.sendStatus(403);
     }
 
-    const accessToken = generateAccessToken({
-      username: req.headers.username,
-      role: req.headers.role,
-    });
+    const accessToken = generateAccessToken(
+      req.headers.username,
+      req.headers.role
+    );
+
     res.json({
       accessToken,
       username: req.headers.username,
@@ -91,7 +92,8 @@ const RefreshToken = (req, res) => {
  * @description Logout to remove REFRESH_TOKEN
  */
 const Logout = (req, res) => {
-  REFRESH_TOKEN = REFRESH_TOKEN.filter((token) => token !== req.headers.token);
+  const authHeader = req.headers.authorization;
+  deleteRefreshToken(authHeader.split(" ")[1]);
   res.status(204).send("Successfully Logged out the user");
 };
 

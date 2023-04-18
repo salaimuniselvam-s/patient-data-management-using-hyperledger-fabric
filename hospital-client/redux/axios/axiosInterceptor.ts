@@ -3,13 +3,14 @@ import { useRouter } from "next/router";
 import {
   getAuthCookies,
   getUserDetails,
+  removeAuthCookies,
+  removeUserDetails,
   setAuthCookies,
 } from "../utils/cookies";
 import { API_BASE_URL } from "@/constants/constants";
 
 // Function to refresh the access token
 const refreshToken = async () => {
-  console.log("refeshToken");
   try {
     const response = await axios.post(
       `${API_BASE_URL}/auth/refreshToken`,
@@ -69,8 +70,10 @@ axiosInstance.interceptors.response.use(
         await refreshToken();
         return axiosInstance(originalRequest);
       } catch (error) {
-        const router = useRouter();
-        router.push("/");
+        window.location.href = "/";
+        console.log(error, "error");
+        removeAuthCookies();
+        removeUserDetails();
         return Promise.reject(error);
       }
     }

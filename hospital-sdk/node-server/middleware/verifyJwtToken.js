@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { REFRESH_TOKEN } = require("../tasks/adminTasks");
+const { saveRefreshToken } = require("../utils/utils");
 require("dotenv").config();
 
 const jwtSecretToken = process.env.JWT_SECRET_TOKEN;
@@ -37,7 +37,7 @@ const authenticateJWT = (req, res, next) => {
  */
 const generateAccessToken = (username, role) => {
   return jwt.sign({ username: username, role: role }, jwtSecretToken, {
-    expiresIn: "24h",
+    expiresIn: "1m",
   });
 };
 
@@ -46,9 +46,9 @@ const generateTokens = (username, role) => {
   const refreshToken = jwt.sign(
     { username: username, role: role },
     refreshSecretToken,
-    { expiresIn: "24h" }
+    { expiresIn: "12h" }
   );
-  REFRESH_TOKEN.push(refreshToken);
+  saveRefreshToken(refreshToken);
   return { accessToken, refreshToken };
 };
 

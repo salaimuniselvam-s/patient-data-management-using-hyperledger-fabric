@@ -8,7 +8,7 @@ const {
   capitalize,
 } = require("../utils/utils.js");
 const network = require("../../fabric-network/app.js");
-const UserDetails = require("../db/schema.js");
+const { UserDetails } = require("../db/schema.js");
 const { generateTokens } = require("../middleware/verifyJwtToken.js");
 const { hashPassword } = require("../utils/hashPassword.js");
 

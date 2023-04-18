@@ -1,5 +1,5 @@
 const express = require("express");
-const UserDetails = require("./schema");
+const { UserDetails } = require("./schema");
 const router = express.Router();
 
 router.get("/", (req, res) => {

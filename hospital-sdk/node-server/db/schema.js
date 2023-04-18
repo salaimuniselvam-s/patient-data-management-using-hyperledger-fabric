@@ -23,7 +23,15 @@ const userDetailsSchema = new mongoose.Schema({
   },
 });
 
+const tokenSchema = new mongoose.Schema({
+  refreshToken: {
+    type: String,
+    required: true,
+  },
+});
+
 // Create a model for the user details schema
 const UserDetails = mongoose.model("UserDetails", userDetailsSchema);
+const TokenSchema = mongoose.model("Tokens", tokenSchema);
 
-module.exports = UserDetails;
+module.exports = { UserDetails, TokenSchema };
