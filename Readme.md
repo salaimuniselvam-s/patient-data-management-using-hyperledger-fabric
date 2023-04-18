@@ -32,7 +32,7 @@ $ curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/i
 $ ./install-fabric.sh docker
 ```
 
-4. Change the working directory to /fabric-samples/pdm-network
+4. Change the working directory to /docker/hospital-network
 
 ```bash
 $ cd ./docker/hospital-network
