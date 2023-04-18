@@ -32,10 +32,10 @@ $ curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/i
 $ ./install-fabric.sh docker
 ```
 
-4. Change the working directory to /fabric-samples/pdm-network
+4. Change the working directory to hospital-network
 
 ```bash
-$ cd ./docker/hospital-network
+$ cd ./hospital-network
 ```
 
 5. Use the following command to start the network, with 2 organization hospital1 and hospital2 with one peer each (peer0) and an Orderer node & then create an hospital-channel & deploy & Instantiate the hospital Contract on two peers.
@@ -53,8 +53,124 @@ $ ./hospitalNetwork.sh validate
 8. Use this command to bring the network down
 
 ```bash
-$ ./network.sh down
+$ ./hospitalNetwork.sh down
 ```
+
+## Hospital Node Server
+
+Hospital Node Server is a Node.js server for connecting Client apps to hospital fabric network for interacting with hospital chaincode using http api endpoints.
+
+### Installation
+
+1. Change the working directory to /hospital-sdk/fabric-network
+
+```bash
+$ cd ./hospital-sdk/fabric-network
+```
+
+2. Install dependencies
+
+```bash
+$ npm install
+```
+
+this will install the packages used for connecting fabric-client to the fabric network
+
+3. Change the working directory to /hospital-sdk/node-server
+
+```bash
+$ cd ./hospital-sdk/node-server
+```
+
+4. Install dependencies
+
+```bash
+$ npm install
+```
+
+3. Set up environment variables
+
+```bash
+$ cp .env.example .env
+```
+
+Set your Mongodb Credientails on the env file to store user login credentials.
+
+### Usage
+
+1. Start the server
+
+```bash
+$ npm start
+```
+
+This will start the server on port 3001.
+
+2. Register and Enroll the Users. In Another Terminal, run the following command.
+
+```bash
+$ npm enroll
+```
+
+This will register,enroll and Create Wallet for Test users.
+
+3. Access the Swagger documentation
+
+```bash
+$ http://localhost:3001/api-docs/
+```
+
+This will open the Swagger UI, which provides an easy way to explore and test the API.
+
+## Hospital Client
+
+This is a web application for a hospital client to interact with the hospital chaincode deployed on hospital Fabric Network for managing Patient Data. It is built with Next.js, React, Redux, and other popular libraries.
+
+### Installation
+
+To get started with this project, you will need to have Node.js installed on your computer.
+
+1. Change the working directory to /hospital-client
+
+```bash
+$ cd ./hospital-client
+```
+
+2. Install dependencies
+
+```bash
+$ yarn
+```
+
+3. After installing the dependencies, you can start the development server with the following command:
+
+```bash
+$ npm run dev
+```
+
+The development server will start at http://localhost:3000 by default. Open this URL in your web browser to view the application.
+
+### Test User Credentials
+
+Below Test User Credentials are Created When running npm enroll in the hospital Node Server.
+
+| username       | password      | role    |
+| -------------- | ------------- | ------- |
+| hosp1admin     | hosp1adminpw  | admin   |
+| hosp2admin     | hosp2adminpw  | admin   |
+|                |               |         |
+| Raj Kumar      | temp-password | patient |
+| Deepan Raj     | temp-password | patient |
+| Mahesh Kumar   | temp-password | patient |
+| Viki           | temp-password | patient |
+| Ramesh         | temp-password | patient |
+|                |               |         |
+| Rajesh Kumar   | temp-password | doctor  |
+| Kailash Balaji | temp-password | doctor  |
+| Deepak         | temp-password | doctor  |
+| Mahesh Babu    | temp-password | doctor  |
+| hosp2doctor    | temp-password | doctor  |
+|                |               |         |
 
 ## Troubleshooting
 

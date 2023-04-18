@@ -1,9 +1,0 @@
-1. Enroll the Admin
-
-2. Connect to the network
-
-3. Register new users
-
-4. Validate Chaincode Functions
-
-
