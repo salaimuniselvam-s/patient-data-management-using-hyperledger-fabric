@@ -4,12 +4,11 @@ import { getPatientPersonalDetailsAction } from "@/redux/actions/patientActions"
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getUserDetails } from "@/redux/utils/cookies";
 import { patientPersonalDetails } from "@/utils/patients";
-import Image from "next/image";
 import { useEffect, useState, Fragment } from "react";
 import UpdatePatientPersonalDetail from "@/components/Patients/UpdatePatientPersonalDetails";
 import Loader from "@/components/Helper/Loader";
 import FormInputReadonly from "@/components/Helper/FormInputReadonly";
-import { generateUserProfilePicture } from "@/utils/generateUserProfilePicture";
+import { GenerateAvatarHeader } from "@/utils/GenerateAvatar";
 
 // Profile Page for Patients
 function PatientProfilePage() {
@@ -43,18 +42,12 @@ function PatientProfilePage() {
   return (
     <>
       <div className="flex max-w-7xl mx-auto justify-center items-center mt-6">
-        <div className="md:min-w-[60%]  2xl:min-w-900 px-4 pb-6 sm:px-6 lg:px-8 bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+        <div className="md:min-w-[60%]  2xl:min-w-900 px-4 pb-2 sm:px-6 lg:px-8 bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
           <div className="px-6  py-4">
             <div className="flex justify-between  flex-col md:flex-row">
               <div className="flex  mb-4">
-                <Image
-                  className=" w-16 h-16 rounded-full shadow-lg"
-                  src={generateUserProfilePicture(getUserDetails().username)}
-                  width={720}
-                  height={720}
-                  alt="Doctor Profile Image"
-                />
-                <div className="font-semibold pl-3 pt-1 text-xl">
+                <GenerateAvatarHeader role={getUserDetails().role} />
+                <div className="font-semibold pl-3 pt-2 text-xl">
                   {patientDetail.patientId}
                   <span className="dark:text-gray-300 block font-normal text-lg">
                     patient
@@ -64,7 +57,7 @@ function PatientProfilePage() {
               <div className="mb-4">
                 <button
                   onClick={openModal}
-                  className="w-full text-white bg-primary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                  className="w-full pt-2 text-white bg-primary hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
                   Update Details
                 </button>

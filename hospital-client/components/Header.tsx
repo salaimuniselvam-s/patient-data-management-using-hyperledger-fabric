@@ -91,7 +91,7 @@ export default function Header() {
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="-mr-2 hidden md:block"
+                className="-mr-2 hidden  md:block"
               >
                 <div
                   onClick={() => toggleTheme()}

@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useAppDispatch } from "@/redux/store";
 import { logOutUserAction } from "@/redux/actions/authActions";
 import { getAuthCookies, getUserDetails } from "@/redux/utils/cookies";
-import { generateUserProfilePicture } from "@/utils/generateUserProfilePicture";
+import { GenerateAvatarHeader } from "@/utils/GenerateAvatar";
 
 interface ProfileProps {
   username: string;
@@ -50,18 +49,10 @@ const Profile: React.FC<ProfileProps> = ({ username, role }) => {
   return (
     <div className="relative">
       <button
-        className="flex items-center justify-center w-12 h-12 rounded-full"
+        className="flex items-center justify-center w-12 h-12 rounded-full cursor-pointer svg-cursor"
         onClick={toggleDropdown}
       >
-        <Image
-          src={generateUserProfilePicture(role)}
-          alt="User Picture"
-          className="image cursor-pointer"
-          typeof="button"
-          itemType="button"
-          width={500}
-          height={500}
-        />
+        <GenerateAvatarHeader isHeader={true} role={getUserDetails().role} />
       </button>
       {isOpen && (
         <div
@@ -77,14 +68,8 @@ const Profile: React.FC<ProfileProps> = ({ username, role }) => {
         >
           <div className="flex justify-between  flex-col md:flex-row">
             <div className="flex  mb-4">
-              <Image
-                className=" w-16 h-16 rounded-full shadow-lg"
-                src={generateUserProfilePicture(role)}
-                width={720}
-                height={720}
-                alt="Doctor Profile Image"
-              />
-              <div className="font-semibold text-black pl-3 pt-1 text-xl">
+              <GenerateAvatarHeader role={getUserDetails().role} />
+              <div className="font-semibold text-black pl-3 pt-2 text-xl">
                 {username}
                 <span className="block font-normal text-lg">{role}</span>
               </div>
