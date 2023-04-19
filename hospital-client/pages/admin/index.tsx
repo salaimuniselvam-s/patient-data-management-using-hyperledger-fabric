@@ -36,7 +36,9 @@ function AdminProfilePage() {
     <Doctor_Admin_ProfileCard
       imgSrc="/Admin.avif"
       {...adminDetail}
-      isPatient={false}
+      isProfile={true}
+      speciality="admin"
+      isAdmin={true}
     />
   );
 }

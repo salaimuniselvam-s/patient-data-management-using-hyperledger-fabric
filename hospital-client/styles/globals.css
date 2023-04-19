@@ -59,6 +59,9 @@ body {
   content: "\f058";
   margin-right: 6px;
 }
+.svg-cursor svg rect {
+  cursor: pointer;
+}
 
 /* table */
 

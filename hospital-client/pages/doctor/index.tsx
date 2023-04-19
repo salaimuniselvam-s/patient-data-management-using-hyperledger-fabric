@@ -36,7 +36,8 @@ function DoctorProfilePage() {
     <Doctor_Admin_ProfileCard
       imgSrc="/DoctorProfilePicture.avif"
       {...doctorDetail}
-      isPatient={false}
+      isDoctor={true}
+      isProfile={true}
     />
   );
 }

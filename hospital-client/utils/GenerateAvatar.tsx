@@ -223,15 +223,16 @@ export default GenerateAvatar;
 export const GenerateAvatarHeader: React.FC<{
   role: string;
   isHeader?: boolean;
-}> = ({ role, isHeader }) => {
+  isProfile?: boolean;
+}> = ({ role, isHeader, isProfile }) => {
   const styles = isHeader
     ? {
         width: "64px",
         height: "54px",
         marginBottom: "6px",
-        pointerEvent: "all",
-        cursor: "pointer",
       }
+    : isProfile
+    ? { width: "128px", height: "128px" }
     : { width: "64px", height: "64px" };
   if (role == "doctor")
     return (

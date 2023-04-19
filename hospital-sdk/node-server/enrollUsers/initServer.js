@@ -40,7 +40,7 @@ async function main() {
   // await enrollAdminHosp1();
   // await enrollAdminHosp2();
 
-  await waitSeconds(5000);
+  // await waitSeconds(5000);
 
   await initPatients();
 

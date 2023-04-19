@@ -71,7 +71,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (error) {
         window.location.href = "/";
-        console.log(error, "error");
+        console.error(error, "error");
         removeAuthCookies();
         removeUserDetails();
         return Promise.reject(error);

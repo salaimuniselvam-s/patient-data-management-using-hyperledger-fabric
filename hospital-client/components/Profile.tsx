@@ -49,7 +49,7 @@ const Profile: React.FC<ProfileProps> = ({ username, role }) => {
   return (
     <div className="relative">
       <button
-        className="flex items-center justify-center w-12 h-12 rounded-full cursor-pointer svg-cursor"
+        className="flex items-center justify-center w-12 h-12 rounded-full svg-cursor"
         onClick={toggleDropdown}
       >
         <GenerateAvatarHeader isHeader={true} role={getUserDetails().role} />
