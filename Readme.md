@@ -19,7 +19,7 @@ Follow the instructions to successfully setup the hospital network.
 1. Clone / Download the repository
 
 ```bash
-$ git clone https://github.com/salaimuniselvam-s/Hospital_Fabric.git
+$ git clone https://github.com/salaimuniselvam-s/patient-data-management-using-hyperledger-fabric
 ```
 
 2. **Before starting with the network is set-up start the docker.**
