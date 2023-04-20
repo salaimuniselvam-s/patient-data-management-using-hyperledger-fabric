@@ -54,11 +54,19 @@ app.get("/", (req, res) =>
 );
 
 // Mongodb Connection
-const uri = `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@cluster0.ndk0ctm.mongodb.net/?retryWrites=true&w=majority`;
+// const uri = `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@cluster0.ndk0ctm.mongodb.net/?retryWrites=true&w=majority`;
 
 console.log("Connecting To MongoDb...");
+
 mongoose
-  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  // .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(
+    `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@localhost:27018/UserCredentials`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => {
     console.log("Connected to MongoDB");
 

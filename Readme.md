@@ -94,7 +94,8 @@ $ npm install
 $ cp .env.example .env
 ```
 
-Set your Mongodb Credientails on the env file to store user login credentials.
+It will set the admin credentials for the mongodb containers into the .env file. <br>
+(Note: Modification of the credientials in the .env file will lead to connection error with the mongodb container.)
 
 ### Usage
 
@@ -209,3 +210,22 @@ $ curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/i
 
 $ ./install-fabric.sh docker
 ```
+
+## Acknowledgments
+
+We would like to express our gratitude to the following individuals and organizations for their contributions and support to our Fabric project:
+
+- The Hyperledger Fabric community for developing and maintaining such a powerful and flexible platform for enterprise blockchain solutions.
+- The authors and contributors of the following open-source projects, which we used extensively in our project:
+  - [Network Samples](https://github.com/hyperledger/fabric-samples) by Hyperledger Fabric
+  - [Patient Data Management Project](https://github.com/sgirdhar/hyperledger-fabric-patient-data-management) by [Sgirdhar](https://github.com/sgirdhar), [Vineet Bhat](https://github.com/bhatvineeth), [Towfi Caziz](https://github.com/towficaziz) and [Faraz Shamim](https://github.com/farazshamim9)
+
+## Note
+
+- This project is not yet production-ready and is intended for learning purposes only.
+
+- This project is a Hyperledger Fabric network implementation that showcases the basic features of Fabric and demonstrates how to interact with the network using chaincodes.
+
+- We created this project as a learning exercise to help us understand the basics of Fabric and how to build decentralized applications using the platform. We hope that it can serve as a starting point for others who are also interested in learning more about Fabric.
+
+- Please keep in mind that this project is a work in progress and may contain bugs or other issues. We welcome feedback and contributions from the community to help improve the project.

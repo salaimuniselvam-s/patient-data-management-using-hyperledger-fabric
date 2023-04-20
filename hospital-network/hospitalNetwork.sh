@@ -1,4 +1,5 @@
 SLEEP_TIME=5
+MONGO_COMPOSE_FILE="-f ./docker/docker-compose-mongodb.yaml"
 
 function setEnvPeer() {
 
@@ -80,6 +81,23 @@ function ValidateChaincodeonPeers() {
 
 }
 
+function startMongodbContainer() {
+  
+  echo "Starting Mongodb Container for storing user credentials"
+
+  docker-compose ${MONGO_COMPOSE_FILE} up -d 2>&1
+
+  docker ps -a
+  if [ $? -ne 0 ]; then
+    echo "ERROR !!!! Unable to start the mongodb container"
+    exit 1
+  fi
+}
+
+function removeMongodbContainer() {
+  docker-compose ${MONGO_COMPOSE_FILE} down
+}
+
 function createHospitalNetwork_DeployChaincode(){
   echo "Removing Old Wallets"
   rm -rf ../hospital-sdk/fabric-network/wallet/*
@@ -100,6 +118,9 @@ function createHospitalNetwork_DeployChaincode(){
   sleep $SLEEP_TIME
   echo "Deploying Hospital Contract on Hospital Channel"
   ./network.sh deployCC
+
+  # starting the mongodb container
+  startMongodbContainer
 
   validateChainCodeInstalledOnPeers
 
@@ -142,8 +163,13 @@ elif [ $1 == "validate" ]; then
   ValidateChaincodeonPeers
 elif [ $1 == "validateChaincode" ]; then
   ./scripts/custom/validateAllFunctionsOnChaincode.sh
+elif [ $1 == "upMongo" ]; then
+  startMongodbContainer
+elif [ $1 == "downMongo" ]; then
+  removeMongodbContainer
 elif [ $1 == "down" ]; then
   ./network.sh down
+  removeMongodbContainer
 else
   printHelp
   exit 1
