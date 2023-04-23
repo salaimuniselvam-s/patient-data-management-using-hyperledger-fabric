@@ -37,7 +37,7 @@ const authenticateJWT = (req, res, next) => {
  */
 const generateAccessToken = (username, role) => {
   return jwt.sign({ username: username, role: role }, jwtSecretToken, {
-    expiresIn: "1m",
+    expiresIn: "15m",
   });
 };
 

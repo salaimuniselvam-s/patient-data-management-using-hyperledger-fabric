@@ -24,13 +24,14 @@ $ git clone https://github.com/salaimuniselvam-s/Hospital_Fabric.git
 
 2. **Before starting with the network is set-up start the docker.**
 
-3. Run the following command to install the binaries and images.
+3. Run the following command to pull the docker images.
 
 ```bash
-$ curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
+$ curl -sSL https://bit.ly/2ysbOFE | bash -s --  2.0.1 1.5.5 -s -b
 
-$ ./install-fabric.sh docker
 ```
+
+It will pull the respective fabric docker images for the binaries.
 
 4. Change the working directory to hospital-network
 
@@ -206,9 +207,7 @@ $docker volume prune
 6. Once the docker is up ,open a new terminal and download the images. (same as Step 3 in Bring up the network section)
 
 ```bash
-$ curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
-
-$ ./install-fabric.sh docker
+$ curl -sSL https://bit.ly/2ysbOFE | bash -s --  2.0.1 1.5.5 -s -b
 ```
 
 ## Acknowledgments
