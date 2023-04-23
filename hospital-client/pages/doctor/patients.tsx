@@ -1,7 +1,7 @@
 import { withAuth } from "@/components/Auth";
 import Loader from "@/components/Helper/Loader";
 import PatientsUnderDoctor from "@/components/Doctors/PatientsUnderDoctor";
-import { getPatientsUnderDoctorAction } from "@/redux/actions/doctorActions";
+import { getPatientsUnderDoctor } from "@/redux/actions/doctorActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { PatientDetailsUpdateByDoctor } from "@/types/patient";
 import React, { useEffect } from "react";
@@ -12,7 +12,7 @@ const AuthorisedPatientsForDoctors = () => {
   const doctors = useAppSelector((state) => state.doctor);
 
   useEffect(() => {
-    dispatch(getPatientsUnderDoctorAction());
+    dispatch(getPatientsUnderDoctor());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

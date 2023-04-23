@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/redux/store";
-import { logOutUserAction } from "@/redux/actions/authActions";
+import { logOutUser } from "@/redux/actions/authActions";
 import { getAuthCookies, getUserDetails } from "@/redux/utils/cookies";
 import { GenerateAvatarHeader } from "@/utils/GenerateAvatar";
 
@@ -77,7 +77,7 @@ const Profile: React.FC<ProfileProps> = ({ username, role }) => {
           </div>
           <div
             className="block px-4 py-2 text-lg text-black cursor-pointer hover:bg-gray-300"
-            onClick={() => dispatch(logOutUserAction())}
+            onClick={() => dispatch(logOutUser())}
           >
             <i className="fas fa-sign-out-alt mr-2"></i> Sign out
           </div>

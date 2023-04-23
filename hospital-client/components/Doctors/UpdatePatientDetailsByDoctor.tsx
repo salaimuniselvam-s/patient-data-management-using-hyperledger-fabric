@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { toast } from "react-toastify";
 import axiosInstance from "@/redux/axios/axiosInterceptor";
-import { getPatientsUnderDoctorAction } from "@/redux/actions/doctorActions";
+import { getPatientsUnderDoctor } from "@/redux/actions/doctorActions";
 
 type patientDetail = {
   patientDetail: PatientDetailsUpdateByDoctor;
@@ -30,7 +30,7 @@ const UpdatePatientDetailsByDoctor: React.FC<patientDetail> = ({
         patientDetails
       );
 
-      dispatch(getPatientsUnderDoctorAction());
+      dispatch(getPatientsUnderDoctor());
       closeModal();
       toast.dismiss();
       toast.success("Successfully Updated Details..");

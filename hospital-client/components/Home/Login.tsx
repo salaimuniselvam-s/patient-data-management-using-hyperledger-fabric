@@ -1,4 +1,4 @@
-import { logInUserAction } from "@/redux/actions/authActions";
+import { logInUser } from "@/redux/actions/authActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { UserCredentialsFields } from "@/types/auth";
 import { redirectToProfilePage } from "@/utils/routeUtils";
@@ -36,7 +36,7 @@ const Login = () => {
   });
 
   const onSubmit = (userDetails: UserCredentialsFields) => {
-    dispatch(logInUserAction(userDetails));
+    dispatch(logInUser(userDetails));
   };
 
   function togglePasswordVisibility() {

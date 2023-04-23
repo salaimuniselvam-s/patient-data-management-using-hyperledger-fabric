@@ -3,7 +3,7 @@ import {
   HOSPITAL_LIST,
   ROLE_PATIENT,
 } from "@/constants/constants";
-import { registerUserAction } from "@/redux/actions/authActions";
+import { registerUser } from "@/redux/actions/authActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { PatientRegistrationFields } from "@/types/patient";
 import { redirectToProfilePage } from "@/utils/routeUtils";
@@ -31,7 +31,7 @@ const RegisterPatient = () => {
   }, [authState]);
 
   const RegisterAsPatient = (patientDetails: PatientRegistrationFields) => {
-    dispatch(registerUserAction(ROLE_PATIENT, patientDetails));
+    dispatch(registerUser({ role: ROLE_PATIENT, details: patientDetails }));
   };
 
   return (

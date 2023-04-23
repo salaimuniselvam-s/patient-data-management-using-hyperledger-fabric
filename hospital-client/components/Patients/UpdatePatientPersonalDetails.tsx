@@ -9,7 +9,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { UpdatePatientDetailsSchema } from "@/utils/patients";
 import { toast } from "react-toastify";
 import axiosInstance from "@/redux/axios/axiosInterceptor";
-import { getPatientPersonalDetailsAction } from "@/redux/actions/patientActions";
+import { getPatientPersonalDetails } from "@/redux/actions/patientActions";
 import SelectField from "@/components/Helper/FormSelect";
 
 type patientDetail = {
@@ -34,7 +34,7 @@ const UpdatePatientPersonalDetail: React.FC<patientDetail> = ({
         patientDetails
       );
 
-      dispatch(getPatientPersonalDetailsAction(patientDetail.patientId));
+      dispatch(getPatientPersonalDetails(patientDetail.patientId));
 
       closeModal();
       toast.dismiss();

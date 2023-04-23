@@ -1,7 +1,7 @@
 import { withAuth } from "@/components/Auth";
 import Loader from "@/components/Helper/Loader";
 import PatientCard from "@/components/Admin/PatientCard";
-import { getAllPatientDetailsAction } from "@/redux/actions/adminActions";
+import { getAllPatientDetails } from "@/redux/actions/adminActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import React, { useEffect } from "react";
 
@@ -10,7 +10,7 @@ const AllPatients = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getAllPatientDetailsAction());
+    dispatch(getAllPatientDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

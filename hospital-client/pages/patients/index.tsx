@@ -1,6 +1,6 @@
 import { withAuth } from "@/components/Auth";
 import { Dialog, Transition } from "@headlessui/react";
-import { getPatientPersonalDetailsAction } from "@/redux/actions/patientActions";
+import { getPatientPersonalDetails } from "@/redux/actions/patientActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getUserDetails } from "@/redux/utils/cookies";
 import { patientPersonalDetails } from "@/utils/patients";
@@ -26,7 +26,7 @@ function PatientProfilePage() {
   }
 
   useEffect(() => {
-    dispatch(getPatientPersonalDetailsAction(getUserDetails().username));
+    dispatch(getPatientPersonalDetails(getUserDetails().username));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

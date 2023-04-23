@@ -1,5 +1,5 @@
 import { API_BASE_URL } from "@/constants/constants";
-import { createAsyncThunk, Dispatch } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { PatientRegistrationFields } from "@/types/patient";
 import { DoctorRegistrationFields } from "@/types/doctor";
@@ -14,7 +14,7 @@ interface RegistrationFields {
   details: PatientRegistrationFields | DoctorRegistrationFields;
 }
 
-const registerUser = createAsyncThunk(
+export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (registrationFields: RegistrationFields, thunkAPI) => {
     try {
@@ -40,7 +40,7 @@ const registerUser = createAsyncThunk(
   }
 );
 
-const logInUser = createAsyncThunk(
+export const logInUser = createAsyncThunk(
   "auth/logIn",
   async (UserDetails: UserCredentials, thunkAPI) => {
     try {
@@ -61,40 +61,24 @@ const logInUser = createAsyncThunk(
   }
 );
 
-const logOutUser = createAsyncThunk("auth/logOut", async (_, thunkAPI) => {
-  try {
-    thunkAPI.dispatch(auth.actions.isPending("Logging Out..."));
-    const response = await axiosInstance.delete(`${API_BASE_URL}/auth/logout`);
-    removeAuthCookies();
-    removeUserDetails();
-    thunkAPI.dispatch(auth.actions.logOut(response.data));
-  } catch (error) {
-    thunkAPI.dispatch(
-      auth.actions.isError("Logout Failed. Please Try Again..")
-    );
-    console.error(error, "error");
-  } finally {
-    thunkAPI.dispatch(auth.actions.isFullfilled());
+export const logOutUser = createAsyncThunk(
+  "auth/logOut",
+  async (_, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(auth.actions.isPending("Logging Out..."));
+      const response = await axiosInstance.delete(
+        `${API_BASE_URL}/auth/logout`
+      );
+      removeAuthCookies();
+      removeUserDetails();
+      thunkAPI.dispatch(auth.actions.logOut(response.data));
+    } catch (error) {
+      thunkAPI.dispatch(
+        auth.actions.isError("Logout Failed. Please Try Again..")
+      );
+      console.error(error, "error");
+    } finally {
+      thunkAPI.dispatch(auth.actions.isFullfilled());
+    }
   }
-});
-
-export const registerUserAction = (
-  role: "patient" | "doctor",
-  details: PatientRegistrationFields | DoctorRegistrationFields
-) => {
-  return (dispatch: Dispatch<any>) => {
-    dispatch(registerUser({ role, details }));
-  };
-};
-
-export const logOutUserAction = () => {
-  return (dispatch: Dispatch<any>) => {
-    dispatch(logOutUser());
-  };
-};
-
-export const logInUserAction = (userdetails: UserCredentials) => {
-  return (dispatch: Dispatch<any>) => {
-    dispatch(logInUser(userdetails));
-  };
-};
+);

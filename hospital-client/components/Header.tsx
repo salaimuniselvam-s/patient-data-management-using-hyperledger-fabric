@@ -9,7 +9,7 @@ import { Transition } from "@headlessui/react";
 import { isPageActive } from "@/utils/routeUtils";
 import Profile from "./Profile";
 import { getUserDetails } from "@/redux/utils/cookies";
-import { logOutUserAction } from "@/redux/actions/authActions";
+import { logOutUser } from "@/redux/actions/authActions";
 
 export default function Header() {
   const router = useRouter();
@@ -203,7 +203,7 @@ export default function Header() {
                   <div className="mt-12 flex justify-center">
                     <div
                       className="block px-4 py-2 text-lg text-white cursor-pointer"
-                      onClick={() => dispatch(logOutUserAction())}
+                      onClick={() => dispatch(logOutUser())}
                     >
                       <i className="fas fa-sign-out-alt mr-2"></i> Sign out
                     </div>

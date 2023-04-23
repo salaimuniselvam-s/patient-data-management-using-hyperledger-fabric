@@ -1,7 +1,7 @@
 import { withAuth } from "@/components/Auth";
 import Doctor_Admin_ProfileCard from "@/components/Admin/Doctor_Admin_ProfileCard";
 import Loader from "@/components/Helper/Loader";
-import { getDoctorDetailsAction } from "@/redux/actions/doctorActions";
+import { getDoctorPersonalDetails } from "@/redux/actions/doctorActions";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useEffect, useState } from "react";
 
@@ -16,7 +16,7 @@ function DoctorProfilePage() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getDoctorDetailsAction());
+    dispatch(getDoctorPersonalDetails());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

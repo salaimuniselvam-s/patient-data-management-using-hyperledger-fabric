@@ -8,7 +8,7 @@ import React, { useEffect, Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { toast } from "react-toastify";
 import { getUserDetails } from "@/redux/utils/cookies";
-import { getPatientPersonalDetailsAction } from "@/redux/actions/patientActions";
+import { getPatientPersonalDetails } from "@/redux/actions/patientActions";
 import Loader from "@/components/Helper/Loader";
 import { withAuth } from "@/components/Auth";
 
@@ -87,7 +87,7 @@ const DoctorByHospital = () => {
         }/${doctor}`
       );
       fetchDoctors(slug || "");
-      dispatch(getPatientPersonalDetailsAction(getUserDetails().username));
+      dispatch(getPatientPersonalDetails(getUserDetails().username));
       toast.dismiss();
       toast.success(`Access ${grant ? "Granted" : "Revoked"} Successfully.`);
     } catch (error) {

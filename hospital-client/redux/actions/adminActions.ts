@@ -2,13 +2,12 @@ import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../axios/axiosInterceptor";
 import { API_BASE_URL } from "@/constants/constants";
 import { admin } from "../slices/admin";
-import { Dispatch } from "react";
 
 export const getAdminPersonalDetails = createAction(
   "admin/getAdminPersonalDetails"
 );
 
-const getAllPatientDetails = createAsyncThunk(
+export const getAllPatientDetails = createAsyncThunk(
   "admin/getAllPatientDetails",
   async (_, thunkAPI) => {
     try {
@@ -30,7 +29,7 @@ const getAllPatientDetails = createAsyncThunk(
   }
 );
 
-const getAllDoctorsDetails = createAsyncThunk(
+export const getAllDoctorsDetails = createAsyncThunk(
   "admin/getAllDoctorsDetails",
   async (_, thunkAPI) => {
     try {
@@ -51,15 +50,3 @@ const getAllDoctorsDetails = createAsyncThunk(
     }
   }
 );
-
-export const getAllPatientDetailsAction = () => {
-  return (dispatch: Dispatch<any>) => {
-    dispatch(getAllPatientDetails());
-  };
-};
-
-export const getAllDoctorsDetailsAction = () => {
-  return (dispatch: Dispatch<any>) => {
-    dispatch(getAllDoctorsDetails());
-  };
-};

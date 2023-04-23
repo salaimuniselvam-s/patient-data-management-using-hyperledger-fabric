@@ -20,7 +20,7 @@ const HomeButtons = () => {
           </button>
         </Link>
         {/* <button
-          onClick={() => dispatch(logOutUserAction())}
+          onClick={() => dispatch(logOutUser())}
           className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center"
         >
           Log Out

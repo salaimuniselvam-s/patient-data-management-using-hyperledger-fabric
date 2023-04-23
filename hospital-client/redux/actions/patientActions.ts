@@ -2,9 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../axios/axiosInterceptor";
 import { API_BASE_URL } from "@/constants/constants";
 import { patient } from "../slices/patients";
-import { Dispatch } from "react";
 
-const getPatientPersonalDetails = createAsyncThunk(
+export const getPatientPersonalDetails = createAsyncThunk(
   "patient/getPatientPersonalDetails",
   async (patientId: string, thunkAPI) => {
     try {
@@ -27,9 +26,3 @@ const getPatientPersonalDetails = createAsyncThunk(
     }
   }
 );
-
-export const getPatientPersonalDetailsAction = (patientId: string) => {
-  return (dispatch: Dispatch<any>) => {
-    dispatch(getPatientPersonalDetails(patientId));
-  };
-};
