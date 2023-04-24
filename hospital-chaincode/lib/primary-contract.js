@@ -11,18 +11,18 @@ const { Contract } = require("fabric-contract-api");
 let initPatients = require("./initLedger.json");
 
 class PrimaryContract extends Contract {
-  async InitPatientLedger(ctx) {
-    console.info("============= START : Initialize Ledger ===========");
-    for (let i = 0; i < initPatients.length; i++) {
-      initPatients[i].docType = "patient";
-      await ctx.stub.putState(
-        "PID" + i,
-        Buffer.from(JSON.stringify(initPatients[i]))
-      );
-      console.info("Added <--> ", initPatients[i]);
-    }
-    console.info("============= END : Initialize Ledger ===========");
-  }
+  // async InitPatientLedger(ctx) {
+  //   console.info("============= START : Initialize Ledger ===========");
+  //   for (let i = 0; i < initPatients.length; i++) {
+  //     initPatients[i].docType = "patient";
+  //     await ctx.stub.putState(
+  //       "PID" + i,
+  //       Buffer.from(JSON.stringify(initPatients[i]))
+  //     );
+  //     console.info("Added <--> ", initPatients[i]);
+  //   }
+  //   console.info("============= END : Initialize Ledger ===========");
+  // }
 
   //Read patient details based on patientId
   async readPatient(ctx, patientId) {

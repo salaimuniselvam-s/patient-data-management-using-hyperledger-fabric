@@ -1,16 +1,14 @@
-const fs = require("fs");
 const PatientDetails = require("./initPatients");
 const DoctorDetails = require("./initDoctors");
-const enrollAdminHosp1 = require("./enrollAdmin-Hospital1.js");
-const enrollAdminHosp2 = require("./enrollAdmin-Hospital2");
 const { registerPatients } = require("./registerPatients");
 const { registerDoctors } = require("./registerDoctors");
 const { waitSeconds } = require("../utils/utils");
+const { getAllRegisteredUsers } = require("./utils");
 
 /**
  * @description Register and Enroll Patients on the initPatients json.
  */
-async function initPatients() {
+async function initPatients(PatientDetails) {
   try {
     for (const details of PatientDetails) {
       await registerPatients(details);
@@ -23,7 +21,7 @@ async function initPatients() {
 /**
  * @description Create doctors in both organizations based on the initDoctors JSON
  */
-async function initDoctors() {
+async function initDoctors(DoctorDetails) {
   try {
     for (const details of DoctorDetails) {
       await registerDoctors(details);
@@ -34,19 +32,26 @@ async function initDoctors() {
 }
 
 /**
- * @description Function to initialise the backend server, enrolls and regsiter the admins and initPatients.
+ * @description Function to register and enroll patients and doctors.
  */
 async function main() {
-  // await enrollAdminHosp1();
-  // await enrollAdminHosp2();
-
-  // await waitSeconds(5000);
-
-  await initPatients();
-
+  await initPatients(PatientDetails);
   await waitSeconds(2000);
+  await initDoctors(DoctorDetails);
+  const allUsers = await getAllRegisteredUsers();
+  // Creating Wallets for already enrolled doctors who is not in the test record
+  const testDoctors = DoctorDetails.map((details) => details.username);
+  const doctors = allUsers
+    ?.filter((details) => details.role === "doctor")
+    .filter((doctors) => !testDoctors.includes(doctors.username));
+  await initDoctors(doctors);
 
-  await initDoctors();
+  // Creating Wallets for already enrolled patients who is not in the test record
+  const testPatients = PatientDetails.map((details) => details.username);
+  const patients = allUsers
+    ?.filter((details) => details.role === "patient")
+    .filter((patients) => !testPatients.includes(patients.username));
+  await initPatients(patients);
 }
 
 main();

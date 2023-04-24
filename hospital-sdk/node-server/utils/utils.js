@@ -93,6 +93,8 @@ async function deleteRefreshToken(refreshToken) {
   });
 }
 
+const BASE_URL = "http://localhost:3001";
+
 module.exports = {
   saveRefreshToken,
   compareRefreshToken,
@@ -107,4 +109,5 @@ module.exports = {
   generateHospitalAdmin,
   TEMP_PASSWORD,
   waitSeconds,
+  BASE_URL,
 };

@@ -77,7 +77,9 @@ approveForMyOrg() {
   HOSPITAL=$1
   setGlobals $HOSPITAL
   set -x
-  peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.geakminds.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name hospitalcontract --version ${VERSION} --init-required --package-id ${PACKAGE_ID} --sequence ${VERSION} >&log.txt
+  # peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.geakminds.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name hospitalcontract --version ${VERSION} --init-required --package-id ${PACKAGE_ID} --sequence ${VERSION} >&log.txt
+
+   peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.geakminds.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name hospitalcontract --version ${VERSION}  --package-id ${PACKAGE_ID} --sequence ${VERSION} >&log.txt
   set +x
   cat log.txt
   verifyResult $res "Chaincode definition approved on peer0.hopsital${HOSPITAL} on channel '$CHANNEL_NAME' failed"
@@ -99,7 +101,8 @@ checkCommitReadiness() {
     sleep $DELAY
     echo "Attempting to check the commit readiness of the chaincode definition on peer0.hopsital${HOSPITAL} secs"
     set -x
-    peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name hospitalcontract --version ${VERSION} --sequence ${VERSION} --output json --init-required >&log.txt
+    # peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name hospitalcontract --version ${VERSION} --sequence ${VERSION} --output json --init-required >&log.txt
+    peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name hospitalcontract --version ${VERSION} --sequence ${VERSION} --output json >&log.txt
     res=$?
     set +x
     let rc=0
@@ -129,7 +132,8 @@ commitChaincodeDefinition() {
   # peer (if join was successful), let's supply it directly as we know
   # it using the "-o" option
   set -x
-  peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.geakminds.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name hospitalcontract $PEER_CONN_PARMS --version ${VERSION} --sequence ${VERSION} --init-required >&log.txt
+  # peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.geakminds.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name hospitalcontract $PEER_CONN_PARMS --version ${VERSION} --sequence ${VERSION} --init-required >&log.txt 
+  peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.geakminds.com --tls  $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA --channelID $CHANNEL_NAME --name hospitalcontract $PEER_CONN_PARMS --version ${VERSION} --sequence ${VERSION} >&log.txt
   res=$?
   set +x
   cat log.txt
@@ -146,6 +150,13 @@ queryCommitted() {
   echo "===================== Querying chaincode definition on peer0.hopsital${HOSPITAL} on channel '$CHANNEL_NAME'... ===================== "
 	local rc=1
 	local COUNTER=1
+
+  if [ -z "$3" ]; then
+  MAX_RETRY="5" 
+  else
+  MAX_RETRY="$3"
+  fi
+
 	# continue to poll
   # we either get a successful response, or reach MAX RETRY
 	while [ $rc -ne 0 -a $COUNTER -lt $MAX_RETRY ] ; do
@@ -167,7 +178,11 @@ queryCommitted() {
   else
     echo "!!!!!!!!!!!!!!! After $MAX_RETRY attempts, Query chaincode definition result on peer0.hopsital${HOSPITAL} is INVALID !!!!!!!!!!!!!!!!"
     echo
-    exit 1
+    if [ "$2" != "validatingQueryCommit" ]; then
+      exit 1
+    else 
+      return 1
+    fi
   fi
 }
 
@@ -180,7 +195,8 @@ chaincodeInvokeInit() {
   # peer (if join was successful), let's supply it directly as we know
   # it using the "-o" option
   set -x
-  peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.geakminds.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n hospitalcontract $PEER_CONN_PARMS --isInit -c '{"function":"InitPatientLedger","Args":[]}' >&log.txt
+  peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.geakminds.com --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n hospitalcontract $PEER_CONN_PARMS  >&log.txt
+  # --isInit -c '{"function":"InitPatientLedger","Args":[]}'
   res=$?
   set +x
   cat log.txt
@@ -233,6 +249,14 @@ installChaincode 1
 echo "Install chaincode on peer0.hospital2..."
 installChaincode 2
 
+queryCommitted 1 "validatingQueryCommit" 2
+
+if [ $? -eq 0 ]; then
+    echo "Chaincode is already Committed.."
+    exit 0
+fi
+
+
 ## query whether the chaincode is installed
 queryInstalled 1
 
@@ -263,16 +287,16 @@ queryCommitted 1
 queryCommitted 2
 
 ## Invoke the chaincode
-chaincodeInvokeInit 1 2
+# chaincodeInvokeInit 1 2
 
-sleep 10
+# sleep 10
 
 # Query chaincode on peer0.hospital1
-echo "Querying chaincode on peer0.hospital1..."
-chaincodeQuery 1
+# echo "Querying chaincode on peer0.hospital1..."
+# chaincodeQuery 1
 
 # Query chaincode on peer0.hospital2
-echo "Querying chaincode on peer0.hospital2..."
-chaincodeQuery 2
+# echo "Querying chaincode on peer0.hospital2..."
+# chaincodeQuery 2
 
 exit 0

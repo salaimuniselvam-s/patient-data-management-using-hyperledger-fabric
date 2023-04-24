@@ -7,6 +7,7 @@ version: "2"
 
 networks:
   hospital-network:
+    driver: bridge
 
 services:
   couchdb0:
@@ -19,6 +20,8 @@ services:
       - COUCHDB_PASSWORD=
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
     # for example map it to utilize Fauxton User Interface in dev environments.
+    volumes:
+      - peer0_hospital1_data:/opt/couchdb/data
     ports:
       - "5984:5984"
     networks:
@@ -48,6 +51,8 @@ services:
     # for example map it to utilize Fauxton User Interface in dev environments.
     ports:
       - "7984:5984"
+    volumes:
+      - peer0_hospital2_data:/opt/couchdb/data
     networks:
       - hospital-network
 
@@ -62,3 +67,7 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
     depends_on:
       - couchdb1
+
+volumes:
+  peer0_hospital1_data:
+  peer0_hospital2_data:

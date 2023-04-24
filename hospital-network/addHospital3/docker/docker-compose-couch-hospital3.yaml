@@ -7,6 +7,7 @@ version: "2"
 
 networks:
   hospital-network:
+    driver: bridge
 
 services:
   couchdb4:
@@ -21,6 +22,8 @@ services:
     # for example map it to utilize Fauxton User Interface in dev environments.
     ports:
       - "9984:5984"
+    volumes:
+      - peer0_hospital3_data:/opt/couchdb/data
     networks:
       - hospital-network
 
@@ -37,3 +40,5 @@ services:
       - couchdb4
     networks:
       - hospital-network
+volumes:
+  peer0_hospital3_data:

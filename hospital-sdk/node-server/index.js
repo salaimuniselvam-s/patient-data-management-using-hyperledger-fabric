@@ -32,6 +32,8 @@ const adminRoutes = require("./routes/admin");
 const authRoutes = require("./routes/auth");
 const deleteRoute = require("./db/deleteRecords");
 const storeAdminCredentials = require("./db/storeAdminCredentials");
+const isUserRegistered = require("./db/isUserRegistered");
+const allUsers = require("./db/allUsers");
 const enrollAdmins = require("./enrollUsers/initAdmins");
 
 // Swagger Docs
@@ -43,8 +45,12 @@ app.use("/admin", adminRoutes);
 app.use("/doctors", doctorRoutes);
 app.use("/patients", patientRoutes);
 app.use("/auth", authRoutes);
-app.use("/deleteRecords", deleteRoute);
+
+// Testing Purpose Routes
+// app.use("/deleteRecords", deleteRoute);
 app.use("/storeAdminCredentials", storeAdminCredentials);
+app.use("/users/registered", isUserRegistered);
+app.use("/users/_all", allUsers);
 
 const port = 3001;
 app.get("/", (req, res) =>

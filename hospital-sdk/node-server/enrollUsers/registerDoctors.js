@@ -1,11 +1,23 @@
-const { fetchAccessToken } = require("./registerPatients");
+const { registerUser } = require("../../fabric-network/app");
+const { BASE_URL } = require("../utils/utils");
+const { fetchAccessToken, isUserRegistered } = require("./utils");
 
 const registerDoctors = async (records) => {
   try {
+    const isRegistered = await isUserRegistered(records.username);
+    if (isRegistered.isUserRegistered) {
+      await registerUser(
+        JSON.stringify({
+          ...isRegistered.userDetails,
+          userId: isRegistered.userDetails.username,
+        })
+      );
+      return;
+    }
     const fetch = (await import("node-fetch")).default;
     const accessToken = await fetchAccessToken(records.hospitalId);
     console.log("Register and Enrolling Doctors..");
-    const url = "http://localhost:3001/admin/doctors/register";
+    const url = `${BASE_URL}/admin/doctors/register`;
     const options = {
       method: "POST",
       headers: {

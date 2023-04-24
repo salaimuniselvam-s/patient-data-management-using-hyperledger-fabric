@@ -1,36 +1,23 @@
-const { hashPassword } = require("../utils/hashPassword");
-const { ROLE_ADMIN, generateHospitalAdmin } = require("../utils/utils");
-require("dotenv").config();
-const salt = process.env.SAMPLE_SALT;
-
-const fetchAccessToken = async (hospitalId) => {
-  console.log("Fetching Access Token..");
-  const fetch = (await import("node-fetch")).default;
-  const url = "http://localhost:3001/auth/login";
-  const options = {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json;charset=UTF-8",
-    },
-    body: JSON.stringify({
-      username: `${generateHospitalAdmin(hospitalId)}`,
-      password: hashPassword(`${generateHospitalAdmin(hospitalId)}pw`, salt),
-      role: ROLE_ADMIN,
-    }),
-  };
-  const response = await fetch(url, options);
-  const token = await response.json();
-  console.log(token);
-  return token.accessToken;
-};
+const { registerUser } = require("../../fabric-network/app");
+const { BASE_URL } = require("../utils/utils");
+const { isUserRegistered, fetchAccessToken } = require("./utils");
 
 const registerPatients = async (records) => {
   try {
+    const isRegistered = await isUserRegistered(records.username);
+    if (isRegistered.isUserRegistered) {
+      await registerUser(
+        JSON.stringify({
+          ...isRegistered.userDetails,
+          userId: isRegistered.userDetails.username,
+        })
+      );
+      return;
+    }
     const fetch = (await import("node-fetch")).default;
     const accessToken = await fetchAccessToken(records.hospitalId);
     console.log("Register and Enrolling Patients..");
-    const url = "http://localhost:3001/admin/patients/register";
+    const url = `${BASE_URL}/admin/patients/register`;
     const options = {
       method: "POST",
       headers: {
@@ -54,4 +41,4 @@ const registerPatients = async (records) => {
   }
 };
 
-module.exports = { registerPatients, fetchAccessToken };
+module.exports = { registerPatients };

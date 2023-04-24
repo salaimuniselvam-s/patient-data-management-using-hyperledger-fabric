@@ -71,13 +71,13 @@ function ValidateChaincodeonPeers() {
   setEnvPeer 1
   peer channel getinfo -c hospital-channel
   peer lifecycle chaincode queryinstalled 
-  chaincodeQuery 1
+  # chaincodeQuery 1
 
   echo "Validation on Hospital2-Peer0"
   setEnvPeer 2
   peer channel getinfo -c hospital-channel
   peer lifecycle chaincode queryinstalled 
-  chaincodeQuery 2
+  # chaincodeQuery 2
 
 }
 
@@ -95,7 +95,7 @@ function startMongodbContainer() {
 }
 
 function removeMongodbContainer() {
-  docker-compose ${MONGO_COMPOSE_FILE} down
+  docker-compose ${MONGO_COMPOSE_FILE} down --remove-orphans 2>&1
 }
 
 function createHospitalNetwork_DeployChaincode(){
@@ -147,7 +147,7 @@ function addHospital3() {
   setEnvPeer 3
   peer channel getinfo -c hospital-channel
   peer lifecycle chaincode queryinstalled 
-  chaincodeQuery 3
+  # chaincodeQuery 3
 
 }
 
@@ -159,6 +159,8 @@ elif [ $1 == "peer" ]; then
   peer lifecycle chaincode queryinstalled
 elif [ $1 == "addHosp3" ]; then
   addHospital3
+elif [ $1 == "deploy" ]; then
+ ./network.sh deployCC
 elif [ $1 == "validate" ]; then
   ValidateChaincodeonPeers
 elif [ $1 == "validateChaincode" ]; then

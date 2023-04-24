@@ -80,24 +80,30 @@ const createPatient = async (req, res) => {
     );
     return res.status(400).send(registerUserRes.error);
   }
-  const patientDetails = new UserDetails({
+  const isPatientExist = await UserDetails.findOne({
     username: req.body.username,
-    password: req.body.password,
-    role: ROLE_PATIENT,
-    hospitalId: req.body.hospitalId,
   });
 
-  patientDetails
-    .save()
-    .then(() => console.log("Patient Details saved to database"))
-    .catch((error) => {
-      console.error(error);
-      return res
-        .status(406)
-        .send(
-          "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database"
-        );
+  if (!isPatientExist) {
+    const patientDetails = new UserDetails({
+      username: req.body.username,
+      password: req.body.password,
+      role: ROLE_PATIENT,
+      hospitalId: req.body.hospitalId,
     });
+
+    patientDetails
+      .save()
+      .then(() => console.log("Patient Details saved to database"))
+      .catch((error) => {
+        console.error(error);
+        return res
+          .status(406)
+          .send(
+            "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database"
+          );
+      });
+  }
 
   const { accessToken, refreshToken } = generateTokens(
     req.body.username,
@@ -121,7 +127,7 @@ const createPatient = async (req, res) => {
 const createDoctor = async (req, res) => {
   // User role from the request header is validated
   // const userRole = req.headers.role;
-  let { hospitalId, username, password } = req.body;
+  let { hospitalId, username, password, speciality } = req.body;
   hospitalId = parseInt(hospitalId);
 
   // const isValidate = await validateRole([ROLE_ADMIN], userRole, res);
@@ -138,25 +144,30 @@ const createDoctor = async (req, res) => {
   if (response.error) {
     return res.status(400).send(response.error);
   }
-  const doctorDetails = new UserDetails({
-    username: username,
-    password: password,
-    role: ROLE_DOCTOR,
-    hospitalId,
-    speciality: req.body.speciality,
-  });
 
-  doctorDetails
-    .save()
-    .then(() => console.log("Doctor Details saved to database"))
-    .catch((error) => {
-      console.error(error);
-      return res
-        .status(406)
-        .send(
-          "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database"
-        );
+  const isDoctorExist = await UserDetails.findOne({ username: username });
+
+  if (!isDoctorExist) {
+    const doctorDetails = new UserDetails({
+      username: username,
+      password: password,
+      role: ROLE_DOCTOR,
+      hospitalId,
+      speciality: speciality,
     });
+
+    doctorDetails
+      .save()
+      .then(() => console.log("Doctor Details saved to database"))
+      .catch((error) => {
+        console.error(error);
+        return res
+          .status(406)
+          .send(
+            "Successfully registered on Fabric. But Failed to Update Creditials into MongoDB Database"
+          );
+      });
+  }
 
   const { accessToken, refreshToken } = generateTokens(username, ROLE_DOCTOR);
 

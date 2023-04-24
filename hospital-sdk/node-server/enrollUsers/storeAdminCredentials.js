@@ -1,5 +1,7 @@
+const { BASE_URL } = require("../utils/utils");
+
 const storeAdminCredentials = async (records) => {
-  const url = "http://localhost:3001/storeAdminCredentials";
+  const url = `${BASE_URL}/storeAdminCredentials`;
   const options = {
     method: "POST",
     headers: {
