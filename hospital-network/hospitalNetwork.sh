@@ -99,9 +99,7 @@ function removeMongodbContainer() {
 }
 
 function createHospitalNetwork_DeployChaincode(){
-  echo "Removing Old Wallets"
-  rm -rf ../hospital-sdk/fabric-network/wallet/*
-
+  
   echo "Creating Hospital Network"
   createHospitalNetwork
   setEnvPeer 1
@@ -170,6 +168,8 @@ elif [ $1 == "upMongo" ]; then
 elif [ $1 == "downMongo" ]; then
   removeMongodbContainer
 elif [ $1 == "down" ]; then
+  echo "Removing Old Wallets"
+  rm -rf ../hospital-sdk/fabric-network/wallet/*
   ./network.sh down
   removeMongodbContainer
 else

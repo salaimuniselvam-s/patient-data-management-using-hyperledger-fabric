@@ -1,8 +1,8 @@
 const { registerUser } = require("../../fabric-network/app");
 const { BASE_URL } = require("../utils/utils");
-const { fetchAccessToken, isUserRegistered } = require("./utils");
+const { isUserRegistered } = require("./utils");
 
-const registerDoctors = async (records) => {
+const registerDoctors = async (records, accessToken) => {
   try {
     const isRegistered = await isUserRegistered(records.username);
     if (isRegistered.isUserRegistered) {
@@ -15,7 +15,6 @@ const registerDoctors = async (records) => {
       return;
     }
     const fetch = (await import("node-fetch")).default;
-    const accessToken = await fetchAccessToken(records.hospitalId);
     console.log("Register and Enrolling Doctors..");
     const url = `${BASE_URL}/admin/doctors/register`;
     const options = {
@@ -41,4 +40,4 @@ const registerDoctors = async (records) => {
   }
 };
 
-module.exports = { registerDoctors, fetchAccessToken };
+module.exports = { registerDoctors };
