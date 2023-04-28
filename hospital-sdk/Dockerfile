@@ -5,7 +5,7 @@ FROM node:16-alpine
 WORKDIR /app/fabric-network
 
 # Copy the contents of the fabric-network directory into the image
-COPY fabric-network/ .
+COPY fabric-network/ . 
 
 # Install dependencies for fabric-network
 RUN npm install
@@ -19,10 +19,16 @@ COPY node-server/ .
 # Install dependencies for the node server
 RUN npm install
 
+RUN npm uninstall bcrypt
+
+RUN npm install bcrypt
+
 # Expose any necessary ports
 EXPOSE 3001
 
 # Set the entrypoint for the image
 CMD ["sh", "-c", "npm start && npm enroll"]
 
-# docker run --network docker_hospital-mongodb-network -p 3001:3001 hosp-sdk 
+# docker run -d -v ${PWD}/organizations/peerOrganizations:/hospital-network/organizations/peerOrganizations  --network docker_hospital-network  --name hosp-sdk --add-host=host.docker.internal:host-gateway -p 3001:3001 hosp-sdk 
+
+

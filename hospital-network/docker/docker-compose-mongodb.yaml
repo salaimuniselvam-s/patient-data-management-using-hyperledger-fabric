@@ -1,7 +1,7 @@
 version: "3.9"
 
 networks:
-  hospital-mongodb-network:
+  hospital-network:
     driver: bridge
 
 services:
@@ -19,7 +19,7 @@ services:
       - hospital-user-credentials_container:/data/db
       - ./init-mongo.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
     networks:
-      hospital-mongodb-network:
+      hospital-network:
         aliases:
           - mongo
   mongo-express:
@@ -32,6 +32,6 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: password
       ME_CONFIG_MONGODB_URL: mongodb://admin:password@mongo:27017/UserCredentials?useNewUrlParser=true&useUnifiedTopology=true
     networks:
-      hospital-mongodb-network:
+      hospital-network:
 volumes:
   hospital-user-credentials_container:

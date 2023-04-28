@@ -96,7 +96,6 @@ function startMongodbContainer() {
 
 function removeMongodbContainer() {
   if [ "$1" == "volumes" ]; then
-  echo "sms"
    docker-compose ${MONGO_COMPOSE_FILE} down --volumes --remove-orphans 2>&1
   else 
    docker-compose ${MONGO_COMPOSE_FILE} down --remove-orphans 2>&1
