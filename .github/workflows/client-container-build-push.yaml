@@ -1,7 +1,9 @@
 name: Build Docker Container for Hospital Client & Push to Docker Hub
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - docker-client
 
 jobs:
   docker:
