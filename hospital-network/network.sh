@@ -380,6 +380,39 @@ function deployCC() {
   exit 0
 }
 
+#To start the paused network
+function startNetwork(){
+  COMPOSE_FILES="-f ${COMPOSE_FILE_BASE}"
+
+  if [ "${DATABASE}" == "couchdb" ]; then
+    COMPOSE_FILES="${COMPOSE_FILES} -f ${COMPOSE_FILE_COUCH}"
+  fi
+
+  IMAGE_TAG=$IMAGETAG docker-compose ${COMPOSE_FILES} up -d 2>&1
+
+  IMAGE_TAG=$IMAGETAG docker-compose -f $COMPOSE_FILE_CA up -d 2>&1
+
+  docker ps -a
+  if [ $? -ne 0 ]; then
+    echo "ERROR !!!! Unable to start network"
+    exit 1
+  fi
+
+}
+
+#To Pause the network 
+function pauseNetwork() {
+  # pause hospital3 containers also in addition to hospital1 and hospital2, in case we were running sample to add hospital3
+  docker-compose -f $COMPOSE_FILE_BASE -f $COMPOSE_FILE_CA down  --remove-orphans
+
+  docker-compose  -f $COMPOSE_FILE_COUCH down --remove-orphans 
+
+  docker-compose  -f $COMPOSE_FILE_ORG3 down  --remove-orphans
+
+  docker-compose -f $COMPOSE_FILE_COUCH_ORG3  down --remove-orphans 
+
+}
+
 
 # Tear down running network
 function networkDown() {
@@ -545,6 +578,12 @@ elif [ "$MODE" == "restart" ]; then
 elif [ "$MODE" == "deployCC" ]; then
   echo "deploying chaincode on channel '${CHANNEL_NAME}'"
   echo
+elif [ "$MODE" == "pause" ]; then
+  echo "Stopping the containers but not removing the ledger details"
+  echo
+elif [ "$MODE" == "start" ]; then
+  echo "Starting the Paused Containers.."
+  echo
 else
   printHelp
   exit 1
@@ -556,6 +595,11 @@ elif [ "${MODE}" == "createChannel" ]; then
   createChannel
 elif [ "${MODE}" == "deployCC" ]; then
   deployCC
+elif [ "${MODE}" == "pause" ]; then
+  pauseNetwork
+elif [ "${MODE}" == "start" ]; then
+  DATABASE="couchdb"
+  startNetwork
 elif [ "${MODE}" == "down" ]; then
   networkDown
 elif [ "${MODE}" == "restart" ]; then

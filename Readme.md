@@ -51,7 +51,20 @@ $ ./hospitalNetwork.sh up
 $ ./hospitalNetwork.sh validate
 ```
 
-8. Use this command to bring the network down
+8. Use the Following Command to Pause the hospital network (it will stop all the containers but does not remove the ledger details)
+
+```bash
+$ ./hospitalNetwork.sh pause
+```
+
+9. Use the Following Command to Start the paused network
+
+```bash
+$ ./hospitalNetwork.sh start
+```
+
+10. Use this command to bring the network down <br>
+    (Note: this will remove all the ledger details )
 
 ```bash
 $ ./hospitalNetwork.sh down

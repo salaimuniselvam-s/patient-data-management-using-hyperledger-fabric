@@ -9,9 +9,10 @@ export const UpdatePatientDetailsSchema = Yup.object().shape({
   phoneNumber: Yup.string()
     .matches(/^[\d+ -]+$/, "Phone number is not valid")
     .required("Phone number is required"),
-  emergPhoneNumber: Yup.string()
-    .matches(/^[\d+ -]+$/, "Phone number is not valid")
-    .required("Emergency Phone number is required"),
+  emergPhoneNumber: Yup.string().matches(
+    /^[\d+ -]+$/,
+    "Phone number is not valid"
+  ),
   address: Yup.string().required("Address is Required"),
 });
 

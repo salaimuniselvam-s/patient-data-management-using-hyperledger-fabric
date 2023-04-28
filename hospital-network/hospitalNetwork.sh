@@ -95,7 +95,12 @@ function startMongodbContainer() {
 }
 
 function removeMongodbContainer() {
-  docker-compose ${MONGO_COMPOSE_FILE} down --remove-orphans 2>&1
+  if [ "$1" == "volumes" ]; then
+  echo "sms"
+   docker-compose ${MONGO_COMPOSE_FILE} down --volumes --remove-orphans 2>&1
+  else 
+   docker-compose ${MONGO_COMPOSE_FILE} down --remove-orphans 2>&1
+  fi
 }
 
 function createHospitalNetwork_DeployChaincode(){
@@ -161,17 +166,17 @@ elif [ $1 == "deploy" ]; then
  ./network.sh deployCC
 elif [ $1 == "validate" ]; then
   ValidateChaincodeonPeers
-elif [ $1 == "validateChaincode" ]; then
-  ./scripts/custom/validateAllFunctionsOnChaincode.sh
-elif [ $1 == "upMongo" ]; then
-  startMongodbContainer
-elif [ $1 == "downMongo" ]; then
-  removeMongodbContainer
 elif [ $1 == "down" ]; then
   echo "Removing Old Wallets"
   rm -rf ../hospital-sdk/fabric-network/wallet/*
   ./network.sh down
+  removeMongodbContainer volumes
+elif [ $1 == "pause" ]; then
+  ./network.sh pause
   removeMongodbContainer
+elif [ $1 == "start" ]; then
+  ./network.sh start
+  startMongodbContainer
 else
   printHelp
   exit 1
