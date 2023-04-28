@@ -67,7 +67,7 @@ console.log("Connecting To MongoDb...");
 mongoose
   // .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .connect(
-    `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@localhost:27018/UserCredentials`,
+    `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@mongo:27017/UserCredentials`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
