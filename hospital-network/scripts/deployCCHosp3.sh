@@ -242,12 +242,12 @@ packageChaincode 3
 echo "Installing chaincode on peer0.hospital3..."
 installChaincode 3
 
-queryCommitted 3 "validatingQueryCommit" 2
+# queryCommitted 3 "validatingQueryCommit" 2
 
-if [ $? -eq 0 ]; then
-    echo "Chaincode is already Committed.."
-    exit 0
-fi
+# if [ $? -eq 0 ]; then
+#     echo "Chaincode is already Committed.."
+#     exit 0
+# fi
 
 ## query whether the chaincode is installed
 queryInstalled 3

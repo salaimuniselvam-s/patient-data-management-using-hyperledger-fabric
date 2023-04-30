@@ -1,0 +1,31 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: "2"
+
+networks:
+  hospital-network:
+
+services:
+  hospital-sdk:
+    image: sms7/hospital-sdk:$IMAGE_TAG
+    environment:
+      - DOCKER_ENV=true
+    ports:
+      - "3001:3001"
+    volumes:
+      - ${PWD}/organizations/peerOrganizations:/hospital-network/organizations/peerOrganizations
+    command: sh -c 'npm start'
+    container_name: hospital-sdk
+    networks:
+      - hospital-network
+  hospital-client:
+    image: sms7/hospital-client:$IMAGE_TAG
+    ports:
+      - "3000:3000"
+    command: sh -c 'npm start'
+    container_name: hospital-client
+    networks:
+      - hospital-network

@@ -8,6 +8,8 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_TAG: ${{ github.sha }}-${{ github.run_id }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -23,6 +25,6 @@ jobs:
       - name: Build web container image for hospital-sdk
         run: |
           cd hospital-sdk
-          docker build -t sms7/hospital-sdk:latest -t sms7/hospital-sdk:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5}  .
+          docker build -t sms7/hospital-sdk:latest -t sms7/hospital-sdk:${IMAGE_TAG} .
       - name: Push container
         run: docker push sms7/hospital-sdk:latest

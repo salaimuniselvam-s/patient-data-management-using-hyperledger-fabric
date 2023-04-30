@@ -7,6 +7,7 @@
 const fs = require("fs");
 const path = require("path");
 require("dotenv").config();
+const isDocker = process.env.DOCKER_ENV ? true : false;
 
 /**
  * @author Salai Muni Selvam
@@ -15,7 +16,7 @@ require("dotenv").config();
  * @description When CA is created there is a json for each hospital which specfies the connection profile.
  */
 exports.buildCCPHosp1 = () => {
-  const connectionJson = process.env.isDocker
+  const connectionJson = isDocker
     ? "connection-hospital1-docker.json"
     : "connection-hospital1.json";
   // load the common connection configuration file
@@ -49,7 +50,7 @@ exports.buildCCPHosp1 = () => {
  * @description When CA is created there is a json for each hospital which specfies the connection profile.
  */
 exports.buildCCPHosp2 = () => {
-  const connectionJson = process.env.isDocker
+  const connectionJson = isDocker
     ? "connection-hospital2-docker.json"
     : "connection-hospital2.json";
   // load the common connection configuration file
@@ -83,7 +84,7 @@ exports.buildCCPHosp2 = () => {
  * @description When CA is created there is a json for each hospital which specfies the connection profile.
  */
 exports.buildCCPHosp3 = () => {
-  const connectionJson = process.env.isDocker
+  const connectionJson = isDocker
     ? "connection-hospital3-docker.json"
     : "connection-hospital3.json";
   // load the common connection configuration file

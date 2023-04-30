@@ -53,9 +53,9 @@ app.use("/users/registered", isUserRegistered);
 app.use("/users/_all", allUsers);
 
 const port = 3001;
-const connectionParams = process.env.isDocker
-  ? "@mongo:27017"
-  : "@localhost:27018";
+const isDocker = process.env.DOCKER_ENV ? true : false;
+const connectionParams = isDocker ? "@mongo:27017" : "@localhost:27018";
+
 app.get("/", (req, res) =>
   res.send(
     `Welcome to the Fabric-Node-Server.. Visit http://localhost:${port}/api-docs to view all the http endpoint in the node server`
@@ -87,6 +87,10 @@ mongoose
 
       // Creating Wallets for Admins
       enrollAdmins();
+
+      if (isDocker) {
+        require("./enrollUsers/initServer");
+      }
     });
   })
   .catch((error) => console.error(error));

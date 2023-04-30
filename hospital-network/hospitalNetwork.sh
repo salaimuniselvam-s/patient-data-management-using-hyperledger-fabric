@@ -1,5 +1,7 @@
 SLEEP_TIME=5
 MONGO_COMPOSE_FILE="-f ./docker/docker-compose-mongodb.yaml"
+IMAGETAG="latest"
+COMPOSE_FILE_CLIEN_SDK="-f ./docker/docker-compose-client-sdk.yaml"
 
 function setEnvPeer() {
 
@@ -78,6 +80,32 @@ function ValidateChaincodeonPeers() {
   peer channel getinfo -c hospital-channel
   peer lifecycle chaincode queryinstalled 
   # chaincodeQuery 2
+
+}
+
+function startClientSDKContainers() {
+  echo "Starting Client-SDK Containers.."
+
+  IMAGE_TAG=$IMAGETAG docker-compose ${COMPOSE_FILE_CLIEN_SDK} up -d 2>&1
+
+  docker ps -a
+  if [ $? -ne 0 ]; then
+    echo "ERROR !!!! Unable to start the Client-SDK container"
+    exit 1
+  fi
+
+}
+
+function removeClientSDKContainers() {
+  echo "Removing Client-SDK Containers.."
+
+  IMAGE_TAG=$IMAGETAG docker-compose ${COMPOSE_FILE_CLIEN_SDK} down -d 2>&1
+
+  docker ps -a
+  if [ $? -ne 0 ]; then
+    echo "ERROR !!!! Unable to remove the Client-SDK container"
+    exit 1
+  fi
 
 }
 
@@ -165,6 +193,17 @@ elif [ $1 == "deploy" ]; then
  ./network.sh deployCC
 elif [ $1 == "validate" ]; then
   ValidateChaincodeonPeers
+elif [ $1 == "startDemo" ]; then
+  createHospitalNetwork_DeployChaincode
+  startClientSDKContainers
+elif [ $1 == "endDemo" ]; then
+  echo "Removing Old Wallets"
+  rm -rf ../hospital-sdk/fabric-network/wallet/*
+  ./network.sh down
+  removeMongodbContainer volumes
+  removeClientSDKContainers
+elif [ $1 == "client" ]; then
+  startClientSDKContainers
 elif [ $1 == "down" ]; then
   echo "Removing Old Wallets"
   rm -rf ../hospital-sdk/fabric-network/wallet/*
