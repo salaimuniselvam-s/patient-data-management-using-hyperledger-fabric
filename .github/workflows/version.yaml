@@ -1,4 +1,4 @@
-name: Generate Version
+name: Generate Version..
 on:
   push:
     branches:
