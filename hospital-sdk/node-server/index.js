@@ -53,6 +53,9 @@ app.use("/users/registered", isUserRegistered);
 app.use("/users/_all", allUsers);
 
 const port = 3001;
+const connectionParams = process.env.isDocker
+  ? "@mongo:27017"
+  : "@localhost:27018";
 app.get("/", (req, res) =>
   res.send(
     `Welcome to the Fabric-Node-Server.. Visit http://localhost:${port}/api-docs to view all the http endpoint in the node server`
@@ -67,7 +70,7 @@ console.log("Connecting To MongoDb...");
 mongoose
   // .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .connect(
-    `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@mongo:27017/UserCredentials`,
+    `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}${connectionParams}/UserCredentials`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,

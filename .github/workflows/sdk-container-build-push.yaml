@@ -23,6 +23,6 @@ jobs:
       - name: Build web container image for hospital-sdk
         run: |
           cd hospital-sdk
-          docker build -t sms7/hospital-sdk:latest .
+          docker build -t sms7/hospital-sdk:latest -t sms7/hospital-sdk:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5}  .
       - name: Push container
         run: docker push sms7/hospital-sdk:latest

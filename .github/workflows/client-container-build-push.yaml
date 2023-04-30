@@ -23,6 +23,6 @@ jobs:
       - name: Build web container image for hospital-client
         run: |
           cd hospital-client
-          docker build -t sms7/hospital-client:latest .
+          docker build -t sms7/hospital-client:latest -t sms7/hospital-client:${GITHUB_SHA::7}-${GITHUB_RUN_ID::5} .
       - name: Push container
         run: docker push sms7/hospital-client:latest

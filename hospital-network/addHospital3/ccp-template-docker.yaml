@@ -1,5 +1,5 @@
 ---
-name: test-network-hospital${HOSPITAL}
+name: hospital-network-hospital${HOSPITAL}
 version: 1.0.0
 client:
   organization: Hospital${HOSPITAL}
@@ -16,7 +16,7 @@ organizations:
       - ca.hospital${HOSPITAL}.geakminds.com
 peers:
   peer0.hospital${HOSPITAL}.geakminds.com:
-    url: grpcs://localhost:${P0PORT}
+    url: grpcs://peer0.hospital${HOSPITAL}.geakminds.com:${P0PORT}
     tlsCACerts:
       pem: |
         ${PEERPEM}
@@ -25,7 +25,7 @@ peers:
       hostnameOverride: peer0.hospital${HOSPITAL}.geakminds.com
 certificateAuthorities:
   ca.hospital${HOSPITAL}.geakminds.com:
-    url: https://localhost:${CAPORT}
+    url: https://ca_hospital${HOSPITAL}:${CAPORT}
     caName: ca-hospital${HOSPITAL}
     tlsCACerts:
       pem: |

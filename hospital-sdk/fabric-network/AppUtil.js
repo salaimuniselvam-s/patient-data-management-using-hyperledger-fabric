@@ -6,6 +6,7 @@
 
 const fs = require("fs");
 const path = require("path");
+require("dotenv").config();
 
 /**
  * @author Salai Muni Selvam
@@ -14,6 +15,9 @@ const path = require("path");
  * @description When CA is created there is a json for each hospital which specfies the connection profile.
  */
 exports.buildCCPHosp1 = () => {
+  const connectionJson = process.env.isDocker
+    ? "connection-hospital1-docker.json"
+    : "connection-hospital1.json";
   // load the common connection configuration file
   const ccpPath = path.resolve(
     __dirname,
@@ -23,7 +27,7 @@ exports.buildCCPHosp1 = () => {
     "organizations",
     "peerOrganizations",
     "hospital1.geakminds.com",
-    "connection-hospital1.json"
+    connectionJson
   );
   const fileExists = fs.existsSync(ccpPath);
   if (!fileExists) {
@@ -45,6 +49,9 @@ exports.buildCCPHosp1 = () => {
  * @description When CA is created there is a json for each hospital which specfies the connection profile.
  */
 exports.buildCCPHosp2 = () => {
+  const connectionJson = process.env.isDocker
+    ? "connection-hospital2-docker.json"
+    : "connection-hospital2.json";
   // load the common connection configuration file
   const ccpPath = path.resolve(
     __dirname,
@@ -54,7 +61,7 @@ exports.buildCCPHosp2 = () => {
     "organizations",
     "peerOrganizations",
     "hospital2.geakminds.com",
-    "connection-hospital2.json"
+    connectionJson
   );
   const fileExists = fs.existsSync(ccpPath);
   if (!fileExists) {
@@ -76,6 +83,9 @@ exports.buildCCPHosp2 = () => {
  * @description When CA is created there is a json for each hospital which specfies the connection profile.
  */
 exports.buildCCPHosp3 = () => {
+  const connectionJson = process.env.isDocker
+    ? "connection-hospital3-docker.json"
+    : "connection-hospital3.json";
   // load the common connection configuration file
   const ccpPath = path.resolve(
     __dirname,
@@ -85,7 +95,7 @@ exports.buildCCPHosp3 = () => {
     "organizations",
     "peerOrganizations",
     "hospital3.geakminds.com",
-    "connection-hospital3.json"
+    connectionJson
   );
   const fileExists = fs.existsSync(ccpPath);
   if (!fileExists) {

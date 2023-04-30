@@ -27,8 +27,6 @@ RUN npm install bcrypt
 EXPOSE 3001
 
 # Set the entrypoint for the image
-CMD ["sh", "-c", "npm start && npm enroll"]
+CMD ["sh", "-c", "npm start && npm run enroll"]
 
-# docker run -d -v ${PWD}/organizations/peerOrganizations:/hospital-network/organizations/peerOrganizations  --network docker_hospital-network  --name hosp-sdk --add-host=host.docker.internal:host-gateway -p 3001:3001 hosp-sdk 
-
-
+# docker run -v ${PWD}/organizations/peerOrganizations:/hospital-network/organizations/peerOrganizations  --name hosp-sdk --network docker_hospital-network -p 3001:3001 -p 127.0.0.1:7054:7054 hosp-sdk 

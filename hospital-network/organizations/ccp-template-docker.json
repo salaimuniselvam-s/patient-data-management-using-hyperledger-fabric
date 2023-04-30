@@ -1,0 +1,45 @@
+{
+  "name": "hospital-network-hospital${HOSPITAL}",
+  "version": "1.0.0",
+  "client": {
+    "organization": "Hospital${HOSPITAL}",
+    "connection": {
+      "timeout": {
+        "peer": {
+          "endorser": "300"
+        }
+      }
+    }
+  },
+  "organizations": {
+    "Hospital${HOSPITAL}": {
+      "mspid": "Hospital${HOSPITAL}MSP",
+      "peers": ["peer0.hospital${HOSPITAL}.geakminds.com"],
+      "certificateAuthorities": ["ca.hospital${HOSPITAL}.geakminds.com"]
+    }
+  },
+  "peers": {
+    "peer0.hospital${HOSPITAL}.geakminds.com": {
+      "url": "grpcs://peer0.hospital${HOSPITAL}.geakminds.com:${P0PORT}",
+      "tlsCACerts": {
+        "pem": "${PEERPEM}"
+      },
+      "grpcOptions": {
+        "ssl-target-name-override": "peer0.hospital${HOSPITAL}.geakminds.com",
+        "hostnameOverride": "peer0.hospital${HOSPITAL}.geakminds.com"
+      }
+    }
+  },
+  "certificateAuthorities": {
+    "ca.hospital${HOSPITAL}.geakminds.com": {
+      "url": "https://ca_hospital${HOSPITAL}:${CAPORT}",
+      "caName": "ca-hospital${HOSPITAL}",
+      "tlsCACerts": {
+        "pem": "${CAPEM}"
+      },
+      "httpOptions": {
+        "verify": false
+      }
+    }
+  }
+}
