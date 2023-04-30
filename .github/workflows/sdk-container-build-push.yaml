@@ -8,8 +8,6 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: ${{ github.sha }}-${{ github.run_id }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -17,6 +15,16 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+      - name: Get previous tag
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        env:
+          GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
+      - name: Get next minor version
+        id: semver
+        uses: "WyriHaximus/github-action-next-semvers@v1"
+        with:
+          version: ${{ steps.previoustag.outputs.tag }}
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
@@ -25,8 +33,8 @@ jobs:
       - name: Build web container image for hospital-sdk
         run: |
           cd hospital-sdk
-          docker build -t sms7/hospital-sdk:latest -t sms7/hospital-sdk:${{ env.IMAGE_TAG }} .
+          docker build -t sms7/hospital-sdk:latest -t sms7/hospital-sdk:${{ steps.semver.outputs.patch }} .
       - name: Push container latest version
         run: docker push sms7/hospital-sdk:latest
       - name: Push container with version
-        run: docker push sms7/hospital-sdk:${{ env.IMAGE_TAG }}
+        run: docker push sms7/hospital-sdk:${{ steps.semver.outputs.patch }}
