@@ -25,6 +25,6 @@ jobs:
       - name: Build web container image for hospital-sdk
         run: |
           cd hospital-sdk
-          docker build -t sms7/hospital-sdk:latest -t sms7/hospital-sdk:${IMAGE_TAG} .
+          docker build -t sms7/hospital-sdk:latest -t sms7/hospital-sdk:${{ env.IMAGE_TAG }} .
       - name: Push container
         run: docker push sms7/hospital-sdk:latest

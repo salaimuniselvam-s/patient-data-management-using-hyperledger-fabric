@@ -99,7 +99,7 @@ function startClientSDKContainers() {
 function removeClientSDKContainers() {
   echo "Removing Client-SDK Containers.."
 
-  IMAGE_TAG=$IMAGETAG docker-compose ${COMPOSE_FILE_CLIEN_SDK} down -d 2>&1
+  IMAGE_TAG=$IMAGETAG docker-compose ${COMPOSE_FILE_CLIEN_SDK} down --volumes --remove-orphans 2>&1
 
   docker ps -a
   if [ $? -ne 0 ]; then
@@ -202,8 +202,6 @@ elif [ $1 == "endDemo" ]; then
   ./network.sh down
   removeMongodbContainer volumes
   removeClientSDKContainers
-elif [ $1 == "client" ]; then
-  startClientSDKContainers
 elif [ $1 == "down" ]; then
   echo "Removing Old Wallets"
   rm -rf ../hospital-sdk/fabric-network/wallet/*
