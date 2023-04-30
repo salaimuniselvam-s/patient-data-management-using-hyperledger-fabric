@@ -25,6 +25,8 @@ jobs:
         run: git tag ${{ steps.semver.outputs.patch }}
       - name: Push tag
         run: git push --tags
+        env:
+          GITHUB_TOKEN: "${{ secrets.SECRET_TOKEN }}"
       - name: "Create new milestone"
         id: createmilestone
         uses: "WyriHaximus/github-action-create-milestone@v1"
