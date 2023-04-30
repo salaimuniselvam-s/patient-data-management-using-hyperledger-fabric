@@ -15,16 +15,13 @@ jobs:
       #   uses: docker/setup-qemu-action@v2
       # - name: Set up Docker Buildx
       #   uses: docker/setup-buildx-action@v2
-      - name: check secret
-        run: |
-          echo "Previous tag: ${{ steps.previoustag.outputs.tag }}"
-          echo "sms"
-          echo ${{ secrets.SECRET_TOKEN }}
       - name: Get previous tag
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
         env:
           GITHUB_TOKEN: ${{ secrets.SECRET_TOKEN }}
+        with:
+          fallback: 1.0.0
       - name: Get next minor version
         id: semver
         uses: "WyriHaximus/github-action-next-semvers@v1"
