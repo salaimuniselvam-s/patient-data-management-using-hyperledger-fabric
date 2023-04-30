@@ -33,8 +33,11 @@ jobs:
       - name: Build web container image for hospital-sdk
         run: |
           cd hospital-sdk
+          echo "Previous tag: ${{ steps.previoustag.outputs.tag }}"
+          echo "sms"
+          echo ${{ secrets.SECRET_TOKEN }}
           docker build -t sms7/hospital-sdk:latest -t sms7/hospital-sdk:${{ steps.semver.outputs.patch }} .
-      - name: Push container latest version
-        run: docker push sms7/hospital-sdk:latest
-      - name: Push container with version
-        run: docker push sms7/hospital-sdk:${{ steps.semver.outputs.patch }}
+      # - name: Push container latest version
+      #   run: docker push sms7/hospital-sdk:latest
+      # - name: Push container with version
+      #   run: docker push sms7/hospital-sdk:${{ steps.semver.outputs.patch }}
