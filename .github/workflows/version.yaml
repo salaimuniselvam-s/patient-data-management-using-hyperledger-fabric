@@ -25,6 +25,8 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.SECRET_TOKEN }}"
         run: |
+          git config --global user.email salaimuniselvams@geakminds.com
+          git config --global user.name salaimuniselvam
           git tag ${{ steps.semver.outputs.patch }}
           git push --tags
       - name: "Create new milestone"
