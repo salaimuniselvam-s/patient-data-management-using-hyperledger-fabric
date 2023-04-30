@@ -2,7 +2,7 @@ name: Generate Version
 on:
   push:
     branches:
-      - master
+      - docker-client
 
 jobs:
   version:
