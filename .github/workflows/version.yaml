@@ -1,4 +1,4 @@
-name: Generate Version
+name: Generate Tags For Docker image version..
 on:
   push:
     branches:
@@ -14,17 +14,13 @@ jobs:
       - name: "Get Previous tag"
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        with:
-          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
       - name: "Get next minor version"
-        id: semvers
+        id: semver
         uses: "WyriHaximus/github-action-next-semvers@v1"
         with:
           version: ${{ steps.previoustag.outputs.tag }}
       - name: Create  and push tag
         run: |
-          echo ${{ steps.semver.outputs.patch }} 
-          echo "sms"
           git tag ${{ steps.semver.outputs.patch }}
           git push --tags
       - name: "Create new milestone"
