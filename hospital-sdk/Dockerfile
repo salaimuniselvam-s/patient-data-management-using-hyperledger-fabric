@@ -19,6 +19,10 @@ COPY node-server/ .
 # Install dependencies for the node server
 RUN npm install
 
+RUN npm uninstall bcrypt
+
+RUN npm install bcrypt
+
 # Expose any necessary ports
 EXPOSE 3001
 

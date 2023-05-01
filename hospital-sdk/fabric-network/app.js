@@ -14,6 +14,8 @@ const {
   buildCCPHosp1,
   buildWallet,
 } = require("./AppUtil.js");
+require("dotenv").config();
+const isDocker = process.env.DOCKER_ENV ? true : false;
 
 const channelName = "hospital-channel";
 const chaincodeName = "hospitalcontract";
@@ -65,7 +67,7 @@ exports.connectToNetwork = async function (doctorID) {
     await gateway.connect(ccp, {
       wallet,
       identity: doctorID,
-      discovery: { enabled: true, asLocalhost: true },
+      discovery: { enabled: true, asLocalhost: !isDocker },
     });
 
     // Build a network instance based on the channel where the smart contract is deployed
