@@ -84,7 +84,7 @@ async function compareRefreshToken(refreshToken) {
     refreshToken: hashedPassword,
   });
 
-  return comparePassword(refreshToken, refreshTokenDetails.refreshToken || "");
+  return comparePassword(refreshToken, refreshTokenDetails?.refreshToken || "");
 }
 
 async function deleteRefreshToken(refreshToken) {
