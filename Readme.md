@@ -187,6 +187,25 @@ Below Test User Credentials are Created When running npm enroll in the hospital 
 | hosp2doctor    | temp-password | doctor  |
 |                |               |         |
 
+## QuickStart Network
+
+1. To start the network with hospital-client and hospital-sdk as a docker container, you can use the following command.
+
+```bash
+$ cd ./hospital-network
+$ ./hospitalNetwork.sh quickstart
+```
+
+It will setup the hospital-fabric-network, and also start the hospital-client web app in a container.
+
+You can access the hospital-web-app in [localhost:3000](http://localhost:3000/)
+
+2. Use the follwing command to bring down the hospital-network, hospital-client and sdk containers
+
+```bash
+$ ./hospitalNetwork.sh shutdown
+```
+
 ## Troubleshooting
 
 Incase if any of the commands fail due to configurations or the network was not brought down properly use the following commands to clear the corrupted docker images and fix the issue.

@@ -193,10 +193,11 @@ elif [ $1 == "deploy" ]; then
  ./network.sh deployCC
 elif [ $1 == "validate" ]; then
   ValidateChaincodeonPeers
-elif [ $1 == "startDemo" ]; then
-  # createHospitalNetwork_DeployChaincode
+elif [ $1 == "quickstart" ]; then
+  createHospitalNetwork_DeployChaincode
   startClientSDKContainers
-elif [ $1 == "endDemo" ]; then
+  echo "Visit http://localhost:3000/ to see the hospital-client web app"
+elif [ $1 == "shutdown" ]; then
   echo "Removing Old Wallets"
   rm -rf ../hospital-sdk/fabric-network/wallet/*
   ./network.sh down
