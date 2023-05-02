@@ -2,7 +2,7 @@ name: Generate Tags For Docker image version..
 on:
   push:
     branches:
-      - docker-client
+      - master
 
 jobs:
   version:
