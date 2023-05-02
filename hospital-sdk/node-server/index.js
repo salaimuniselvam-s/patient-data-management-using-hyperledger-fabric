@@ -66,10 +66,6 @@ app.get("/", (req, res) =>
 // const uri = `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@cluster0.ndk0ctm.mongodb.net/?retryWrites=true&w=majority`;
 
 console.log("Connecting To MongoDb...");
-console.log(process.env.DOCKER_ENV, "sdf");
-console.log(
-  `mongodb://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}${connectionParams}/UserCredentials`
-);
 
 mongoose
   // .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })

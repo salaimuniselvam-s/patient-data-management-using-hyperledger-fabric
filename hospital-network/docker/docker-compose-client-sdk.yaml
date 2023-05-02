@@ -13,6 +13,12 @@ services:
     image: sms7/hospital-sdk:$IMAGE_TAG
     environment:
       - DOCKER_ENV=true
+      - JWT_EXPIRES_IN=15m
+      - MONGO_DB_USERNAME=admin
+      - MONGO_DB_PASSWORD=password
+      - JWT_SECRET_TOKEN=password
+      - REFRESH_SECRET_TOKEN=refreshpassword
+      - SAMPLE_SALT=$2a$10$4vJ4X9gYcu5CJU5y6wnSue
     ports:
       - "3001:3001"
     volumes:
@@ -23,6 +29,8 @@ services:
       - hospital-network
   hospital-client:
     image: sms7/hospital-client:$IMAGE_TAG
+    environment:
+      - NEXT_PUBLIC_SALT=$2a$10$4vJ4X9gYcu5CJU5y6wnSue
     ports:
       - "3000:3000"
     command: sh -c 'npm start'

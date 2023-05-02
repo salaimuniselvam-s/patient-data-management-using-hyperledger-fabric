@@ -3,7 +3,7 @@ name: Build Docker Container for Hospital Client & Push to Docker Hub
 on:
   push:
     branches:
-      - master
+      - docker-client
 
 jobs:
   docker:

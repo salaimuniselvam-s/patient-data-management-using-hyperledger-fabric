@@ -194,7 +194,7 @@ elif [ $1 == "deploy" ]; then
 elif [ $1 == "validate" ]; then
   ValidateChaincodeonPeers
 elif [ $1 == "startDemo" ]; then
-  createHospitalNetwork_DeployChaincode
+  # createHospitalNetwork_DeployChaincode
   startClientSDKContainers
 elif [ $1 == "endDemo" ]; then
   echo "Removing Old Wallets"
