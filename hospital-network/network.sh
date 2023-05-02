@@ -417,9 +417,7 @@ function pauseNetwork() {
 # Tear down running network
 function networkDown() {
   # stop hospital3 containers also in addition to hospital1 and hospital2, in case we were running sample to add hospital3
-  docker-compose -f $COMPOSE_FILE_BASE -f $COMPOSE_FILE_CA down --volumes --remove-orphans
-
-  docker-compose  -f $COMPOSE_FILE_COUCH down --volumes --remove-orphans 
+  docker-compose -f $COMPOSE_FILE_BASE -f $COMPOSE_FILE_COUCH -f $COMPOSE_FILE_CA down --volumes --remove-orphans
 
   docker-compose  -f $COMPOSE_FILE_ORG3 down --volumes --remove-orphans
 
