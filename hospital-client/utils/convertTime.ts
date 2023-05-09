@@ -19,7 +19,6 @@ export function convertTimestamp(timestamp: number) {
     h = 12;
   }
 
-  // ie: 2014-03-24, 3:00 PM
   time = yyyy + "-" + mm + "-" + dd + ", " + h + ":" + min + " " + ampm;
   return time;
 }
