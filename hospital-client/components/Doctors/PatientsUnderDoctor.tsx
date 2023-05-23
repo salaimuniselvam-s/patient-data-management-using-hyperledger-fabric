@@ -34,9 +34,9 @@ const PatientsUnderDoctor: React.FC<{
   const [view, setView] = useState(false);
   return (
     <>
-      <div className="flex justify-center items-center mt-6">
+      <div className="flex justify-center items-center mt-3">
         <div className="w-full bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
-          <div className="px-6">
+          <div className="px-6 py-3">
             <div className="flex justify-between  items-center flex-col sm:flex-row">
               <div className="flex">
                 <Image
@@ -48,7 +48,7 @@ const PatientsUnderDoctor: React.FC<{
                 />
                 <div
                   className="font-semibold pl-3 pt-1 text-xl"
-                  onClick={()=>setView((prev)=> !prev)}
+                  onClick={() => setView((prev) => !prev)}
                 >
                   {patientDetail.patientId}
                   <span className="dark:text-gray-300 block font-normal text-lg">
@@ -74,16 +74,22 @@ const PatientsUnderDoctor: React.FC<{
           </div>
         </div>
       </div>
-      <Transition appear show={view} as={Fragment}
+      <Transition
+        appear
+        show={view}
+        as={Fragment}
         enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0">
-        <div className="flex  justify-center
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="ease-in duration-200"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <div
+          className="flex  justify-center
          gap-3 flex-col sm:flex-row py-3 px-3
-          bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700">
+          bg-white rounded-lg shadow dark:border dark:bg-gray-800 dark:border-gray-700"
+        >
           <div className="sm:w-1/2 min-w-fit flex flex-col gap-6">
             <FormInputReadonly
               id="Blood Group"
