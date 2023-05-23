@@ -135,6 +135,8 @@ function createHospitalNetwork_DeployChaincode(){
   echo "Creating Hospital Network"
   createHospitalNetwork
   setEnvPeer 1
+  export CORE_PEER_MSPCONFIGPATH=$(echo "$CORE_PEER_MSPCONFIGPATH" | sed 's,//,/,g')
+  echo $CORE_PEER_MSPCONFIGPATH
   peer channel list
   sleep $SLEEP_TIME
   sleep $SLEEP_TIME

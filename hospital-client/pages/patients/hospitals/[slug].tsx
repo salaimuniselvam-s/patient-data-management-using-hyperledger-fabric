@@ -107,7 +107,7 @@ const DoctorByHospital = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto flex flex-wrap flex-col sm:flex-row gap-6 px-6">
+    <div className="max-w-7xl mx-auto flex flex-wrap flex-row sm:flex-row gap-6 mt-5 px-6">
       {doctorDetail.map((doctorDetail, index: number) => {
         return (
           <Doctor_Admin_ProfileCard

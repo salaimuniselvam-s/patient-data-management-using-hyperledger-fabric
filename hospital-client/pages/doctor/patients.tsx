@@ -30,8 +30,8 @@ const AuthorisedPatientsForDoctors = () => {
 
   return (
     // bug
-    <div className="max-w-7xl mx-auto">
-      <div className="flex flex-wrap justify-center lg:justify-normal flex-col lg:flex-row mt-3 px-6 gap-6">
+    <div className="max-w-9xl mx-auto justify-center flex">
+      <div className="flex justify-center lg:justify-normal flex-col  mt-3 px-6 gap-2">
         {doctors.patients.map(
           (data: PatientDetailsUpdateByDoctor, index: number) => {
             return <PatientsUnderDoctor key={index} patientDetail={data} />;

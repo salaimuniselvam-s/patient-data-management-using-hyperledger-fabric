@@ -33,12 +33,14 @@ function DoctorProfilePage() {
   }
 
   return (
+    <div className="mt-3 max-w-8xl px-6 justify-center flex">
     <Doctor_Admin_ProfileCard
       imgSrc="/DoctorProfilePicture.avif"
       {...doctorDetail}
       isDoctor={true}
       isProfile={true}
-    />
+      />
+      </div>
   );
 }
 

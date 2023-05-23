@@ -6,7 +6,7 @@ const {
 } = require("../utils/utils");
 require("dotenv").config();
 const salt = process.env.SAMPLE_SALT;
-
+console.log(salt,'sal')
 const getAllRegisteredUsers = async () => {
   console.log("Fetching all the registered users..");
   const fetch = (await import("node-fetch")).default;

@@ -2,7 +2,7 @@ const { TokenSchema } = require("../db/schema");
 const { hashPassword, comparePassword } = require("./hashPassword");
 require("dotenv").config();
 const salt = process.env.SAMPLE_SALT;
-
+console.log(salt);
 const ROLE_ADMIN = "admin";
 const ROLE_DOCTOR = "doctor";
 const ROLE_PATIENT = "patient";
